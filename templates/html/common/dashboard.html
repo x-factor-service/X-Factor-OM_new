@@ -299,7 +299,7 @@
                         </div>
                         <div class="col-12" style="padding-right: 5px;">
                             <!-- BEGIN chart -->
-                            <div class="mt-nd h-145px" id="om_m_chart"></div>
+                            <div class="mt-nd h-145px" id=""></div>
                             <!-- END chart -->
                             <!-- BEGIN row -->
                             <!-- END row -->
@@ -337,7 +337,7 @@
                         <!-- END title -->
                         <div class="col-12" style="padding-right: 5px;">
                             <!-- BEGIN chart -->
-                            <div class="mt-nd h-145px"  id="om_um_chart"></div>
+                            <div class="mt-nd h-145px"  id=""></div>
                             <!-- END chart -->
                             <!-- BEGIN row -->
                             <!-- END row -->
@@ -551,223 +551,76 @@
         <!-- 리포트 부분--->
         <!-- BEGIN col-6 -->
         <div class="om-l">
-                <div class="d-flex">
-                    <!-- BEGIN card -->
-                    <div class="card">
+            <div>
+                <!-- BEGIN card -->
+                <div class="card">
 
-                    <div class="card-body">
-                        <!-- title -->
-                        <div class="d-flex fw-bold fs-12px mb-2">
-                            <div class="flex-grow-1">일간 자산 리포트</div>
-                        </div>
-                        <!-- BEGIN #datatable -->
-                        <table class="table table-report text-nowrap" width="100%">
-                            <thead class="fw-bold fs-14px mb-2">
-                            <tr>
-                                <th>No</th>
-                                <th>리포트 이름</th>
-                                <th>생성 일자</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody class="fw-bold fs-14px mb-2">
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <a href="../reportPagedaily">
-                                        일간 자산 리포트
-                                    </a>
-                                </td>
-                                <td>2023-04-21</td>
-                                <td>
-                                    <a href="http://localhost:8000/reportPagedaily/"download="230421 일간 리포트">
-                                        <button type="button" class="btn btn-outline-warning" value="print">
-                                            다운로드
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>
-                                    <a href="../reportPagedaily1">
-                                        일간 자산 리포트
-                                    </a>
-                                </td>
-                                <td>2023-04-20</td>
-                                <td>
-                                    <a href="http://localhost:8000/reportPagedaily1/"download="230420 일간 리포트">
-                                        <button type="button" class="btn btn-outline-warning" value="print">
-                                            다운로드
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>
-                                    <a href="../reportPagedaily2">
-                                        일간 자산 리포트
-                                    </a>
-                                </td>
-                                <td>2023-04-19</td>
-                                <td>
-                                    <a href="http://localhost:8000/reportPagedaily2/"download="230419 일간 리포트">
-                                        <button type="button" class="btn btn-outline-warning" value="print">
-                                            다운로드
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>
-                                    <a href="../reportPagedaily3">
-                                        일간 자산 리포트
-                                    </a>
-                                </td>
-                                <td>2023-04-18</td>
-                                <td>
-                                    <a href="http://localhost:8000/reportPagedaily3/"download="230418 일간 리포트">
-                                        <button type="button" class="btn btn-outline-warning" value="print">
-                                            다운로드
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-
-                        <!-- END #datatable -->
-
+                <div class="card-body h-205px">
+                    <!-- BEGIN title -->
+<!--                        {% if chartData.server_LChartDataList %}-->
+<!--                        <div class="d-flex fw-bold fs-12px mb-2">-->
+<!--                            <div class="flex-grow-1">미관리 자산</div>-->
+<!--                            <div class="d-flex fw-bold fs-17px mb-2"><br>Current : {{ chartData.server_LChartDataList.0.data.1.data | last }} unit</div>-->
+<!--                        </div>-->
+<!--                        {% endif %}-->
+                    <div class="d-flex fw-bold fs-12px mb-2">
+                        <div class="flex-grow-1">예상 유휴 자산</div>
+                        <div class="d-flex fw-bold fs-17px mb-2"><br>Current : {{ chartData.server_LChartDataList.0.data.1.data | last }} unit</div>
                     </div>
-                    <div class="card-arrow">
-                        <div class="card-arrow-top-left"></div>
-                        <div class="card-arrow-top-right"></div>
-                        <div class="card-arrow-bottom-left"></div>
-                        <div class="card-arrow-bottom-right"></div>
+                    <!-- END title -->
+                    <div class="col-12" style="padding-right: 5px;">
+                        <!-- BEGIN chart -->
+                        <div class="mt-nd h-145px"  id=""></div>
+                        <!-- END chart -->
+                        <!-- BEGIN row -->
+                        <!-- END row -->
                     </div>
                 </div>
-                    <!-- END card -->
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
                 </div>
-
-
-
-
-        <!-- END col-6 -->
-
-        <!-- END col-6 -->
-
-        <!-- BEGIN col-3 -->
-
-
-        <br>
-                    <!-- BEGIN card -->
-                <div id="datatable" class="datatable w-100">
-                    <div class="card">
-                        <div class="card-body">
-                        <!-- title -->
-                        <div class="d-flex fw-bold fs-12px mb-2">
-                            <div class="flex-grow-1">주간 자산 리포트</div>
-                        </div>
-                        <!-- BEGIN #datatable -->
-                        <table class="table table-report text-nowrap" width="100%">
-                            <thead class="fw-bold fs-14px mb-2">
-                                <tr>
-                                    <th>No</th>
-                                    <th>리포트 이름</th>
-                                    <th>생성 일자</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody class="fw-bold fs-14px mb-2">
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <a href="../reportPageweekly">
-                                            주간 자산 리포트
-                                        </a>
-                                    </td>
-                                    <td>2023-04-21</td>
-                                    <td>
-                                        <a href="http://localhost:8000/reportPageweekly/"download="230421 주간 리포트">
-                                            <button type="button" class="btn btn-outline-warning" value="print">
-                                                다운로드
-                                            </button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>
-                                        <a href="../reportPageweekly1">
-                                            주간 자산 리포트
-                                        </a>
-                                    </td>
-                                    <td>2023-04-14</td>
-                                    <td>
-                                        <a href="http://localhost:8000/reportPageweekly1/"download="230414 주간 리포트">
-                                            <button type="button" class="btn btn-outline-warning" value="print">
-                                                다운로드
-                                            </button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>
-                                        <a href="../reportPageweekly2">
-                                            주간 자산 리포트
-                                        </a>
-                                    </td>
-                                    <td>2023-04-07</td>
-                                    <td>
-                                        <a href="http://localhost:8000/reportPageweekly2/"download="230407 주간 리포트">
-                                            <button type="button" class="btn btn-outline-warning" value="print">
-                                                다운로드
-                                            </button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>
-                                        <a href="../reportPageweekly3">
-                                            주간 자산 리포트
-                                        </a>
-                                    </td>
-                                    <td>2023-03-31</td>
-                                    <td>
-                                        <a href="http://localhost:8000/reportPageweekly3/"download="230331 주간 리포트">
-                                            <button type="button" class="btn btn-outline-warning" value="print">
-                                                다운로드
-                                            </button>
-                                        </a>
-                                    </td>
-                                </tr>
-
-
-                            </tbody>
-                        </table>
-
-
-                        <!-- END #datatable -->
-
-                    </div>
-                    <div class="card-arrow">
-                        <div class="card-arrow-top-left"></div>
-                        <div class="card-arrow-top-right"></div>
-                        <div class="card-arrow-bottom-left"></div>
-                        <div class="card-arrow-bottom-right"></div>
-                    </div>
-                    </div>
-                <!-- END card-body -->
-                </div>
-                    <!-- END card -->
-
-
             </div>
+                <!-- END card -->
+            </div>
+            <!-- BEGIN 간격용 div-->
+            <div style="height:16px;"></div>
+            <!-- END 간격용 div-->
+                <!-- BEGIN card -->
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                    <!-- title -->
+                    <div class="d-flex fw-bold fs-12px mb-2">
+                        <div class="flex-grow-1">기간별 자산 리포트</div>
+                    </div>
+                    <!-- BEGIN #datatable -->
+                    <div class="input-group" id="daterange">
+                          <input type="text" name="daterange" class="form-control" value="" placeholder="click to select the date range" autocomplete="off">
+                            <input type="hidden" name="startDate" value="">
+                            <input type="hidden" name="endDate" value="">
+                          <span class="input-group-text">
+                          <i class="fa fa-calendar"></i>
+                          </span>
+                    </div>
+
+
+                    <!-- END #datatable -->
+
+                </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+                </div>
+            <!-- END card-body -->
+            </div>
+                <!-- END card -->
+        </div>
 
 
 

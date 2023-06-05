@@ -12,7 +12,7 @@ def transform_pieData(sensorName):
     valueCounts = dataFrame()[sensorName].value_counts()
     values = []
     counts = []
-    preprocessing_list = ['dfdfdfdfdf']
+    preprocessing_list = ['no result']
     for value, count in zip(valueCounts.index, valueCounts.values):
         if not any(excluded_value.upper() in value.upper() for excluded_value in preprocessing_list):
             values.append(value)
