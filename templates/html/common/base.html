@@ -172,27 +172,46 @@
 
 
     //datepicker
-        $(function() {
-            $('#daterange').daterangepicker({
-                "alwaysOpen": true,
-                "autoapply": true,
-                "linkedCalendars": false,
-            },
-            function(start, end, label) {
-                $('#daterange').text('시작일 : ' + start.format('YYYY-MM-DD') + ' ~  종료일 : ' + end.format('YYYY-MM-DD'));
-            });
-            $('.drp-calendar.right').hide();
-            $('.drp-calendar.left').addClass('single');
+    $(function() {
+      var daterangepicker = $('#daterange').daterangepicker({
+          "autoapply": true,
+          "linkedCalendars": false,
+          },
 
-            $('.calendar-table').on('DOMSubtreeModified', function() {
-                var el = $(".prev.available").parent().children().last();
-                if (el.hasClass('next available')) {
-                    return;
-                }
-                el.addClass('next available');
-                el.append('<span></span>');
-            });
-        });
+      function(start, end, label) {
+          $('#daterange').text('시작일 : ' + start.format('YYYY-MM-DD') + ' ~  종료일 : ' + end.format('YYYY-MM-DD'));
+      }).on('hide.daterangepicker', function() {        // 'hide' 이벤트를 청취하도록 추가합니다.
+      setTimeout(function() {                      // 'hide' 이벤트 처리가 완료되는 것을 기다립니다.
+      $('#daterange').trigger('click');
+          }, 0);
+      });
+
+      $('#daterange').trigger('click');
+      $('.drp-calendar.right').hide();
+      $('.drp-calendar.left').addClass('single');
+
+    $('.daterangepicker').css({
+        'background-color': 'transparent',
+        'float':'middle',
+        'width': '700px', // 가로 크기를 100%로 설정합니다.
+        'max-width': '700px', // 최대 가로 크기도 100%로 설정합니다.
+    });
+
+    $('.drp-calendar.left').css({
+        'background-color': 'transparent',
+        'width': '100%', // 가로 크기를 100%로 설정합니다.
+        'max-width': '100%', // 최대 가로 크기도 100%로 설정합니다.
+    });
+
+    $('.calendar-table').on('DOMSubtreeModified', function() {
+        var el = $(".prev.available").parent().children().last();
+        if (el.hasClass('next available')) {
+            return;
+        }
+        el.addClass('next available');
+        el.append('<span></span>');
+    });
+});
 
 </script>
 </body>
