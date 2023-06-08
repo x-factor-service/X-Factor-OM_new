@@ -159,7 +159,7 @@ var handleRenderChartNCOMG = function () {
         stroke: {
           lineCap: 'round'
         },
-        labels: [JSON.stringify(dataList.disk_donutData) + ' 대']
+        labels: [ dataList.disk_donutData + ' 대']
     };
     var om_disk_chart = new ApexCharts(document.querySelector('#om_disk_chart'),om_disk_chartOptions);
     om_disk_chart.render();
@@ -246,7 +246,7 @@ var handleRenderChartNCOMG = function () {
         stroke: {
           lineCap: 'round'
         },
-        labels: [JSON.stringify(dataList.memory_donutData)+ ' 대'],
+        labels: [dataList.memory_donutData+ ' 대'],
     };
     var om_mem_chart = new ApexCharts(document.querySelector('#om_mem_chart'),om_mem_chartOptions);
     om_mem_chart.render();
@@ -256,6 +256,14 @@ var handleRenderChartNCOMG = function () {
     //--------------------------------------------------------------------------
     // OM- om_os_chart
     //--------------------------------------------------------------------------
+    var os_pieDataItem = []
+    var os_pieDataCount = []
+
+    for (var i = 0; i < dataList.os_pieData.length; i++) {
+        os_pieDataItem.push(dataList.os_pieData[i]['item']);
+        os_pieDataCount.push(dataList.os_pieData[i]['count']);
+    };
+
     var om_os_chartOptions = {
         chart: {
           height: 220,
@@ -293,8 +301,8 @@ var handleRenderChartNCOMG = function () {
           position: 'left',
         },
         colors: ["#b76306", "#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
-        labels: dataList.os_pieData.name,
-        series: dataList.os_pieData.value,
+        labels: os_pieDataItem,
+        series: os_pieDataCount,
         tooltip: {
           theme: 'dark',
           x: {
@@ -319,6 +327,14 @@ var handleRenderChartNCOMG = function () {
     //--------------------------------------------------------------------------
     // OM- om_wire_chart
     //--------------------------------------------------------------------------
+    var wire_pieDataItem = []
+    var wire_pieDataCount = []
+
+    for (var i = 0; i < dataList.wire_pieData.length; i++) {
+        wire_pieDataItem.push(dataList.wire_pieData[i]['item']);
+        wire_pieDataCount.push(dataList.wire_pieData[i]['count']);
+    };
+
     var om_wire_chartOptions = {
         chart: {
           height: 220,
@@ -356,8 +372,8 @@ var handleRenderChartNCOMG = function () {
           position: 'left',
         },
         colors: ["#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
-        labels: dataList.wire_pieData.name,
-        series: dataList.wire_pieData.value,
+        labels: wire_pieDataItem,
+        series: wire_pieDataCount,
         tooltip: {
           theme: 'dark',
           x: {
@@ -382,6 +398,14 @@ var handleRenderChartNCOMG = function () {
     //--------------------------------------------------------------------------
     // OM- om_vp_chart
     //--------------------------------------------------------------------------
+    var virtual_pieDataItem = []
+    var virtual_pieDataCount = []
+
+    for (var i = 0; i < dataList.virtual_pieData.length; i++) {
+        virtual_pieDataItem.push(dataList.virtual_pieData[i]['item']);
+        virtual_pieDataCount.push(dataList.virtual_pieData[i]['count']);
+    };
+
     var om_vp_chartOptions = {
         chart: {
           height: 220,
@@ -419,8 +443,8 @@ var handleRenderChartNCOMG = function () {
           position: 'left',
         },
         colors: ["#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
-        labels: dataList.virtual_pieData.name,
-        series: dataList.virtual_pieData.value,
+        labels: virtual_pieDataItem,
+        series: virtual_pieDataCount,
         tooltip: {
           theme: 'dark',
           x: {

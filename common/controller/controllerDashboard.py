@@ -1,18 +1,11 @@
-import requests
-from django.core.paginator import Paginator
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
 # from common.Input.DB.Tanium.Postgresql.Dashboard import plug_in as PDPI
 # from web.model.dashboard_function import DashboardData
 # from web.model.dashboard_function import MainData
 # from web.model.dashboard_function import AssetData
-from django.views.decorators.csrf import csrf_exempt
 from common.controller.controllerCommon import MenuSetting
-from common.dashboardFunction import Dashboard
+from common.core.dashboardFunction import Dashboard
 import json
-from pprint import pprint
-
-
 
 menuListDB = MenuSetting()
 

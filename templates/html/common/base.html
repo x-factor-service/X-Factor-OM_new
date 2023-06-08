@@ -124,7 +124,7 @@
   <!-- ================== dashboard chart NC or Xfactor ================== -->
   {% if Customer == 'NC' or Customer == 'Xfactor'%}
   <script src="{% static 'assets/js/demo/dashboard.demo.nc.banner.js' %}"></script>
-<!--  <script src="{% static 'assets/js/demo/om.demo.nc.banner.js' %}"></script>-->
+<!--  <script src="{% static 'assets/js/nouse/om.nouse.nc.banner.js' %}"></script>-->
   <script src="{% static 'js/common/dashboardData.js'%}"></script>
 
   {% else %}
@@ -162,12 +162,6 @@
 <!-- ================== END TABLE-js ================== -->
 
 <script src="{% static 'js/common/nav.js' %}"></script>
-<script src="{% static 'js/chart/network.js' %}"></script>
-
-<script type="text/javascript" src="{% static 'js/d3/d3.v3.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/d3/d3v4.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/d3/queue.v1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/common/topojson.v1.min.js' %}"></script>
 
 
   <script>
@@ -180,6 +174,7 @@
     //datepicker
         $(function() {
             $('#daterange').daterangepicker({
+                "alwaysOpen": true,
                 "autoapply": true,
                 "linkedCalendars": false,
             },

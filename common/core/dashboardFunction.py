@@ -1,9 +1,7 @@
 import logging
-
-from common.transform import transform_donutData, transform_pieData
+from common.input.db import plug_in as inputDb
 import urllib3
 import json
-import math
 
 with open("setting.json", encoding="UTF-8") as f:
     SETTING = json.loads(f.read())
@@ -32,7 +30,7 @@ def Dashboard():
 
             #------------------------------상단 디스크 사용률 도넛 차트------------------------
         try:
-            disk_donutData = transform_donutData('Disk Used Percentage#2')
+            disk_donutData = inputDb('disk_donutData')
             logger.info('dashboardFunction.py - disk_donutData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
@@ -40,35 +38,35 @@ def Dashboard():
 
             # -----------------------------상단 메모리 사용률 도넛 차트------------------------------
         try:
-            memory_donutData = transform_donutData('Memory Consumption#2')
+            memory_donutData = inputDb('memory_donutData')
             logger.info('dashboardFunction.py - memory_donutData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - memory_donutData')
             # -----------------------------상단 씨피유 사용률 도넛 차트------------------------------
         try:
-            cpu_donutData = transform_donutData('CPU Consumption#2')
+            cpu_donutData = inputDb('cpu_donutData')
             logger.info('dashboardFunction.py - cpu_donutData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - cpu_donutData')
             # -----------------------------상단 오에스 파이차트 ------------------------------------
         try:
-            os_pieData = transform_pieData('OS Platform')
+            os_pieData = inputDb('os_pieData')
             logger.info('dashboardFunction.py - os_pieData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - os_pieData')
             # -----------------------------상단 유/무선(와이어) 파이차트 ------------------------------------
         try:
-            wire_pieData = transform_pieData('wired/wireless 2')
+            wire_pieData = inputDb('wire_pieData')
             logger.info('dashboardFunction.py - wire_pieData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - wire_pieData')
             # -----------------------------상단 물리/가상 파이차트 ------------------------------------
         try:
-            virtual_pieData = transform_pieData('Is Virtual#3')
+            virtual_pieData = inputDb('virtual_pieData')
             logger.info('dashboardFunction.py - virtual_pieData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
