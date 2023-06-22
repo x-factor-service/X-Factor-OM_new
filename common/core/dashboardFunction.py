@@ -71,6 +71,13 @@ def Dashboard():
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - virtual_pieData')
+            # -----------------------------상단 물리/가상 파이차트 ------------------------------------
+        try:
+            idle_lineData = inputDb('idle_lineData')
+            logger.info('dashboardFunction.py - idle_lineData - Success')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - idle_lineData')
 
         RD = {
             'disk_donutData': disk_donutData,

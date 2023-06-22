@@ -432,14 +432,9 @@
                                     </td>
                                     <td>2099-12-31</td>
                                 </tr>
-
-
                                 </tbody>
                             </table>
-
-
                             <!-- END #datatable -->
-
                         </div>
                         <div class="card-arrow">
                             <div class="card-arrow-top-left"></div>
@@ -517,15 +512,10 @@
                                     </td>
                                     <td>5</td>
                                 </tr>
-
-
-
                                 </tbody>
                             </table>
 
-
                             <!-- END #datatable -->
-
                         </div>
                         <div class="card-arrow">
                             <div class="card-arrow-top-left"></div>
@@ -536,15 +526,8 @@
                     </div>
                 <!-- END 인증서 card -->
                 </div>
-
-
-
-
-
-
             <!-- d-flex end-->
             </div>
-
         </div>
 
         <!-- END col-6 -->
@@ -556,21 +539,16 @@
                 <div class="card">
 
                 <div class="card-body h-205px">
-                    <!-- BEGIN title -->
-<!--                        {% if chartData.server_LChartDataList %}-->
-<!--                        <div class="d-flex fw-bold fs-12px mb-2">-->
-<!--                            <div class="flex-grow-1">미관리 자산</div>-->
-<!--                            <div class="d-flex fw-bold fs-17px mb-2"><br>Current : {{ chartData.server_LChartDataList.0.data.1.data | last }} unit</div>-->
-<!--                        </div>-->
-<!--                        {% endif %}-->
+                    {% if dataList.idle_lineData %}
                     <div class="d-flex fw-bold fs-12px mb-2">
                         <div class="flex-grow-1">예상 유휴 자산</div>
-                        <div class="d-flex fw-bold fs-17px mb-2"><br>Current : {{ chartData.server_LChartDataList.0.data.1.data | last }} unit</div>
+                        <div class="d-flex fw-bold fs-17px mb-2"><br><br></div>
                     </div>
+                    {% endif %}
                     <!-- END title -->
                     <div class="col-12" style="padding-right: 5px;">
                         <!-- BEGIN chart -->
-                        <div class="mt-nd h-145px"  id=""></div>
+                        <div class="mt-nd h-145px"  id="idle_chart"></div>
                         <!-- END chart -->
                         <!-- BEGIN row -->
                         <!-- END row -->
@@ -597,16 +575,112 @@
                         <div class="flex-grow-1">기간별 자산 리포트</div>
                     </div>
                     <!-- BEGIN #datatable -->
-                    <div class="input-group" id="daterange">
-                          <input type="text" name="daterange" class="form-control" value="" placeholder="click to select the date range" autocomplete="off">
+                    <div style="display: flex; gap: 10%; width: 100%;">
+                        <div class="input-group" id="daterange" style="width:50%;">
+                            <input type="text" name="daterange" class="form-control" value="" placeholder="날짜를 선택해주세요" autocomplete="off">
                             <input type="hidden" name="startDate" value="">
                             <input type="hidden" name="endDate" value="">
-                          <span class="input-group-text">
-                          <i class="fa fa-calendar"></i>
-                          </span>
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </div>
+                        <button class="btn btn-outline-warning" type="button">미리보기</button>
                     </div>
+                        <br>
                     <!-- END #datatable -->
-                </div>
+                        <table class="table table-report text-nowrap" width="100%">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>리포트 이름</th>
+                                <th>생성 일자</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <a href="../reportPagedaily">
+                                        일간 자산 리포트
+                                    </a>
+                                </td>
+                                <td>2023-04-21</td>
+                                <td>
+                                    <a href="http://localhost:8000/reportPagedaily/"download="230421 일간 리포트">
+                                        <button type="button" class="btn btn-outline-warning" value="print">
+                                            다운로드
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>
+                                    <a href="../reportPagedaily1">
+                                        일간 자산 리포트
+                                    </a>
+                                </td>
+                                <td>2023-04-20</td>
+                                <td>
+                                    <a href="http://localhost:8000/reportPagedaily1/"download="230420 일간 리포트">
+                                        <button type="button" class="btn btn-outline-warning" value="print">
+                                            다운로드
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>
+                                    <a href="../reportPagedaily2">
+                                        일간 자산 리포트
+                                    </a>
+                                </td>
+                                <td>2023-04-19</td>
+                                <td>
+                                    <a href="http://localhost:8000/reportPagedaily2/"download="230419 일간 리포트">
+                                        <button type="button" class="btn btn-outline-warning" value="print">
+                                            다운로드
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>
+                                    <a href="../reportPagedaily3">
+                                        일간 자산 리포트
+                                    </a>
+                                </td>
+                                <td>2023-04-18</td>
+                                <td>
+                                    <a href="http://localhost:8000/reportPagedaily3/"download="230418 일간 리포트">
+                                        <button type="button" class="btn btn-outline-warning" value="print">
+                                            다운로드
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>
+                                    <a href="../reportPagedaily4">
+                                        일간 자산 리포트
+                                    </a>
+                                </td>
+                                <td>2023-04-17</td>
+                                <td>
+                                    <a href="http://localhost:8000/reportPagedaily4/"download="230417 일간 리포트">
+                                        <button type="button" class="btn btn-outline-warning" value="print">
+                                            다운로드
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 <div class="card-arrow">
                     <div class="card-arrow-top-left"></div>
                     <div class="card-arrow-top-right"></div>
