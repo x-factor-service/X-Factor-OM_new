@@ -23,6 +23,7 @@ var apexDisk60usageChart
 
 var handleRenderChartNC2 = function () {
     // global apexchart settings
+
     Apex = {
         title: {
           style: {
