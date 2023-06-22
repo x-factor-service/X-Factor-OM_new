@@ -632,6 +632,107 @@ var handleRenderChartNCOMG = function () {
 
 
 
+
+
+
+
+
+
+
+
+    //--------------------------------------------------------------------------
+    // Total quantity of servers - apexTotalServerChart Virtual
+    //--------------------------------------------------------------------------
+    var idle_lineDataItem = []
+    var idle_lineDataCount = []
+
+    for (var i = 0; i < dataList.idle_lineData.length; i++) {
+        idle_lineDataItem.push(dataList.idle_lineData[i]['item']);
+        idle_lineDataCount.push(dataList.idle_lineData[i]['count']);
+    };
+
+
+    //console.log(dataList.idle_lineData);
+    var idle_chart = {
+        chart: {
+          height: 145,
+          type: 'line',
+          toolbar: {
+            show: false
+          },
+          events: {
+            mounted: (chart) => {
+              chart.windowResizeHandler();
+            }
+          },
+        },
+        colors: ['rgba(' + app.color.themeRgb + ', .95)', 'rgba(' + app.color.themeRgb + ', .30)'],
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 3
+        },
+        grid: {
+          row: {
+            colors: ['rgba(' + app.color.whiteRgb + ', .25)', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          }
+        },
+        markers: {
+          size: 1,
+        },
+        series: [{
+            data: idle_lineDataCount
+        }],
+        xaxis: {
+          categories: idle_lineDataItem,
+          labels: {
+            show: true,
+          },
+          tooltip: {
+            enabled: false,
+          },
+        },
+        yaxis: {
+          labels: {
+            show: true,
+            formatter: function (val) {
+              return Math.round(val);
+            }
+          }
+        },
+        tooltip: {
+          theme: 'dark',
+          x: {
+            show: true,
+          },
+          y: {
+            title: {
+              formatter: function (val) {
+                return '' + val
+              }
+            },
+            formatter: (value) => { return '' + value },
+          }
+        },
+        legend: {
+          show: false,
+          position: 'top',
+          offsetY: 1,
+          horizontalAlign: 'right',
+          floating: true
+        }
+    };
+    var idle_line_chart = new ApexCharts(
+    document.querySelector('#idle_chart'),idle_chart);
+    idle_line_chart.render();
+
+
+
+
+}
 $(document).ready(function () {
 handleRenderChartNCOMG();
 });

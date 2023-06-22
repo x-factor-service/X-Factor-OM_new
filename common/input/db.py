@@ -124,6 +124,18 @@ def plug_in(type):
                             and statistics_collection_date >= '""" + weekDay + """'
                         order by statistics_collection_date asc
                     """
+        #-----------------------------예상 유휴자산 라인차트 ------------------------------------
+        elif type == 'idle_lineData':
+            query = """
+                        select 
+                            TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') ,item_count
+                        from
+                            daily_statistics
+                        where 
+                            item = 'collection_date'
+                            and statistics_collection_date >= '""" + weekDay + """'
+                        order by statistics_collection_date asc
+                    """
         # -----------------------------인증서리스트 ------------------------------------
         elif type == 'cert_listData':
             query = """
@@ -150,7 +162,7 @@ def plug_in(type):
                         ('count', int(R[0]))
                     )
                 )
-            elif type == 'os_pieData' or type == 'wire_pieData' or type == 'virtual_pieData' or type == 'discover_lineData':
+            elif type == 'os_pieData' or type == 'wire_pieData' or type == 'virtual_pieData' or type == 'discover_lineData' or type == 'idle_lineData':
                 SDL.append(dict(
                     (
                         ('item', R[0]),

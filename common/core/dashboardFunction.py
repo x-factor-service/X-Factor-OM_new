@@ -27,6 +27,7 @@ def Dashboard():
         report_listData = []
         idle_lineData = []
 
+
             #------------------------------상단 디스크 사용률 도넛 차트------------------------
         try:
             disk_donutData = inputDb('disk_donutData')
@@ -70,14 +71,20 @@ def Dashboard():
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - virtual_pieData')
-            # -----------------------------상단 물리/가상 파이차트 ------------------------------------
+            # -----------------------------중앙 미관리자산 라인차트 ------------------------------------
         try:
             discover_lineData = inputDb('discover_lineData')
             logger.info('dashboardFunction.py - discover_lineData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - discover_lineData')
-
+            # -----------------------------중앙 유휴자산 라인차트 ------------------------------------
+            try:
+                idle_lineData = inputDb('idle_lineData')
+                logger.info('dashboardFunction.py - idle_lineData - Success')
+            except:
+                logger.warning('dashboardFunction.py - Error Occurred')
+                logger.warning('Error - idle_lineData')
             # -----------------------------하단 인증서리스트  ------------------------------------
         try:
             cert_listData = inputDb('cert_listData')
@@ -96,8 +103,7 @@ def Dashboard():
             "cert_listData": cert_listData,
             "sbom_listData": sbom_listData,
             "report_listData": report_listData,
-            "idle_lineData": idle_lineData,
-            "discover_lineData": discover_lineData
+            "idle_lineData": idle_lineData
             }
     else:
         print()
