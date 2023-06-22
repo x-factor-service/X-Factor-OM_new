@@ -79,12 +79,12 @@ def Dashboard():
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - discover_lineData')
             # -----------------------------중앙 유휴자산 라인차트 ------------------------------------
-            try:
-                idle_lineData = inputDb('idle_lineData')
-                logger.info('dashboardFunction.py - idle_lineData - Success')
-            except:
-                logger.warning('dashboardFunction.py - Error Occurred')
-                logger.warning('Error - idle_lineData')
+        try:
+            idle_lineData = inputDb('idle_lineData')
+            logger.info('dashboardFunction.py - idle_lineData - Success')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - idle_lineData')
             # -----------------------------하단 인증서리스트  ------------------------------------
         try:
             cert_listData = inputDb('cert_listData')
