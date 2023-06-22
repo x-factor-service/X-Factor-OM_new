@@ -28,6 +28,7 @@ def plug_in(type):
         halfHourAgo = (datetime.today() - timedelta(minutes=35)).strftime("%Y-%m-%d %H:%M:%S")
         yesterday = (datetime.today() - timedelta(1)).strftime("%Y-%m-%d")
         fiveDay = (datetime.today() - timedelta(5)).strftime("%Y-%m-%d")
+        weekDay = (datetime.today() - timedelta(7)).strftime("%Y-%m-%d")
         # monthDay = (datetime.today() - timedelta(30)).strftime("%Y-%m-%d")
         monthDay = (datetime.today() - relativedelta(days=31)).strftime("%Y-%m-%d")
 
@@ -111,6 +112,18 @@ def plug_in(type):
                             and statistics_collection_date >= '""" + DBSelectTime + """'
                         order by item_count desc
                     """
+        # -----------------------------중앙 미관리자산 라인차트 ------------------------------------
+        elif type == 'discover_lineData':
+            query = """
+                        select 
+                            TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count
+                        from
+                            daily_statistics
+                        where 
+                            item = 'unmanagement'
+                            and statistics_collection_date >= '""" + weekDay + """'
+                        order by statistics_collection_date asc
+                    """
         Cur.execute(query)
         RS = Cur.fetchall()
         for R in RS:
@@ -120,7 +133,7 @@ def plug_in(type):
                         ('count', int(R[0]))
                     )
                 )
-            elif type == 'os_pieData' or type == 'wire_pieData' or type == 'virtual_pieData':
+            elif type == 'os_pieData' or type == 'wire_pieData' or type == 'virtual_pieData' or type == 'discover_lineData':
                 SDL.append(dict(
                     (
                         ('item', R[0]),

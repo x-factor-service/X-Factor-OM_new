@@ -323,25 +323,28 @@
                     <div class="card mb-3">
                     <!-- BEGIN card-body -->
                     <div class="card-body h-205px">
-                        <!-- BEGIN title -->
-<!--                        {% if chartData.server_LChartDataList %}-->
-<!--                        <div class="d-flex fw-bold fs-12px mb-2">-->
-<!--                            <div class="flex-grow-1">미관리 자산</div>-->
-<!--                            <div class="d-flex fw-bold fs-17px mb-2"><br>Current : {{ chartData.server_LChartDataList.0.data.1.data | last }} unit</div>-->
-<!--                        </div>-->
-<!--                        {% endif %}-->
                         <div class="d-flex fw-bold fs-12px mb-2">
                             <div class="flex-grow-1">미관리 자산</div>
-                            <div class="d-flex fw-bold fs-17px mb-2"><br>Current : {{ chartData.server_LChartDataList.0.data.1.data | last }} unit</div>
                         </div>
                         <!-- END title -->
-                        <div class="col-12" style="padding-right: 5px;">
+
+                        <!--<div class="col-12" style="padding-right: 5px;">-->
                             <!-- BEGIN chart -->
-                            <div class="mt-nd h-145px"  id=""></div>
+                            <!--<div class="mt-nd h-145px"  id="om_um_chart"></div>-->
                             <!-- END chart -->
                             <!-- BEGIN row -->
                             <!-- END row -->
+                       <!--</div> -->
+
+                        <div class="row align-items-center">
+                            <div class="h-145px">
+                                <div class="col-12">
+                                    <div class="h-145px" id="om_um_chart"></div>
+                                </div>
+                            </div>
                         </div>
+
+
                     </div>
                     <!-- END card-body -->
                     <!-- BEGIN card-arrow -->

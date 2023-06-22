@@ -47,7 +47,7 @@ def dashboard(request):
                     "cert_listData": cert_listData,
                     "sbom_listData": sbom_listData,
                     "report_listData": report_listData,
-                    "idle_lineData": idle_lineData
+                    "idle_lineData": idle_lineData,
                      }
         returnData = {'menuList': menuListDB, 'dataList': dataList, 'Login_Method': Login_Method, 'Customer' : Customer}
         #print(returnData)

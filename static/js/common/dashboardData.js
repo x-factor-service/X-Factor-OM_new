@@ -545,6 +545,14 @@ var handleRenderChartNCOMG = function () {
    //--------------------------------------------------------------------------
     // OM_미관리자산 om_um_chart
     //--------------------------------------------------------------------------
+    var discover_lineDataItem = []
+    var discover_lineDataCount = []
+    //console.log(dataList)
+    for (var i = 0; i < dataList.discover_lineData.length; i++) {
+        discover_lineDataItem.push(dataList.discover_lineData[i]['item']);
+        discover_lineDataCount.push(dataList.discover_lineData[i]['count']);
+    };
+
     var om_um_chartOptions2 = {
         chart: {
           height: 145,
@@ -576,10 +584,10 @@ var handleRenderChartNCOMG = function () {
           size: 1,
         },
         series: [{
-            data: [9,20,13,15,8,15,12,11,15,20]
+            data: discover_lineDataCount
         }],
         xaxis: {
-          categories: ['11','12','13','14','15','16','17','18','19','20'],
+          categories: discover_lineDataItem,
           labels: {
             show: true,
           },
