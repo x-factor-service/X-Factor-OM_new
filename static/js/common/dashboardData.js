@@ -553,7 +553,7 @@ var handleRenderChartNCOMG = function () {
         discover_lineDataCount.push(dataList.discover_lineData[i]['count']);
     };
 
-    var om_um_chartOptions2 = {
+    var om_um_chartOptions = {
         chart: {
           height: 145,
           type: 'line',
@@ -610,8 +610,8 @@ var handleRenderChartNCOMG = function () {
           },
           y: {
             title: {
-              formatter: function (val) {
-                return '' + val
+              formatter: function () {
+                return 'Count'
               }
             },
             formatter: (value) => { return '' + value },
@@ -626,9 +626,12 @@ var handleRenderChartNCOMG = function () {
         }
     };
     var om_um_chart = new ApexCharts(
-    document.querySelector('#om_um_chart'),om_um_chartOptions2);
+    document.querySelector('#om_um_chart'),om_um_chartOptions);
     om_um_chart.render();
-}
+};
+
+
+
 $(document).ready(function () {
 handleRenderChartNCOMG();
 });
