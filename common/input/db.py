@@ -111,6 +111,23 @@ def plug_in(type):
                             and statistics_collection_date >= '""" + DBSelectTime + """'
                         order by item_count desc
                     """
+        # -----------------------------인증서리스트 ------------------------------------
+        elif type == 'cert_listData':
+            query = """
+                        select 
+                            item, item_count
+                        from
+                            daily_statistics
+                        where
+                            classification = 'certificate_list'
+                        AND
+                            item != 'Root'
+                        AND
+                            statistics_collection_date >= '""" + yesterday + """'
+                        order by 
+                            item_count ASC
+                        LIMIT 7
+                    """
         Cur.execute(query)
         RS = Cur.fetchall()
         for R in RS:
@@ -125,6 +142,13 @@ def plug_in(type):
                     (
                         ('item', R[0]),
                         ('count', int(R[1]))
+                    )
+                ))
+            elif type == 'cert_listData':
+                SDL.append(dict(
+                    (
+                        ('name', R[0]),
+                        ('date', R[1])
                     )
                 ))
             else:

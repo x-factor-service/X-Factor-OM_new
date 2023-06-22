@@ -72,6 +72,13 @@ def Dashboard():
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - virtual_pieData')
 
+            # -----------------------------하단 인증서리스트  ------------------------------------
+        try:
+            cert_listData = inputDb('cert_listData')
+            logger.info('dashboardFunction.py - cert_listData - Success')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - cert_listData')
         RD = {
             'disk_donutData': disk_donutData,
             'memory_donutData': memory_donutData,
