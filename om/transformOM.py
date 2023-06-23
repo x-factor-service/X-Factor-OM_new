@@ -308,7 +308,6 @@ def chart_data(data, type):
         V_count = []
         date_list = []
         count = []
-        print(len(data))
         for i in range(len(data)):
             if data[i][0] == 'Yes':
                 V_count.append(data[i][1])

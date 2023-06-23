@@ -45,7 +45,7 @@ def plug_in(type):
                         from
                             minutely_statistics
                         where 
-                            item = 'Disk Used Percentage#2'
+                            item = 'Disk Used Percentage#3'
                             and statistics_collection_date >= '""" + DBSelectTime + """'
                     """
         # -----------------------------상단 메모리 사용률 도넛 차트------------------------------
@@ -112,6 +112,20 @@ def plug_in(type):
                             and statistics_collection_date >= '""" + DBSelectTime + """'
                         order by item_count desc
                     """
+        # -----------------------------중앙 관리자산 라인차트 ------------------------------------
+        elif type == 'allAsset_lineData':
+            query = """
+                SELECT 
+                    TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'),
+                    CAST(SUM(CAST(item_count as INTEGER)) as VARCHAR)
+                FROM
+                    daily_statistics
+                WHERE 
+                    classification = 'dashboard_OS Platform'
+                    AND statistics_collection_date >= '""" + weekDay + """'
+                GROUP BY statistics_collection_date
+                ORDER BY statistics_collection_date ASC
+                    """
         # -----------------------------중앙 미관리자산 라인차트 ------------------------------------
         elif type == 'discover_lineData':
             query = """
@@ -162,7 +176,7 @@ def plug_in(type):
                         ('count', int(R[0]))
                     )
                 )
-            elif type == 'os_pieData' or type == 'wire_pieData' or type == 'virtual_pieData' or type == 'discover_lineData' or type == 'idle_lineData':
+            elif type in ['os_pieData', 'wire_pieData', 'virtual_pieData', 'discover_lineData', 'idle_lineData', 'allAsset_lineData']:
                 SDL.append(dict(
                     (
                         ('item', R[0]),

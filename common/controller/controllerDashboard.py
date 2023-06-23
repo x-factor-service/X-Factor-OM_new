@@ -31,6 +31,7 @@ def dashboard(request):
         wire_pieData = DCDL["wire_pieData"]
         os_pieData = DCDL["os_pieData"]
         virtual_pieData = DCDL["virtual_pieData"]
+        allAsset_lineData = DCDL["allAsset_lineData"]
         discover_lineData = DCDL["discover_lineData"]
         cert_listData = DCDL["cert_listData"]
         sbom_listData = DCDL["sbom_listData"]
@@ -43,6 +44,7 @@ def dashboard(request):
                     'wire_pieData': wire_pieData,
                     "os_pieData": os_pieData,
                     "virtual_pieData": virtual_pieData,
+                    "allAsset_lineData": allAsset_lineData,
                     "discover_lineData": discover_lineData,
                     "cert_listData": cert_listData,
                     "sbom_listData": sbom_listData,

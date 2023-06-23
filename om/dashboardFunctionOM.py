@@ -249,7 +249,7 @@ def DashboardData():
                         alarmCounter.update(i)
                     # alarm_donutChartDataList = [{key:value} for key, value in alarmCounter.most_common()]
                     alarm_donutChartDataList = [{'key': key, 'value': value} for key, value in alarmCounter.most_common()]
-                    print(alarm_donutChartDataList)
+                    #print(alarm_donutChartDataList)
 
                     for i in range(len(alarm_donutChartDataList)):
                         alarm_donutChartDataList[i]['color'] = colorList[i]

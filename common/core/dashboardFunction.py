@@ -22,6 +22,7 @@ def Dashboard():
         os_pieData = []
         virtual_pieData = []
         discover_lineData = []
+        allAsset_lineData = []
         cert_listData = []
         sbom_listData = []
         report_listData = []
@@ -71,10 +72,18 @@ def Dashboard():
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - virtual_pieData')
+            # -----------------------------중앙 관리자산 라인차트 ------------------------------------
+        try:
+            allAsset_lineData = inputDb('allAsset_lineData')
+            logger.info('dashboardFunction.py - allAsset_lineData - Success')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - allAsset_lineData')
             # -----------------------------중앙 미관리자산 라인차트 ------------------------------------
         try:
             discover_lineData = inputDb('discover_lineData')
             logger.info('dashboardFunction.py - discover_lineData - Success')
+            #print(discover_lineData)
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - discover_lineData')
@@ -99,6 +108,7 @@ def Dashboard():
             'wire_pieData': wire_pieData,
             "os_pieData": os_pieData,
             "virtual_pieData": virtual_pieData,
+            "allAsset_lineData": allAsset_lineData,
             "discover_lineData": discover_lineData,
             "cert_listData": cert_listData,
             "sbom_listData": sbom_listData,

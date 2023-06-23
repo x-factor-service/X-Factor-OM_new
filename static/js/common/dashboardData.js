@@ -466,6 +466,13 @@ var handleRenderChartNCOMG = function () {
     //--------------------------------------------------------------------------
     // OM_관리자산 om_m_chart
     //--------------------------------------------------------------------------
+    var allAsset_lineDataItem = []
+    var allAsset_lineDataCount = []
+    //console.log(dataList)
+    for (var i = 0; i < dataList.allAsset_lineData.length; i++) {
+        allAsset_lineDataItem.push(dataList.allAsset_lineData[i]['item']);
+        allAsset_lineDataCount.push(dataList.allAsset_lineData[i]['count']);
+    };
     var om_m_chartOptions = {
         chart: {
           height: 145,
@@ -497,10 +504,10 @@ var handleRenderChartNCOMG = function () {
           size: 1,
         },
         series: [{
-            data: [20,20,20,15,18,15,12,20,15,15]
+            data: allAsset_lineDataCount
         }],
         xaxis: {
-          categories: ['11','12','13','14','15','16','17','18','19','20'],
+          categories: allAsset_lineDataItem,
           labels: {
             show: true,
           },
@@ -523,8 +530,8 @@ var handleRenderChartNCOMG = function () {
           },
           y: {
             title: {
-              formatter: function (val) {
-                return '' + val
+              formatter: function () {
+                return 'Count'
               }
             },
             formatter: (value) => { return '' + value },

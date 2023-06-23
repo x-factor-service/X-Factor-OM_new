@@ -717,7 +717,7 @@
 </div>
 <!-- END #content -->
 <script>
-
+    var a = {{ chartData | safe }};
 	window.setTimeout('window.location.reload()',600000);
     //메모리,CPU,디스크 자동롤링
     var buttons = document.querySelectorAll(".mcdBtn"); // 버튼 요소들을 가져옴
