@@ -45,7 +45,7 @@ def plug_in(type):
                         from
                             minutely_statistics
                         where 
-                            item = 'Disk Used Percentage#2'
+                            item = 'Disk Used Percentage#3'
                             and statistics_collection_date >= '""" + DBSelectTime + """'
                     """
         # -----------------------------상단 메모리 사용률 도넛 차트------------------------------

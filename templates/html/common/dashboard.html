@@ -492,21 +492,18 @@
             <div>
                 <!-- BEGIN card -->
                 <div class="card">
-
                 <div class="card-body h-205px">
-                    {% if dataList.idle_lineData %}
                     <div class="d-flex fw-bold fs-12px mb-2">
                         <div class="flex-grow-1">예상 유휴 자산</div>
-                        <div class="d-flex fw-bold fs-17px mb-2"><br><br></div>
+                        <div class="d-flex fw-bold fs-17px mb-2"></div>
                     </div>
-                    {% endif %}
                     <!-- END title -->
-                    <div class="col-12" style="padding-right: 5px;">
-                        <!-- BEGIN chart -->
-                        <div class="mt-nd h-145px"  id="idle_chart"></div>
-                        <!-- END chart -->
-                        <!-- BEGIN row -->
-                        <!-- END row -->
+                    <div class="row align-items-center">
+                        <div class="h-145px">
+                            <div class="col-12">
+                                <div class="h-145px" id="idle_chart"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-arrow">
