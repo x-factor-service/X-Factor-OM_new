@@ -32,6 +32,7 @@ def plug_in(table, day, type):
         fiveDay = (datetime.today() - timedelta(5)).strftime("%Y-%m-%d")
         # monthDay = (datetime.today() - timedelta(30)).strftime("%Y-%m-%d")
         monthDay = (datetime.today() - relativedelta(days=31)).strftime("%Y-%m-%d")
+        weekDay = (datetime.today() - timedelta(7)).strftime("%Y-%m-%d")
         # ----------------------서버수량그래프 데이터 변경 추가 종윤 ----------------------
         lastYear = (datetime.today() - relativedelta(months=12)).strftime("%Y-%m-%d")
         lastDay = (datetime.today() - relativedelta(months=11)).strftime("%Y-%m-%d")
@@ -956,6 +957,17 @@ def plug_in(table, day, type):
                             and 
                                 to_char(statistics_collection_date, 'YYYY-MM-DD') = '""" + yesterday + """'
                     """
+                elif type == 'idle':
+                    query = """
+                                select 
+                                    TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') ,item_count
+                                from
+                                    daily_statistics
+                                where 
+                                    item = 'collection_date'
+                                    and statistics_collection_date >= '""" + yesterday + """'
+                                order by statistics_collection_date asc
+                            """
                 # elif type == 'ip':
                 #     query = """
                 #             select
@@ -1285,6 +1297,14 @@ def plug_in(table, day, type):
                         ('model', R[2]),
                     )
                 ))
+            elif type in ['idle']:
+                SDL.append(dict(
+                    (
+                        ('item', R[0]),
+                        ('count', int(R[1]))
+                    )
+                ))
+
             elif day == 'alarmCaseMore':
                 index = (int(type[1]) - 1) * int(type[0]) + i
                 SDL.append(dict(
