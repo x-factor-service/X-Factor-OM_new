@@ -358,6 +358,25 @@ def DashboardData():
                     logger.warning('dashboard_function.py - Error Occurred')
                     logger.warning('Error - memoryMoreDataList')
 
+                #예상 유휴자산
+                try:
+                    idleData = PDPI('statistics', 'today', 'idle')
+                    try:
+                        tValue = int(idleData[0]['count'])
+                        yValue = int(idleData[1]['count']) if len(idleData) > 1 else tValue
+                        roc = tValue - yValue
+                        idleDataList = {"value": tValue, 'roc': roc}
+                    except:
+                        if not tValue:
+                            idleDataList = {"value": '-', 'roc': '-'}
+                        else:
+                            idleDataList = {"value": tValue, 'roc': tValue}
+                    logger.info('dashboard_function.py - idleDataList - Success')
+                except:
+                    idleDataList = {"value": '-', 'roc': '-'}
+                    logger.warning('dashboard_function.py - Error Occurred')
+                    logger.warning('Error - idleDataList')
+
                 USCDL = {"DiskChartDataList": DiskChartDataList, "CpuChartDataList": CpuChartDataList, "MemoryChartDataList": MemoryChartDataList}
                 ODDLC = os_donutChartData
                 OCPO = os_chartPartOne
@@ -374,6 +393,8 @@ def DashboardData():
                 CIDL = connectIpDataList
                 CSDL = connectServerDataList
                 MMDL = []
+                IDDL = idleDataList
+
 
             elif core == 'Zabbix':
                 print()
@@ -399,7 +420,7 @@ def DashboardData():
             "cpuNormalDataList": CNDLF,
             "memoryNormalDataList": MNDLF,
             "diskNormalDataList": DNDLF,
-
+            "idleDataList":IDDL,
         }
     else:
         if ProjectType == 'System':
