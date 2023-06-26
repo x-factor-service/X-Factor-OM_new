@@ -171,7 +171,7 @@
 
 
   <script>
-var dataList = {{ dataList| safe }};
+
 //datepicker
         $(function() {
             $('#daterange').daterangepicker({
@@ -208,7 +208,94 @@ var dataList = {{ dataList| safe }};
                 el.append('<span></span>');
             });
         });
+    $('.osVersion-moreInfo').on('click',function(){
+         window.open("osVersion_moreInfo", "osVersion", "width=1000, height=650");
+    });
 
+    $('.serverBandBy-moreInfo').on('click',function(){
+         window.open("serverBandBy_moreInfo", "serverBandBy", "width=800, height=650");
+    });
+
+    $('.connectDestinationIp-moreInfo').on('click',function(){
+        window.open("connectDestinationIp_moreInfo", "connectDestinationIp", "width=1200, height=650");
+    });
+
+    $('.connectSourceIp-moreInfo').on('click',function(){
+        window.open("connectSourceIp_moreInfo", "connectSourceIp", "width=1200, height=650");
+    });
+
+    $('.runningService-moreInfo').on('click',function(){
+        window.open("runningService_moreInfo", "runningService", "width=1200, height=650");
+    });
+
+    $('.memoryCpuDisk-moreInfo').on('click',function(){
+      if($('#btn-memory').hasClass("active") === true) {
+        window.open("memory_moreInfo", "memory", "width=1000, height=650");
+        return;
+      }
+      if($('#btn-cpu').hasClass("active") === true){
+        window.open("cpu_moreInfo", "cpu", "width=1000, height=650");
+        return;
+      }
+      if($('#btn-disk').hasClass("active") === true){
+        window.open("disk_moreInfo", "disk", "width=1000, height=650");
+        return;
+      }
+    });
+
+    $('.physicalServer-moreInfo').on('click',function(){
+        window.open("physicalServer_moreInfo", "physicalServer", "width=800, height=650");
+    });
+
+    $('.gpuServer-moreInfo').on('click',function(){
+        window.open("gpuServer_moreInfo", "gpuServer", "width=1000, height=750");
+    });
+
+    $('.alarmCase-moreInfo').on('click',function(){
+    window.open("alarmCase_moreInfo", "alarmCase", "width=1400, height=650");
+    });
+
+     $('.iscsi-moreInfo').on('click',function(){
+    window.open("iscsi_moreInfo", "iscsi", "width=1400, height=650");
+    });
+
+
+
+
+    var worldMapData = [];
+    for (let i = 0; i < a.WorldMapDataList[0].length; i++) {
+      worldMapData.push(a.WorldMapDataList[0][0].gps);
+    };
+
+    var seongnamNetwork = [
+      {
+        "nodes": [
+          { "id": "Ncrd", "group": "ncrd", "x": 555, "y": 251 },
+          { "id": "Ncalpha", "group": "ncalpha", "x": 455, "y": 351 }
+        ],
+        "links": [
+          { "source": "Ncrd", "target": "Ncalpha", "distance": 300 },
+          { "source": "Ncalpha", "target": "Ncrd", "distance": 300 }
+        ]
+      }
+    ];
+    //메모리,CPU,디스크 자동롤링
+    var buttons = document.querySelectorAll(".mcdBtn"); // 버튼 요소들을 가져옴
+    var index = 0; // 버튼 요소들의 인덱스
+    setInterval(function() {
+      buttons[index].click(); // 버튼 클릭 이벤트 실행
+      index = (index + 1) % buttons.length; // 다음 버튼의 인덱스 계산
+    }, 7000); // 7초마다 실행
+
+    //지도 자동롤링
+    var buttons2 = document.querySelectorAll(".who_btn"); // 버튼 요소들을 가져옴
+    var index2 = 0; // 버튼 요소들의 인덱스
+    setInterval(function() {
+      buttons2[index].click(); // 버튼 클릭 이벤트 실행
+      index2 = (index + 1) % buttons2.length; // 다음 버튼의 인덱스 계산
+    }, 7000); // 7초마다 실행
+
+    window.setTimeout('window.location.reload()',600000);
 </script>
 </body>
 

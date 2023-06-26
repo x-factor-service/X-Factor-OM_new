@@ -79,15 +79,17 @@
 </head>
 
 <body class="theme-orange">
-    {% if request.path == '/osVersion_moreInfo/' or request.path == '/serverBandBy_moreInfo/' or request.path == '/runningService_moreInfo/' or request.path == '/memory_moreInfo/' or request.path == '/cpu_moreInfo/' or request.path == '/disk_moreInfo/' or request.path == '/physicalServer_moreInfo/' or request.path == '/gpuServer_moreInfo/' or request.path == '/alarmCase_moreInfo/' or request.path == '/connectDestinationIp_moreInfo/' or request.path == '/connectSourceIp_moreInfo/' %}
+    {% if request.path == '/om/osVersion_moreInfo/' or request.path == '/om/gpuServer_moreInfo/' or request.path == '/om/alarmCase_moreInfo/' or request.path == '/om/runningService_moreInfo/' or request.path == '/om/memory_moreInfo/' or request.path == '/om/cpu_moreInfo/' or request.path == '/om/disk_moreInfo/' or request.path == '/om/physicalServer_moreInfo/' or request.path == '/om/serverBandBy_moreInfo/'%}
+
     {% elif request.path == '/documentation_ug/' or request.path == '/specification_ug/' or request.path == '/start_ug/' or request.path == '/dashboard_public_ug/' or request.path == '/dashboard_chart_ug/' or request.path == '/dashboard_etc_ug/' or request.path == '/weak_public_ug/' or request.path == '/weak_windows_ug/' or request.path == '/weak_linux_ug/' or request.path == '/report_public_ug/' or request.path == '/report_all_ug/' or request.path == '/technical_support_ug/' or request.path == '/faq_ug/' or request.path == '/setting_ug/' %}
     <div class="app">
       <!-- 네비게이션바 -->
       {% include "common/navbar.html" %}
       <!-- 사이드바 -->
       {% include "docs/documentation-sidebar.html" %}
-    {% else %}
     </div>
+    {% else %}
+
   <!-- BEGIN #app -->
     <div id="app" class="app app-sidebar-collapsed">
         <!-- 네비게이션바 -->
@@ -171,44 +173,123 @@
 
 
   <script>
-var dataList = {{ dataList| safe }};
-//datepicker
-        $(function() {
-            $('#daterange').daterangepicker({
-                "autoapply": true,
-                "linkedCalendars": false,
-                "opens": 'right'
 
-            },
-            function(start, end, label) {
-                $('input[name="daterange"]').val('시작일 : ' + start.format('YYYY-MM-DD') + ' ~  종료일 : ' + end.format('YYYY-MM-DD'));
-            });
+ $(function(){
+         $(".cardBox").sortable({
+            connectWith: ".cardBox",
+            placeholder: "cardMoving",
+            cursor: "move",
+            start: function (event, ui) {
+              ui.placeholder.height(ui.helper.outerHeight());
+            }
+         });
+         $(".cardBox .cardMove").disableSelection();
+         });
+
+      $('.card-del').on('click',function(){
+          $(this).prevAll().remove()
+          $(this).unwrap()
+          $(this).remove()
+      })
+
+		$('.make-card').on('click',function(){
+		const $newCard = $('.newCard:first-child').clone(true);
+		const newCard = $newCard;
+		$($newCard).appendTo('.col1');
+		$('.newCard:last-child').css('display','inline');
+		$('.newCard:last-child').sortable({connectWith: '.cardBox'});
 
 
-            $('.drp-calendar.right').hide();
-            $('.drp-calendar.left').addClass('single');
+		for(i=0 ;i < $('.row').children().length; i++){
+		$('.newCard:last-child').addClass("card" + i);
+		$('.newCard:last-child').removeClass("card" + (i-1));
+		}
+		});
 
-            $('.daterangepicker').css({
-                'width': '36%', // 가로 크기를 100%로 설정합니다.
-                'max-width': '36%'
-			});
+    $('.osVersion-moreInfo').on('click',function(){
+         window.open("osVersion_moreInfo", "osVersion", "width=1000, height=650");
+    });
 
-			$('.drp-calendar.left').css({
-                'background-color': 'transparent',
-                'width': '100%', // 가로 크기를 100%로 설정합니다.
-                'max-width': '100%', // 최대 가로 크기도 100%로 설정합니다.
-            });
+    $('.serverBandBy-moreInfo').on('click',function(){
+         window.open("serverBandBy_moreInfo", "serverBandBy", "width=800, height=650");
+    });
 
-            $('.calendar-table').on('DOMSubtreeModified', function() {
-                var el = $(".prev.available").parent().children().last();
-                if (el.hasClass('next available')) {
-                    return;
-                }
-                el.addClass('next available');
-                el.append('<span></span>');
-            });
-        });
+    $('.connectDestinationIp-moreInfo').on('click',function(){
+        window.open("connectDestinationIp_moreInfo", "connectDestinationIp", "width=1200, height=650");
+    });
 
+    $('.connectSourceIp-moreInfo').on('click',function(){
+        window.open("connectSourceIp_moreInfo", "connectSourceIp", "width=1200, height=650");
+    });
+
+    $('.runningService-moreInfo').on('click',function(){
+        window.open("runningService_moreInfo", "runningService", "width=1200, height=650");
+    });
+
+    $('.memoryCpuDisk-moreInfo').on('click',function(){
+      if($('#btn-memory').hasClass("active") === true) {
+        window.open("memory_moreInfo", "memory", "width=1000, height=650");
+        return;
+      }
+      if($('#btn-cpu').hasClass("active") === true){
+        window.open("cpu_moreInfo", "cpu", "width=1000, height=650");
+        return;
+      }
+      if($('#btn-disk').hasClass("active") === true){
+        window.open("disk_moreInfo", "disk", "width=1000, height=650");
+        return;
+      }
+    });
+
+    $('.physicalServer-moreInfo').on('click',function(){
+        window.open("physicalServer_moreInfo", "physicalServer", "width=800, height=650");
+    });
+
+    $('.gpuServer-moreInfo').on('click',function(){
+        window.open("gpuServer_moreInfo", "gpuServer", "width=1000, height=750");
+    });
+
+    $('.alarmCase-moreInfo').on('click',function(){
+    window.open("alarmCase_moreInfo", "alarmCase", "width=1400, height=650");
+    });
+
+      var a = {{ chartData| safe}};
+      var mapUse = {{ MapUse| safe}};
+
+    var worldMapData = [];
+    for (let i = 0; i < a.WorldMapDataList[0].length; i++) {
+      worldMapData.push(a.WorldMapDataList[0][0].gps);
+    };
+    //worldMapData.push([35.1552983,129.1152895]);
+    //worldMapData.push([37.3994481,127.1088779]);
+
+
+
+    var seongnamNetwork = [
+      {
+        "nodes": [
+          { "id": "Ncrd", "group": "ncrd", "x": 555, "y": 251 },
+          { "id": "Ncalpha", "group": "ncalpha", "x": 455, "y": 351 }
+        ],
+        "links": [
+          { "source": "Ncrd", "target": "Ncalpha", "distance": 300 },
+          { "source": "Ncalpha", "target": "Ncrd", "distance": 300 }
+        ]
+      }
+    ];
+    var networkData = [{
+      "nodes": [
+        {% for nodeData in chartData.AssociationDataList.nodeDataList %}
+    { "id": '{{nodeData.id}}', "group": '{{nodeData.group}}', "name": '{{nodeData.name}}', "alarmCase": '{{nodeData.alarmCase}}', "alarmCount": '{{nodeData.alarmCount}}', "point": '{{nodeData.point}}' },
+    {% endfor %}
+  ],
+    "links": [
+      {% for linksData in chartData.AssociationDataList.linksDataList %}
+    { "source": '{{linksData.source}}', "target": '{{linksData.target}}', "distance": 200 },
+    {% endfor %}
+  ]
+}];
+    networkChart(networkData);
 </script>
 </body>
 

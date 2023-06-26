@@ -1,4 +1,4 @@
-{% extends 'common/base.html' %}
+{% extends 'om/base.html' %}
 {% block content %}
 {% load static %}
 
@@ -717,8 +717,8 @@
 </div>
 <!-- END #content -->
 <script>
-    var a = {{ chartData | safe }};
 	window.setTimeout('window.location.reload()',600000);
+
     //메모리,CPU,디스크 자동롤링
     var buttons = document.querySelectorAll(".mcdBtn"); // 버튼 요소들을 가져옴
     var index = 0; // 버튼 요소들의 인덱스
@@ -734,7 +734,6 @@
       buttons2[index].click(); // 버튼 클릭 이벤트 실행
       index2 = (index + 1) % buttons2.length; // 다음 버튼의 인덱스 계산
     }, 7000); // 7초마다 실행
-
 
 </script>
 {% endblock %}
