@@ -28,4 +28,6 @@ urlpatterns = [
     path('connectDestinationIp_moreInfo/paging/', controllerOM.connectDestinationIp_moreInfo_paging, name='connectDestinationIp_moreInfo_paging'),
     path('connectSourceIp_moreInfo/', controllerOM.connectSourceIp_moreInfo, name='connectSourceIp_moreInfo'),
     path('connectSourceIp_moreInfo/paging/', controllerOM.connectSourceIp_moreInfo_paging, name='connectSourceIp_moreInfo_paging')
+    path('idle_moreInfo/', controllerOM.idle_moreInfo, name='idle_moreInfo'),
+    path('idle_moreInfo/paging/', controllerOM.idle_moreInfo_paging, name='idle_moreInfo_paging'),
 ]
