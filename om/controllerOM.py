@@ -437,6 +437,32 @@ def gpuServer_moreInfo_paging(request):
                   }
     return JsonResponse(returnData)
 
+
+
+def idle_moreInfo(request):
+    return render(request, 'popup/idle_moreInfo.html')
+
+@csrf_exempt
+def idle_moreInfo_paging(request):
+    draw = int(request.POST.get('draw'))
+    start = int(request.POST.get('start'))
+    length = int(request.POST.get('length'))
+    search = request.POST.get('search[value]')
+    page = math.ceil(start / length) + 1
+    data = [ str(length), str(page), str(search)]
+    IDM = PDPI('statistics', 'idleMore', data)
+
+    IDC = PDPI('statistics', 'idleMoreCount', data)
+    RD = {"item": IDM}
+    returnData = {'data': RD,
+                  'draw': draw,
+                  'recordsTotal': IDC,
+                  'recordsFiltered': IDC,
+                  }
+    return JsonResponse(returnData)
+
+
+
 def alarmCase_moreInfo(request):
     return render(request, 'popup/alarmCase_moreInfo.html')
 @csrf_exempt

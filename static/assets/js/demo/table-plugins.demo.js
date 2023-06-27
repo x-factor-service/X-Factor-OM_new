@@ -548,6 +548,95 @@ var physicalServerhandleRenderDashboardPopupTableData = function () {
         $('head').append(customStyle);
 });
 };
+
+
+
+var idleAssetHandleRenderDashboardPopupTableData = function () {
+	var dashboardpopupTable = $('#idleDashboard-popupTable').DataTable({
+		dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
+		lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+		responsive: true,
+		searching: true,
+		ordering: false,
+		serverSide: true,
+		displayLength: false,
+		ajax: {
+			url: 'paging/',
+			type: "POST",
+			dataSrc: function (res) {
+				var data = res.data.item;
+				return data;
+			}
+		},
+		columns: [
+			{data: 'index'},
+			{data: 'computer_name'},
+			{data: 'chassis_type'},
+			{data: 'ipv_address'},
+			{data: 'disk_total_used_space'},
+			{data: 'last_logged_in_date'},
+
+		],
+		columnDefs: [
+            {targets: 0, width: "10%", className: 'text-center'},
+            {targets: 1, width: "20%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.computer_name+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 2, width: "20%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.chassis_type+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 3, width: "20%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.ipv_address+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 4, width: "15%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.disk_total_used_space+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 5, width: "15%", className: 'text-center'},
+		],
+		language: {
+			"decimal": "",
+			"info": "전체 _TOTAL_건",
+			"infoEmpty": "데이터가 없습니다.",
+			"emptyTable": "데이터가 없습니다.",
+			"thousands": ",",
+			"lengthMenu": "페이지당 _MENU_ 개씩 보기",
+			"loadingRecords": "로딩 중입니다.",
+			"processing": "",
+			"zeroRecords": "검색 결과 없음",
+			"paginate": {
+				"first": "처음",
+				"last": "끝",
+				"next": "다음",
+				"previous": "이전"
+			},
+			"search": "검색:",
+			"infoFiltered": "(전체 _MAX_ 건 중 검색결과)",
+			"infoPostFix": "",
+		},
+        pagingType: 'numbers',
+
+        drawCallback: function() {
+            var current_page = dashboardpopupTable.page();
+            var total_pages = dashboardpopupTable.page.info().pages;
+            $('#nexts').remove();
+            $('#after').remove();
+
+            if (total_pages > 10){
+            $('<button type="button" class="btn" id="nexts">10≫</button>')
+            .insertAfter('#idleDashboard-popupTable_paginate .paginate_button:last');
+            $('<button type="button" class="btn" id="after">≪10</button>')
+            .insertBefore('#idleDashboard-popupTable_paginate .paginate_button:first');
+            }
+        }
+});
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var gpuServerhandleRenderDashboardPopupTableData = function () {
 	var dashboardpopupTable = $('#gpuServerDashboard-popupTable').DataTable({
 		dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
@@ -1229,5 +1318,9 @@ $(document).ready(function () {
     	connectDestinationIphandleRenderDashboardPopupTableData();
 	}else if($("#connectSourceIpDashboard-popupTable").length > 0){
     	connectSourceIphandleRenderDashboardPopupTableData();
-    };
+
+    }else if ($("#idleDashboard-popupTable").length > 0) {
+
+        idleAssetHandleRenderDashboardPopupTableData();
+        }
 });

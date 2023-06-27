@@ -663,6 +663,40 @@ def plug_in(table, day, type):
                             driveusage Ilike '%""" + type[2] + """%' or
                             TF Ilike '%""" + type[2] + """%')
                 """
+            elif day == 'idleMore':
+                query = """
+                            select
+                                computer_name, chassis_type, ipv_address, disk_total_used_space, last_logged_in_date
+                            from
+                                idle_asset
+                            where
+                                collection_date < '""" + yesterday + """'
+                            and
+                                (computer_name Ilike '%""" + type[2] + """%' or
+                                chassis_type Ilike '%""" + type[2] + """%' or
+                                ipv_address Ilike '%""" + type[2] + """%' or
+                                disk_total_used_space Ilike '%""" + type[2] + """%' or
+                                last_logged_in_date Ilike '%""" + type[2] + """%')
+                                order by computer_name desc
+                            LIMIT """ + type[0] + """
+                            OFFSET (""" + type[1] + """-1) * """ + type[0] + """
+                        """
+            elif day == 'idleMoreCount':
+                query = """
+                            select
+                                COUNT(*)
+                            from
+                                idle_asset
+                            where
+                                collection_date < '""" + yesterday + """'
+                            and
+                                (computer_name Ilike '%""" + type[2] + """%' or
+                                chassis_type Ilike '%""" + type[2] + """%' or
+                                ipv_address Ilike '%""" + type[2] + """%' or
+                                disk_total_used_space Ilike '%""" + type[2] + """%' or
+                                last_logged_in_date Ilike '%""" + type[2] + """%')
+                    """
+
             #################################################################### 페이징 끝 ########################################################################
             if day == 'today':
                 if type == '':
@@ -957,6 +991,7 @@ def plug_in(table, day, type):
                             and 
                                 to_char(statistics_collection_date, 'YYYY-MM-DD') = '""" + yesterday + """'
                     """
+                #--------카드 ---------------
                 elif type == 'idle':
                     query = """
                                 select 
@@ -965,7 +1000,7 @@ def plug_in(table, day, type):
                                     daily_statistics
                                 where 
                                     item = 'collection_date'
-                                    and statistics_collection_date >= '""" + yesterday + """'
+                                    and statistics_collection_date > '""" + yesterday + """'
                                 order by statistics_collection_date asc
                             """
                 # elif type == 'ip':
@@ -1348,6 +1383,18 @@ def plug_in(table, day, type):
                         ('name', R[1]),
                         ('count', R[2]),
 
+                    )
+                ))
+            elif day == 'idleMore':
+                index = (int(type[1]) - 1) * int(type[0]) + i
+                SDL.append(dict(
+                    (
+                        ('index', index),
+                        ('computer_name', R[0]),
+                        ('chassis_type', R[1]),
+                        ('ipv_address', R[2]),
+                        ('disk_total_used_space', R[3]),
+                        ('last_logged_in_date', R[4]),
                     )
                 ))
             else:

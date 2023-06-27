@@ -24,4 +24,6 @@ urlpatterns = [
     path('alarmCase_moreInfo/paging/', controllerOM.alarmCase_moreInfo_paging, name='alarmCase_moreInfo_paging'),
     path('send_email/', controllerOM.send_email_view, name='send_email'),
     path('send_reboot/', controllerOM.send_reboot_view, name='send_reboot'),
+    path('idle_moreInfo/', controllerOM.idle_moreInfo, name='idle_moreInfo'),
+    path('idle_moreInfo/paging/', controllerOM.idle_moreInfo_paging, name='idle_moreInfo_paging'),
 ]
