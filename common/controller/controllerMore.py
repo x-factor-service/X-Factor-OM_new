@@ -3,7 +3,7 @@ from django.shortcuts import render
 import math
 from django.views.decorators.csrf import csrf_exempt
 
-from common.input import db as input_db
+from common.input.db import plug_in as PDPI
 
 def certificate_more(request) :
     return render(request, 'common/popup/certificate_more.html')
@@ -15,8 +15,8 @@ def certificate_more_paging(request):
     search = request.POST.get('search[value]')
     page = math.ceil(start / length) + 1
     data = [ str(length), str(page), str(search)]
-    SMD = input_db('cert_listDataMore', data)
-    SMC = input_db('cert_listDataMoreCount', data)
+    SMD = PDPI('cert_listDataMore', data)
+    SMC = PDPI('cert_listDataMoreCount', data)
     RD = {"item": SMD}
     returnData = {'data': RD,
                   'draw': draw,

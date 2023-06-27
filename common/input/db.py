@@ -151,36 +151,53 @@ def plug_in(type, threeData=None):
                         order by statistics_collection_date asc
                     """
         # -----------------------------인증서리스트 ------------------------------------
+        # elif type == 'cert_listData':
+        #     query = """
+        #                 select
+        #                     crt_name, crt_expire_date, count(computer_name) as item_count
+        #                 from
+        #                     certificate_asset
+        #                 where
+        #                     crt_name != 'Root'
+        #                 AND
+        #                     collection_date >= '""" + yesterday + """'
+        #                 group by crt_name, crt_expire_date
+        #                 order by
+        #                     crt_expire_date ASC, item_count ASC
+        #                 LIMIT 7
+        #             """
+        #--------------인증서 리스트 날짜 지난거 안보이게
         elif type == 'cert_listData':
             query = """
-                        select 
-                            item, item_count
-                        from
-                            daily_statistics
-                        where
-                            classification = 'certificate_list'
-                        AND
-                            item != 'Root'
-                        AND
-                            statistics_collection_date >= '""" + yesterday + """'
-                        order by 
-                            item_count ASC
+                        SELECT
+                            crt_name, crt_expire_date, COUNT(computer_name) AS item_count
+                        FROM
+                            certificate_asset
+                        WHERE
+                            crt_name != 'Root'
+                            AND TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') >= DATE '""" + yesterday + """'
+                        GROUP BY crt_name, crt_expire_date
+                        ORDER BY TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') ASC
                         LIMIT 7
                     """
         # -----------------------------인증서리스트 더보기 및 카운트----------------------------
         elif type == 'cert_listDataMore':
             query = """
                         select 
-                            crt_name, crt_expire_date 
+                            crt_name, MAX(crt_expire_date)
                         from 
                             certificate_asset 
                         where 
-                            crt_name != 'Root' 
+                            crt_name != 'Root'
+                        AND
+                            collection_date >= '""" + yesterday + """'    
                         and
-                            (crt_name Ilike '%""" + threeData[2] + """%' or
-                            crt_expire_date Ilike '%""" + threeData[2] + """%')
+                            (crt_name ILIKE '%""" + threeData[2] + """%' or
+                            crt_expire_date ILIKE '%""" + threeData[2] + """%')
+                        GROUP BY 
+                            crt_name
                         order by 
-                            crt_expire_date asc
+                            MAX(crt_expire_date) asc
                         LIMIT """ + threeData[0] + """
                         OFFSET (""" + threeData[1] + """-1) * """ + threeData[0] + """
                     """
@@ -195,8 +212,6 @@ def plug_in(type, threeData=None):
                         and
                             (crt_name Ilike '%""" + threeData[2] + """%' or
                             crt_expire_date Ilike '%""" + threeData[2] + """%')
-                        order by 
-                            crt_expire_date asc           
                     """
         Cur.execute(query)
         RS = Cur.fetchall()
@@ -218,14 +233,15 @@ def plug_in(type, threeData=None):
                 SDL.append(dict(
                     (
                         ('name', R[0]),
-                        ('date', R[1])
+                        ('date', R[1]),
+                        ('count', R[2])
                     )
                 ))
             elif type == 'cert_listDataMore':
                 SDL.append(dict(
                     (
-                        ('name', R[0]),
-                        ('date', R[1]),
+                        ('crt_name', R[0]),
+                        ('crt_expire_date', R[1]),
                     )
                 ))
             else:

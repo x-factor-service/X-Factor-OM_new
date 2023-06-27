@@ -1265,23 +1265,20 @@ var certHandleRenderDashboardPopupTableData = function () {
 		displayLength: false,
 
 		ajax: {
-
 			url: 'paging/',
 			type: "POST",
 			dataSrc: function (res) {
 				var data = res.data.item;
 				return data;
-
-
 			}
 		},
 		columns: [
-			{data: 'name'},
-			{data: 'date'},
+			{data: 'crt_name'},
+			{data: 'crt_expire_date'},
 		],
 		columnDefs: [
-		    {targets: 1, width: "70%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.name+'" data-toggle="tooltip">'+data+'</span>'}},
-		    {targets: 2, width: "20%", className: 'text-center'}
+		    {targets: 0, width: "70%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.crt_name+'" data-toggle="tooltip">'+data+'</span>'}},
+		    {targets: 1, width: "70%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.crt_expire_date+'" data-toggle="tooltip">'+data+'</span>'}},
 		],
 		language: {
 			"decimal": "",
@@ -1302,11 +1299,42 @@ var certHandleRenderDashboardPopupTableData = function () {
 			"search": "검색:",
 			"infoFiltered": "(전체 _MAX_ 건 중 검색결과)",
 			"infoPostFix": "",
-		},
+},
+        		pagingType: 'numbers',
 
-	});
+        drawCallback: function() {
+            var current_page = dashboardpopupTable.page();
+            var total_pages = dashboardpopupTable.page.info().pages;
+            $('#nexts').remove();
+            $('#after').remove();
+
+            if (total_pages > 10){
+            $('<button type="button" class="btn" id="nexts">10≫</button>')
+            .insertAfter('#certDashboard-popupTable_paginate .paginate_button:last');
+            $('<button type="button" class="btn" id="after">≪10</button>')
+            .insertBefore('#certDashboard-popupTable_paginate .paginate_button:first');
+            }
+        }
+});
+
+	$(document).on('click', '#nexts, #after', function() {
+        var current_page = dashboardpopupTable.page();
+        var total_pages = dashboardpopupTable.page.info().pages;
+        if ($(this).attr('id') == 'nexts') {
+                if (current_page + 10 < total_pages) {
+                    dashboardpopupTable.page(current_page + 10).draw('page');
+                } else {
+                    dashboardpopupTable.page(total_pages - 1).draw('page');
+                }
+                } else {
+                    dashboardpopupTable.page(Math.max(current_page - 10, 0)).draw('page');
+                }
+});
+        $(document).ready(function() {
+        var customStyle = '<style>#nexts, #after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
+        $('head').append(customStyle);
+});
 };
-
 
 
 
@@ -1375,10 +1403,7 @@ $(document).ready(function () {
 //----------------------------대시보드 하단 인증서 더보기 ---------------
     }else if($("#certDashboard-popupTable").length > 0){
         certHandleRenderDashboardPopupTableData();
-    } ;
-
     }else if ($("#idleDashboard-popupTable").length > 0) {
-
         idleAssetHandleRenderDashboardPopupTableData();
-        }
+        };
 });

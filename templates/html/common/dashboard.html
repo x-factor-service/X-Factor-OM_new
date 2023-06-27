@@ -371,18 +371,21 @@
                                     <th>No</th>
                                     <th>발급 인증서</th>
                                     <th style="text-align:center">만료 일자</th>
-
+                                    <th style="text-align:center">개수</th>
                                 </tr>
                                 </thead>
                                 <tbody class="fw-bold fs-12px mb-2">
                                 {% for data in dataList.cert_listData %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>
+                                    <td class="ellipsis">
                                         {{ data.name }}
                                     </td>
                                     <td>
                                         {{ data.date }}
+                                    </td>
+                                    <td>
+                                        {{ data.count }}
                                     </td>
                                 </tr>
                                 {% endfor %}

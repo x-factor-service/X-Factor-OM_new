@@ -547,4 +547,11 @@ stroke-width: 0.2px; stroke: #fff;
 .conNum {
     padding-top: 0.375em;
 }
+
+.ellipsis {
+    width: 100px; /* or any width you want to set */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 /******* END swiper css *******/

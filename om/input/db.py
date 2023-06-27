@@ -663,10 +663,15 @@ def plug_in(table, day, type):
                             driveusage Ilike '%""" + type[2] + """%' or
                             TF Ilike '%""" + type[2] + """%')
                 """
+                #-----------더보기 idle------------------
             elif day == 'idleMore':
                 query = """
                             select
-                                computer_name, chassis_type, ipv_address, disk_total_used_space, last_logged_in_date
+                                computer_name, chassis_type, ipv_address, disk_total_used_space,
+                                CASE
+                                    WHEN last_logged_in_date LIKE '%%TSE-Error: Error: WshShell.Exec: 지정된 파일을 찾을 수 없습니다.%%' THEN '알수없음'
+                                    ELSE last_logged_in_date
+                                END
                             from
                                 idle_asset
                             where
