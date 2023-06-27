@@ -24,6 +24,9 @@ urlpatterns = [
     path('report_all_ug/', controllerGuide.report_all_ug, name='report_all_ug'),
     path('technical_support_ug/', controllerGuide.technical_support_ug, name='technical_support_ug'),
     path('faq_ug/', controllerGuide.faq_ug, name='faq_ug'),
+########################### 더보기 ##########################################
+    path('certificate_more/', controllerMore.certificate_more, name='certificate_more'),
+    path('certificate_more/paging/', controllerMore.certificate_more_paging, name='certificate_more_paging')
 ]
 # path('admin/', admin.site.urls),
 # path('om/', include(om.urls), name="om"),

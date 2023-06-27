@@ -1163,6 +1163,60 @@ var connectSourceIphandleRenderDashboardPopupTableData = function () {
         $('head').append(customStyle);
 });
 };
+var certHandleRenderDashboardPopupTableData = function () {
+
+	var dashboardpopupTable = $('#certDashboard-popupTable').DataTable({
+		dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
+		lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+
+		responsive: true,
+		searching: true,
+		ordering: false,
+		serverSide: true,
+		displayLength: false,
+
+		ajax: {
+
+			url: 'paging/',
+			type: "POST",
+			dataSrc: function (res) {
+				var data = res.data.item;
+				return data;
+
+
+			}
+		},
+		columns: [
+			{data: 'name'},
+			{data: 'date'},
+		],
+		columnDefs: [
+		    {targets: 1, width: "70%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.name+'" data-toggle="tooltip">'+data+'</span>'}},
+		    {targets: 2, width: "20%", className: 'text-center'}
+		],
+		language: {
+			"decimal": "",
+			"info": "전체 _TOTAL_건",
+			"infoEmpty": "데이터가 없습니다.",
+			"emptyTable": "데이터가 없습니다.",
+			"thousands": ",",
+			"lengthMenu": "페이지당 _MENU_ 개씩 보기",
+			"loadingRecords": "로딩 중입니다.",
+			"processing": "",
+			"zeroRecords": "검색 결과 없음",
+			"paginate": {
+				"first": "처음",
+				"last": "끝",
+				"next": "다음",
+				"previous": "이전"
+			},
+			"search": "검색:",
+			"infoFiltered": "(전체 _MAX_ 건 중 검색결과)",
+			"infoPostFix": "",
+		},
+
+	});
+};
 
 
 
@@ -1229,5 +1283,8 @@ $(document).ready(function () {
     	connectDestinationIphandleRenderDashboardPopupTableData();
 	}else if($("#connectSourceIpDashboard-popupTable").length > 0){
     	connectSourceIphandleRenderDashboardPopupTableData();
-    };
+//----------------------------대시보드 하단 인증서 더보기 ---------------
+    }else if($("#certDashboard-popupTable").length > 0){
+        certHandleRenderDashboardPopupTableData();
+    } ;
 });

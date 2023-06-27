@@ -24,4 +24,8 @@ urlpatterns = [
     path('alarmCase_moreInfo/paging/', controllerOM.alarmCase_moreInfo_paging, name='alarmCase_moreInfo_paging'),
     path('send_email/', controllerOM.send_email_view, name='send_email'),
     path('send_reboot/', controllerOM.send_reboot_view, name='send_reboot'),
+    path('connectDestinationIp_moreInfo/', controllerOM.connectDestinationIp_moreInfo, name='connectDestinationIp_moreInfo'),
+    path('connectDestinationIp_moreInfo/paging/', controllerOM.connectDestinationIp_moreInfo_paging, name='connectDestinationIp_moreInfo_paging'),
+    path('connectSourceIp_moreInfo/', controllerOM.connectSourceIp_moreInfo, name='connectSourceIp_moreInfo'),
+    path('connectSourceIp_moreInfo/paging/', controllerOM.connectSourceIp_moreInfo_paging, name='connectSourceIp_moreInfo_paging')
 ]

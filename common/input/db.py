@@ -21,7 +21,7 @@ day = datetime.today().strftime("%Y-%m-%d")
 RSU = SETTING['FILE']['RunningService_Except']['USE']
 
 
-def plug_in(type):
+def plug_in(type, threeData=None):
     try:
         FiveMinuteAgo = (datetime.today() - timedelta(minutes=5)).strftime("%Y-%m-%d %H:%M:%S")
         DBSelectTime = (datetime.today() - timedelta(minutes=DBSettingTime)).strftime("%Y-%m-%d %H:%M:%S")
@@ -167,6 +167,37 @@ def plug_in(type):
                             item_count ASC
                         LIMIT 7
                     """
+        # -----------------------------인증서리스트 더보기 및 카운트----------------------------
+        elif type == 'cert_listDataMore':
+            query = """
+                        select 
+                            crt_name, crt_expire_date 
+                        from 
+                            certificate_asset 
+                        where 
+                            crt_name != 'Root' 
+                        and
+                            (crt_name Ilike '%""" + threeData[2] + """%' or
+                            crt_expire_date Ilike '%""" + threeData[2] + """%')
+                        order by 
+                            crt_expire_date asc
+                        LIMIT """ + threeData[0] + """
+                        OFFSET (""" + threeData[1] + """-1) * """ + threeData[0] + """
+                    """
+        elif type == 'cert_listDataMoreCount':
+            query = """
+                        select
+                            COUNT(*)
+                        from 
+                            certificate_asset 
+                        where 
+                            crt_name != 'Root' 
+                        and
+                            (crt_name Ilike '%""" + threeData[2] + """%' or
+                            crt_expire_date Ilike '%""" + threeData[2] + """%')
+                        order by 
+                            crt_expire_date asc           
+                    """
         Cur.execute(query)
         RS = Cur.fetchall()
         for R in RS:
@@ -188,6 +219,13 @@ def plug_in(type):
                     (
                         ('name', R[0]),
                         ('date', R[1])
+                    )
+                ))
+            elif type == 'cert_listDataMore':
+                SDL.append(dict(
+                    (
+                        ('name', R[0]),
+                        ('date', R[1]),
                     )
                 ))
             else:

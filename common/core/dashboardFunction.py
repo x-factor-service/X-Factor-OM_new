@@ -101,6 +101,13 @@ def Dashboard():
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - cert_listData')
+            # -----------------------------하단 인증서더보기 -------------------------------------
+        try:
+            cert_moreData = inputDb('cert_listDataMore')
+        except:
+            logger.warning('dashboard_function.py - Error Occurred')
+            logger.warning('Error - memoryMoreDataList')
+
         RD = {
             'disk_donutData': disk_donutData,
             'memory_donutData': memory_donutData,
