@@ -208,9 +208,16 @@ var dataList = {{ dataList| safe }};
                 el.append('<span></span>');
             });
         });
-    $('.certificate_more').on('click',function(){
-        window.open("../certificate_more", "certificate_more", "width=1200, height=650");
+
+
+    $(document).ready(function() {
+    $('.certificate-link').on('click',function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+        window.open("../certificate_more?id=" + id, "certificate_more", "width=1200, height=650");
     });
+});
+
 
 </script>
 </body>

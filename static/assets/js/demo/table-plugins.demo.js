@@ -1252,8 +1252,8 @@ var connectSourceIphandleRenderDashboardPopupTableData = function () {
         $('head').append(customStyle);
 });
 };
-var certHandleRenderDashboardPopupTableData = function () {
-
+var certHandleRenderDashboardPopupTableData = function (id) {
+    var crt = JSON.stringify(id);
 	var dashboardpopupTable = $('#certDashboard-popupTable').DataTable({
 		dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
 		lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
@@ -1266,6 +1266,9 @@ var certHandleRenderDashboardPopupTableData = function () {
 
 		ajax: {
 			url: 'paging/',
+			data:{
+			    id: id
+			},
 			type: "POST",
 			dataSrc: function (res) {
 				var data = res.data.item;
@@ -1273,12 +1276,18 @@ var certHandleRenderDashboardPopupTableData = function () {
 			}
 		},
 		columns: [
-			{data: 'crt_name'},
-			{data: 'crt_expire_date'},
+			{data: 'computer_name'},
+            {data: 'os'},
+            {data: 'ip'},
+            {data: 'crt_name'},
+            {data: 'crt_expire_date'},
 		],
 		columnDefs: [
-		    {targets: 0, width: "70%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.crt_name+'" data-toggle="tooltip">'+data+'</span>'}},
-		    {targets: 1, width: "70%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.crt_expire_date+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 0, width: "70%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.computer_name+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 1, width: "70%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.os+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 2, width: "70%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.ip+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 3, width: "70%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.crt_name+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 4, width: "70%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.crt_expire_date+'" data-toggle="tooltip">'+data+'</span>'}},
 		],
 		language: {
 			"decimal": "",
@@ -1402,7 +1411,13 @@ $(document).ready(function () {
     	connectSourceIphandleRenderDashboardPopupTableData();
 //----------------------------대시보드 하단 인증서 더보기 ---------------
     }else if($("#certDashboard-popupTable").length > 0){
-        certHandleRenderDashboardPopupTableData();
+        const urlParams = new URLSearchParams(window.location.search);
+        // 특정 파라미터 값 가져오기
+        const paramValue = urlParams.get('id');
+
+        // 가져온 파라미터 값 출력하기
+        console.log(paramValue);
+        certHandleRenderDashboardPopupTableData(paramValue);
     }else if ($("#idleDashboard-popupTable").length > 0) {
         idleAssetHandleRenderDashboardPopupTableData();
         };

@@ -184,23 +184,29 @@ def plug_in(type, threeData=None):
         elif type == 'cert_listDataMore':
             query = """
                         select 
-                            crt_name, MAX(crt_expire_date)
+                            computer_name, os, ip, crt_name, crt_expire_date
                         from 
                             certificate_asset 
                         where 
                             crt_name != 'Root'
+                        and
+                            crt_name = '""" + threeData[3] + """'
                         AND
                             collection_date >= '""" + yesterday + """'    
                         and
-                            (crt_name ILIKE '%""" + threeData[2] + """%' or
+                            (computer_name ILIKE '%""" + threeData[2] + """%' or
+                            os ILIKE '%""" + threeData[2] + """%' or
+                            ip ILIKE '%""" + threeData[2] + """%' or
+                            crt_name ILIKE '%""" + threeData[2] + """%' or
                             crt_expire_date ILIKE '%""" + threeData[2] + """%')
                         GROUP BY 
-                            crt_name
+                            crt_name, crt_expire_date, computer_name, os, ip
                         order by 
-                            MAX(crt_expire_date) asc
+                            crt_expire_date asc
                         LIMIT """ + threeData[0] + """
                         OFFSET (""" + threeData[1] + """-1) * """ + threeData[0] + """
                     """
+
         elif type == 'cert_listDataMoreCount':
             query = """
                         select
@@ -210,9 +216,16 @@ def plug_in(type, threeData=None):
                         where 
                             crt_name != 'Root' 
                         and
-                            (crt_name Ilike '%""" + threeData[2] + """%' or
-                            crt_expire_date Ilike '%""" + threeData[2] + """%')
+                            crt_name = '""" + threeData[3] + """'
+                        and
+                            (crt_name ILIKE '%""" + threeData[2] + """%' or
+                            crt_expire_date ILIKE '%""" + threeData[2] + """%' or
+                            computer_name ILIKE '%""" + threeData[2] + """%' or
+                            os ILIKE '%""" + threeData[2] + """%' or
+                            ip ILIKE '%""" + threeData[2] + """%')
+                            
                     """
+
         Cur.execute(query)
         RS = Cur.fetchall()
         for R in RS:
@@ -240,8 +253,11 @@ def plug_in(type, threeData=None):
             elif type == 'cert_listDataMore':
                 SDL.append(dict(
                     (
-                        ('crt_name', R[0]),
-                        ('crt_expire_date', R[1]),
+                        ('computer_name', R[0]),
+                        ('os', R[1]),
+                        ('ip', R[2]),
+                        ('crt_name', R[3]),
+                        ('crt_expire_date', R[4]),
                     )
                 ))
             else:

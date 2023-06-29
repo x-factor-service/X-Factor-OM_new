@@ -358,9 +358,8 @@
                 <div class="col-xl-6 col-l-6" style="padding-right: 0.5rem;">
                     <!-- BEGIN 인증서 card -->
                     <div class="card" style="height:440px">
-
                         <div class="card-body">
-                            <!-- title --><button type="button" class="btn btn-outline-link btn-sm btn-moreInfo certificate_more"><i class="fas fa-ellipsis-h"></i></button>
+
                             <div class="d-flex fw-bold fs-12px mb-2">
                                 <div class="flex-grow-1">인증서 관리</div>
                             </div>
@@ -379,7 +378,9 @@
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td class="ellipsis">
-                                        {{ data.name }}
+                                        <a href="#" class="certificate-link" data-id="{{data.name}}">
+                                            {{ data.name }}
+                                        </a>
                                     </td>
                                     <td>
                                         {{ data.date }}
@@ -389,7 +390,6 @@
                                     </td>
                                 </tr>
                                 {% endfor %}
-
                                 </tbody>
                             </table>
                             <!-- END #datatable -->

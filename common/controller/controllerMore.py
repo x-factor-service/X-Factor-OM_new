@@ -9,12 +9,14 @@ def certificate_more(request) :
     return render(request, 'common/popup/certificate_more.html')
 @csrf_exempt
 def certificate_more_paging(request):
+    print(request.POST.get('id'))
+    id=request.POST.get('id')
     draw = int(request.POST.get('draw'))
     start = int(request.POST.get('start'))
     length = int(request.POST.get('length'))
     search = request.POST.get('search[value]')
     page = math.ceil(start / length) + 1
-    data = [ str(length), str(page), str(search)]
+    data = [ str(length), str(page), str(search), str(id)]
     SMD = PDPI('cert_listDataMore', data)
     SMC = PDPI('cert_listDataMoreCount', data)
     RD = {"item": SMD}
