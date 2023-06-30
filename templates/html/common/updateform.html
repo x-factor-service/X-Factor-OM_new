@@ -38,7 +38,6 @@
 			<div class="login-content">
 				<form action="{% url 'updateform' %}" method="POST" name="updateform">
 					{% csrf_token %}
-					{% include "../form_errors.html" %}
 					{% if error %}
 						<div class="alert alert-danger" role="alert">{{error}}</div>
 					{% endif %}

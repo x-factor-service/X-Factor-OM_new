@@ -176,6 +176,7 @@ def plug_in(type, threeData=None):
                         WHERE
                             crt_name != 'Root'
                             AND TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') >= DATE '""" + yesterday + """'
+                            AND collection_date >= '""" + yesterday + """'
                         GROUP BY crt_name, crt_expire_date
                         ORDER BY TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') ASC
                         LIMIT 7
@@ -222,8 +223,9 @@ def plug_in(type, threeData=None):
                             crt_expire_date ILIKE '%""" + threeData[2] + """%' or
                             computer_name ILIKE '%""" + threeData[2] + """%' or
                             os ILIKE '%""" + threeData[2] + """%' or
-                            ip ILIKE '%""" + threeData[2] + """%')
-                            
+                            ip ILIKE '%""" + threeData[2] + """%') 
+                        and    
+                            collection_date >= '""" + yesterday + """'  
                     """
 
         Cur.execute(query)

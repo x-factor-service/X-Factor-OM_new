@@ -569,11 +569,17 @@ def send_email_view(request):
         date = request.POST['date']
 
         body = ip + ' ip를 사용하는 컴퓨터가 경고가 발생하였습니다. \n' + name + ' 컴퓨터를 체크해주시길 바랍니다.'
-        to_email = "djlee@xionits.com"
+
+        # JSON 파일에서 이메일 ID, 비밀번호 및 수신자 이메일 목록 읽기
+        with open('setting.json', 'r') as f:
+            data = json.load(f)
+        Email_id = data['EMAIL']['EMAIL_ID']
+        Email_pwd = data['EMAIL']['EMAIL_PWD']
+        to_emails = data['EMAIL']['TO_EMAIL']  # 이제 'to_email' 변수는 배열
 
         msg = MIMEMultipart()
         msg['From'] = Email_id
-        msg['To'] = to_email
+        msg['To'] = ', '.join(to_emails)  # 이메일 헤더에는 쉼표로 구분된 문자열이 필요합니다
         msg['Subject'] = subject
 
         msg.attach(MIMEText(body, 'plain'))
@@ -582,8 +588,9 @@ def send_email_view(request):
             server = smtplib.SMTP('smtp.office365.com', 587)
             server.starttls()
             server.login(Email_id, Email_pwd)
+            print(server.login(Email_id, Email_pwd))
             text = msg.as_string()
-            server.sendmail(Email_id, to_email, text)
+            server.sendmail(Email_id, to_emails, text)  # 여기서 'to_emails'는 배열
             server.quit()
             print('이메일이 성공적으로 전송되었습니다.')
         except Exception as e:

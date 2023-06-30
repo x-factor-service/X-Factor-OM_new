@@ -9,7 +9,6 @@ def certificate_more(request) :
     return render(request, 'common/popup/certificate_more.html')
 @csrf_exempt
 def certificate_more_paging(request):
-    print(request.POST.get('id'))
     id=request.POST.get('id')
     draw = int(request.POST.get('draw'))
     start = int(request.POST.get('start'))

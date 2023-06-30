@@ -37,7 +37,6 @@
 			<div class="register-content">
 				<form action="{% url 'update' %}" method="POST" name="update_form">
                     {% csrf_token %}
-                    {% include "../form_errors.html" %}
 					{% if error %}
 						<div class="alert alert-danger" role="alert">{{error}}</div>
 					{% endif %}

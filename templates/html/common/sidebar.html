@@ -9,7 +9,7 @@
             <div class="menu-header"></div>
             {% for menu in menuList %}
             {% if menu.menuUse == '1' %}
-            {% if menu.menuName == "Dashboard" or menu.menuName == "CSPM" or menu.menuName == "IT OM" %}
+            {% if menu.menuName == "Dashboard" or menu.menuName == "CSPM" or menu.menuName == "IT OM" or menu.menuName == "Setting"%}
             {% if request.get_full_path|cut:'/' == menu.menuUrl %}
             <div class="menu-item active">
                 {% else %}
@@ -19,84 +19,18 @@
                     <a href="../{{menu.menuUrl}}" class="menu-link">
                         {% if menu.menuName == "IT OM" %}
                         <span class="menu-icon"><i class="bi bi-columns-gap"></i></span>
-
                         {% endif %}
                         {% if menu.menuName == "Dashboard" %}
                         <span class="menu-icon"><i class="bi bi-columns-gap"></i></span>
                         {% elif menu.menuName == "CSPM" %}
                         <span class="menu-icon"><i class="bi bi-cpu"></i></span>
+                        {% elif menu.menuName == "Setting" %}
+                        <span class="menu-icon"><i class="bi bi-gear"></i></span>
                         {% else %}
                         {% endif %}
-                        {% if menu.menuName != "Setting" and menu.menuName != "Report" %}
                         <span class="menu-text">{{ menu.menuName }}</span>
-                        {% else %}
-                        {% endif %}
-
                     </a>
-
                 </div>
-
-                {% elif menu.menuName == "Report" %}
-                {% if request.get_full_path|cut:'/' == 'reportdaily' or request.get_full_path|cut:'/' == 'reportmonthly' or request.get_full_path|cut:'/' == 'reportannual' or request.get_full_path|cut:'/' == 'report' %}
-                <div class="menu-item has-sub active">
-                    {% else %}
-                    <div class="menu-item has-sub">
-                        {% endif %}
-                        <a href="#" class="menu-link">
-							<span class="menu-icon">
-								<i class="bi bi-collection"></i>
-							</span>
-                            <span class="menu-text">{{ menu.menuName }}</span>
-                            <span class="menu-caret"><b class="caret"></b></span>
-                        </a>
-                        <div class="menu-submenu">
-                            <div class="menu-item">
-                                <a href="../reportdaily" class="menu-link">
-                                    <span class="menu-text">일간 보고서</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="../reportmonthly" class="menu-link">
-                                    <span class="menu-text">주간 보고서</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="../reportannual" class="menu-link">
-                                    <span class="menu-text">월간 보고서</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    {% elif menu.menuName == "Setting" %}
-
-                    <div class="menu-item has-sub">
-                        <a href="#" class="menu-link">
-								<span class="menu-icon">
-									<i class="bi bi-gear"></i>
-								</span>
-                            <span class="menu-text">{{ menu.menuName }}</span>
-                            <span class="menu-caret"><b class="caret"></b></span>
-                        </a>
-                        <div class="menu-submenu">
-                            <div class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <span class="menu-text">Inbox</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <span class="menu-text">Compose</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="#" class="menu-link">
-                                    <span class="menu-text">Detail</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    {% else %}
                     {% endif %}
                     {% endif %}
                     {% endfor %}
@@ -109,7 +43,6 @@
                     </a>
                 </div>
                 {% else %}
-
                 {% endif %}
             </div>
             {% endif %}
