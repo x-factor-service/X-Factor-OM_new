@@ -176,12 +176,10 @@ def plug_in(type, threeData=None):
                         WHERE
                             crt_name != 'Root'
                             AND TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') >= DATE '""" + yesterday + """'
-                            AND collection_date >= '""" + yesterday + """'
                         GROUP BY crt_name, crt_expire_date
                         ORDER BY TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') ASC
                         LIMIT 7
                     """
-
         # -----------------------------인증서리스트 더보기 및 카운트----------------------------
         elif type == 'cert_listDataMore':
             query = """
