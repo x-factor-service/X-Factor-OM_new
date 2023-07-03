@@ -40,7 +40,6 @@ def highCpuProc_more_paging(request):
     page = math.ceil(start / length) + 1
     data = [str(length), str(page), str(search), str(id)]
     SMD = PDPI('highCpuProc_listDataMore', data)
-    print(SMD)
     SMC = PDPI('highCpuProc_listDataMoreCount', data)
     RD = {"item": SMD}
     returnData = {'data': RD,
