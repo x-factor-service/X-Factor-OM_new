@@ -107,6 +107,13 @@ def Dashboard():
         # except:
         #     logger.warning('dashboard_function.py - Error Occurred')
         #     logger.warning('Error - memoryMoreDataList')
+            # -----------------------------하단 최대 CPU 점유 프로세스더보기 -----------------------
+        try:
+            highCpuProc_listData = inputDb('highCpuProc_listData')
+            logger.info('dashboardFunction.py - highCpuProc_listData - Success')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - highCpuProc_listData')
 
         RD = {
             'disk_donutData': disk_donutData,
@@ -120,7 +127,8 @@ def Dashboard():
             "cert_listData": cert_listData,
             "sbom_listData": sbom_listData,
             "report_listData": report_listData,
-            "idle_lineData": idle_lineData
+            "idle_lineData": idle_lineData,
+            "highCpuProc_listData": highCpuProc_listData
             }
     else:
         print()

@@ -176,10 +176,12 @@ def plug_in(type, threeData=None):
                         WHERE
                             crt_name != 'Root'
                             AND TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') >= DATE '""" + yesterday + """'
+                            AND collection_date >= '""" + yesterday + """'
                         GROUP BY crt_name, crt_expire_date
                         ORDER BY TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') ASC
                         LIMIT 7
                     """
+
         # -----------------------------인증서리스트 더보기 및 카운트----------------------------
         elif type == 'cert_listDataMore':
             query = """
@@ -222,8 +224,49 @@ def plug_in(type, threeData=None):
                             crt_expire_date ILIKE '%""" + threeData[2] + """%' or
                             computer_name ILIKE '%""" + threeData[2] + """%' or
                             os ILIKE '%""" + threeData[2] + """%' or
+                            ip ILIKE '%""" + threeData[2] + """%') 
+                        and    
+                            collection_date >= '""" + yesterday + """'  
+                    """
+        # -----------------------------최대 CPU 점유 프로세스 더보기 및 카운트-------------
+        elif type == 'highCpuProc_listData' :
+            query = """
+                        SELECT proc_name, COUNT(*)
+                        FROM high_cpu_proc
+                        GROUP BY proc_name
+                        ORDER BY COUNT DESC
+                        LIMIT 7
+                    """
+        elif type == 'highCpuProc_listDataMore':
+            query = """
+                        select computer_name, os, ip, proc_name
+                        from high_cpu_proc 
+                        where proc_name = '""" + threeData[3] + """'  
+                        and
+                            (computer_name ILIKE '%""" + threeData[2] + """%' or
+                            os ILIKE '%""" + threeData[2] + """%' or
+                            ip ILIKE '%""" + threeData[2] + """%' or
+                            proc_name ILIKE '%""" + threeData[2] + """%')
+                        GROUP BY
+                            computer_name, os, ip, proc_name
+                        LIMIT """ + threeData[0] + """
+                        OFFSET (""" + threeData[1] + """-1) * """ + threeData[0] + """
+                    """
+
+        elif type == 'highCpuProc_listDataMoreCount':
+            query = """
+                        select
+                            COUNT(*)
+                        from 
+                            high_cpu_proc 
+                        where 
+                            proc_name = '""" + threeData[3] + """'
+                        and
+                            (proc_name ILIKE '%""" + threeData[2] + """%' or
+                            computer_name ILIKE '%""" + threeData[2] + """%' or
+                            os ILIKE '%""" + threeData[2] + """%' or
                             ip ILIKE '%""" + threeData[2] + """%')
-                            
+
                     """
 
         Cur.execute(query)
@@ -235,7 +278,7 @@ def plug_in(type, threeData=None):
                         ('count', int(R[0]))
                     )
                 )
-            elif type in ['os_pieData', 'wire_pieData', 'virtual_pieData', 'discover_lineData', 'idle_lineData', 'allAsset_lineData']:
+            elif type in ['os_pieData', 'wire_pieData', 'virtual_pieData', 'discover_lineData', 'idle_lineData', 'allAsset_lineData', 'highCpuProc_listData']:
                 SDL.append(dict(
                     (
                         ('item', R[0]),

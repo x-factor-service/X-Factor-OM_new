@@ -26,7 +26,9 @@ urlpatterns = [
     path('faq_ug/', controllerGuide.faq_ug, name='faq_ug'),
 ########################### 더보기 ##########################################
     path('certificate_more/', controllerMore.certificate_more, name='certificate_more'),
-    path('certificate_more/paging/', controllerMore.certificate_more_paging, name='certificate_more_paging')
+    path('certificate_more/paging/', controllerMore.certificate_more_paging, name='certificate_more_paging'),
+    path('highCpuProc_more/', controllerMore.highCpuProc_more, name='highCpuProc_more'),
+    path('highCpuProc_more/paging/', controllerMore.highCpuProc_more_paging, name='highCpuProc_more_paging')
 ]
 # path('admin/', admin.site.urls),
 # path('om/', include(om.urls), name="om"),
