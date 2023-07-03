@@ -1363,9 +1363,17 @@ var highCpuProcDashboardPopupTableData = function (id) {
 			},
 			type: "POST",
 			dataSrc: function (res) {
-				var data = res.data.item;
-				return data;
-			}
+                var data = res.data.item;
+                // 배열을 객체로 변환
+                return data.map(function(item) {
+                    return {
+                        computer_name: item[0],
+                        os: item[1],
+                        ip: item[2],
+                        proc_name: item[3]
+                    };
+                });
+            }
 		},
 		columns: [
 			{data: 'computer_name'},
