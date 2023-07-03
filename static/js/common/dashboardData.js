@@ -652,7 +652,6 @@ var handleRenderChartNCOMG = function () {
     //--------------------------------------------------------------------------
     var idle_lineDataItem = []
     var idle_lineDataCount = []
-console.log(dataList.idle_lineData);
     for (var i = 0; i < dataList.idle_lineData.length; i++) {
         idle_lineDataItem.push(dataList.idle_lineData[i]['item']);
         idle_lineDataCount.push(dataList.idle_lineData[i]['count']);
