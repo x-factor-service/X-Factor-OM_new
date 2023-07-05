@@ -1,5 +1,5 @@
 from django.urls import path, include
-from common.controller import controllerCommon, controllerDashboard, controllerMore, controllerGuide, controllerSetting
+from common.controller import controllerCommon, controllerDashboard, controllerMore, controllerGuide, controllerSetting, controllerReport
 
 urlpatterns = [
     path('', controllerCommon.login, name=''),
@@ -29,7 +29,9 @@ urlpatterns = [
     path('certificate_more/paging/', controllerMore.certificate_more_paging, name='certificate_more_paging'),
     path('highCpuProc_more/', controllerMore.highCpuProc_more, name='highCpuProc_more'),
     path('highCpuProc_more/paging/', controllerMore.highCpuProc_more_paging, name='highCpuProc_more_paging'),
-    path('setting/', controllerSetting.setting, name='setting')
+    path('setting/', controllerSetting.setting, name='setting'),
+########################## 리포트 ###########################################
+    path('reportdaily/', controllerReport.reportdaily, name='reportdaily')
 ]
 # path('admin/', admin.site.urls),
 # path('om/', include(om.urls), name="om"),

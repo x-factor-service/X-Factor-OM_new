@@ -5,7 +5,7 @@ Author: Sean Ngu
 Website: http://www.seantheme.com/hud/
 */
 
-var handleRenderWeeklyApexChart = function () {
+var handleRenderdailyApexChart = function () {
 	Apex = {
 		title: {
 			style: {
@@ -78,11 +78,11 @@ var handleRenderWeeklyApexChart = function () {
 		}
 	};
 
-	//weeklyChart_deviceAsset
-	var weeklyDeviceAssetChartOptions = {
+	//dailyChart_deviceAsset
+	var dailyDeviceAssetChartOptions = {
 		chart: {
 			width: '100%',
-			height: 260,
+			height: 150,
 			type: 'bar',
 			toolbar: {
 				show: false
@@ -124,14 +124,14 @@ var handleRenderWeeklyApexChart = function () {
 		},
 		colors: [app.color.orange],
 		series: [{
-			data: [10, 21, 10, 21, 5]
+			data: [10, 21]
 		}],
 		grid: {
 			show: true
 		},
 		xaxis: {
 			categories: [
-				'Virturl', 'Desktop', 'Notebook', 'Rack', 'Etc'
+				'어제', '오늘'
 			],
 			labels: {
 				show: true,
@@ -162,15 +162,103 @@ var handleRenderWeeklyApexChart = function () {
 			}
 		},
 	};
-	var weeklyDeviceAssetChart = new ApexCharts(
-		document.querySelector('#weeklyChart_deviceAsset'),
-		weeklyDeviceAssetChartOptions
+	var dailyDeviceAssetChart = new ApexCharts(
+		document.querySelector('#dailyChart_deviceAsset'),
+		dailyDeviceAssetChartOptions
 	);
-	weeklyDeviceAssetChart.render();
+	dailyDeviceAssetChart.render();
 
+	var dailyDeviceAssetChartOptions = {
+		chart: {
+			width: '100%',
+			height: 150,
+			type: 'bar',
+			toolbar: {
+				show: false
+			},
+		},
+		plotOptions: {
+			bar: {
+				horizontal: false,
+				columnWidth: '70%',
+				distributed: true,
+				endingShape: 'rounded'
 
-	//weeklyChart_actionAsset
-	var weeklyActionAssetChartOptions = {
+			},
+		},
+		dataLabels: {
+			enabled: false
+		},
+		legend: {
+			show: false
+		},
+		/* 		legend: {
+					show: true,
+					position: 'left',
+					width: '100%',
+					height: 150,
+					itemMargin: {
+						horizontal: 0,
+						vertical: 0
+					},
+					labels: {
+						colors: '#000',
+						fontSize: '9px'
+					}
+				}, */
+		stroke: {
+			show: true,
+			width: 1,
+			colors: ['transparent']
+		},
+		colors: [app.color.orange],
+		series: [{
+			data: [10, 21]
+		}],
+		grid: {
+			show: true
+		},
+		xaxis: {
+			categories: [
+				'어제', '오늘'
+			],
+			labels: {
+				show: true,
+
+			}
+		},
+		yaxis: {
+			labels: {
+				show: true,
+			}
+
+		},
+		fill: {
+			opacity: 1
+		},
+		tooltip: {
+			theme: 'dark',
+			x: {
+				show: true
+			},
+			y: {
+				title: {
+					formatter: function (seriesName) {
+						return ''
+					}
+				},
+				formatter: (value) => { return '' + value },
+			}
+		},
+	};
+	var dailyDeviceAssetChart = new ApexCharts(
+		document.querySelector('#dailyChart_deviceAsset'),
+		dailyDeviceAssetChartOptions
+	);
+	dailyDeviceAssetChart.render();
+
+	//dailyChart_actionAsset
+	var dailyActionAssetChartOptions = {
 		chart: {
 			width: '100%',
 			height: 245,
@@ -251,15 +339,15 @@ var handleRenderWeeklyApexChart = function () {
 			}
 		}
 	};
-	var weeklyActionAssetChart = new ApexCharts(
-		document.querySelector('#weeklyChart_actionAsset'),
-		weeklyActionAssetChartOptions
+	var dailyActionAssetChart = new ApexCharts(
+		document.querySelector('#dailyChart_actionAsset'),
+		dailyActionAssetChartOptions
 	);
-	weeklyActionAssetChart.render();
+	dailyActionAssetChart.render();
 
 
-	//weeklyChart_completedAsset
-	var weeklyCompletedAssetChartOptions = {
+	//dailyChart_completedAsset
+	var dailyCompletedAssetChartOptions = {
 		chart: {
 			width: '100%',
 			height: 245,
@@ -340,15 +428,15 @@ var handleRenderWeeklyApexChart = function () {
 			}
 		}
 	};
-	var weeklyCompletedAssetChart = new ApexCharts(
-		document.querySelector('#weeklyChart_completedAsset'),
-		weeklyCompletedAssetChartOptions
+	var dailyCompletedAssetChart = new ApexCharts(
+		document.querySelector('#dailyChart_completedAsset'),
+		dailyCompletedAssetChartOptions
 	);
-	weeklyCompletedAssetChart.render();
+	dailyCompletedAssetChart.render();
 
 
-	//weeklyChart_usedCPU
-	var weeklyUsedCPUChartOptions = {
+	//dailyChart_usedCPU
+	var dailyUsedCPUChartOptions = {
 		chart: {
 			width: '100%',
 			height: 250,
@@ -415,15 +503,15 @@ var handleRenderWeeklyApexChart = function () {
 			}
 		},
 	};
-	var weeklyUsedCPUChart = new ApexCharts(
-		document.querySelector('#weeklyChart_usedCPU'),
-		weeklyUsedCPUChartOptions
+	var dailyUsedCPUChart = new ApexCharts(
+		document.querySelector('#dailyChart_usedCPU'),
+		dailyUsedCPUChartOptions
 	);
-	weeklyUsedCPUChart.render();
+	dailyUsedCPUChart.render();
 
 
-	//weeklyChart_usedMemory
-	var weeklyUsedMemoryChartOptions = {
+	//dailyChart_usedMemory
+	var dailyUsedMemoryChartOptions = {
 		chart: {
 			width: '100%',
 			height: 250,
@@ -490,15 +578,15 @@ var handleRenderWeeklyApexChart = function () {
 			}
 		},
 	};
-	var weeklyUsedMemoryChart = new ApexCharts(
-		document.querySelector('#weeklyChart_usedMemory'),
-		weeklyUsedMemoryChartOptions
+	var dailyUsedMemoryChart = new ApexCharts(
+		document.querySelector('#dailyChart_usedMemory'),
+		dailyUsedMemoryChartOptions
 	);
-	weeklyUsedMemoryChart.render();
+	dailyUsedMemoryChart.render();
 
 
-	//weeklyChart_usedDisk
-	var weeklyUsedDiskChartOptions = {
+	//dailyChart_usedDisk
+	var dailyUsedDiskChartOptions = {
 		chart: {
 			width: '100%',
 			height: 250,
@@ -565,15 +653,15 @@ var handleRenderWeeklyApexChart = function () {
 			}
 		},
 	};
-	var weeklyUsedDiskChart = new ApexCharts(
-		document.querySelector('#weeklyChart_usedDisk'),
-		weeklyUsedDiskChartOptions
+	var dailyUsedDiskChart = new ApexCharts(
+		document.querySelector('#dailyChart_usedDisk'),
+		dailyUsedDiskChartOptions
 	);
-	weeklyUsedDiskChart.render();
+	dailyUsedDiskChart.render();
 
 
-	//weeklyChart_usedSystem
-	var weeklyUsedSystemChartOptions = {
+	//dailyChart_usedSystem
+	var dailyUsedSystemChartOptions = {
 		chart: {
 			width: '100%',
 			height: 250,
@@ -640,15 +728,15 @@ var handleRenderWeeklyApexChart = function () {
 			}
 		},
 	};
-	var weeklyUsedSystemChart = new ApexCharts(
-		document.querySelector('#weeklyChart_usedSystem'),
-		weeklyUsedSystemChartOptions
+	var dailyUsedSystemChart = new ApexCharts(
+		document.querySelector('#dailyChart_usedSystem'),
+		dailyUsedSystemChartOptions
 	);
-	weeklyUsedSystemChart.render();
+	dailyUsedSystemChart.render();
 
 
-	//weeklyChart_usedSw1
-	var weeklyUsedSw1ChartOptions = {
+	//dailyChart_usedSw1
+	var dailyUsedSw1ChartOptions = {
 		chart: {
 			width: '100%',
 			height: 250,
@@ -715,15 +803,15 @@ var handleRenderWeeklyApexChart = function () {
 			}
 		},
 	};
-	var weeklyUsedSw1Chart = new ApexCharts(
-		document.querySelector('#weeklyChart_usedSw1'),
-		weeklyUsedSw1ChartOptions
+	var dailyUsedSw1Chart = new ApexCharts(
+		document.querySelector('#dailyChart_usedSw1'),
+		dailyUsedSw1ChartOptions
 	);
-	weeklyUsedSw1Chart.render();
+	dailyUsedSw1Chart.render();
 
 
-	//weeklyChart_usedSw2
-	var weeklyUsedSw2ChartOptions = {
+	//dailyChart_usedSw2
+	var dailyUsedSw2ChartOptions = {
 		chart: {
 			width: '100%',
 			height: 250,
@@ -790,21 +878,21 @@ var handleRenderWeeklyApexChart = function () {
 			}
 		},
 	};
-	var weeklyUsedSw2Chart = new ApexCharts(
-		document.querySelector('#weeklyChart_usedSw2'),
-		weeklyUsedSw2ChartOptions
+	var dailyUsedSw2Chart = new ApexCharts(
+		document.querySelector('#dailyChart_usedSw2'),
+		dailyUsedSw2ChartOptions
 	);
-	weeklyUsedSw2Chart.render();
+	dailyUsedSw2Chart.render();
 };
 
 
 /* Controller
 ------------------------------------------------ */
 $(document).ready(function () {
-	handleRenderWeeklyApexChart();
+	handleRenderdailyApexChart();
 
 	$(document).on('theme-reload', function () {
-		$('#weeklyChart_deviceAsset, #weeklyChart_actionAsset, #weeklyChart_completedAsset, #weeklyChart_usedCPU, #weeklyChart_usedMemory, #weeklyChart_usedDisk, #weeklyChart_usedSystem, #weeklyChart_usedSw1, #weeklyChart_usedSw2').empty();
+		$('#dailyChart_deviceAsset, #dailyChart_actionAsset, #dailyChart_completedAsset, #weeklyChart_usedCPU, #weeklyChart_usedMemory, #weeklyChart_usedDisk, #weeklyChart_usedSystem, #weeklyChart_usedSw1, #weeklyChart_usedSw2').empty();
 
 		handleRenderWeeklyApexChart();
 	});

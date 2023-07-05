@@ -233,6 +233,7 @@ def plug_in(type, threeData=None):
             query = """
                         SELECT proc_name, COUNT(*)
                         FROM high_cpu_proc
+                        WHERE collection_date >= '""" + DBSelectTime + """'  
                         GROUP BY proc_name
                         ORDER BY COUNT DESC
                         LIMIT 7
@@ -247,8 +248,12 @@ def plug_in(type, threeData=None):
                             os ILIKE '%""" + threeData[2] + """%' or
                             ip ILIKE '%""" + threeData[2] + """%' or
                             proc_name ILIKE '%""" + threeData[2] + """%')
+                        and
+                            collection_date >= '""" + DBSelectTime + """'  
                         GROUP BY
                             computer_name, os, ip, proc_name
+                        ORDER BY
+                            computer_name
                         LIMIT """ + threeData[0] + """
                         OFFSET (""" + threeData[1] + """-1) * """ + threeData[0] + """
                     """
@@ -266,6 +271,8 @@ def plug_in(type, threeData=None):
                             computer_name ILIKE '%""" + threeData[2] + """%' or
                             os ILIKE '%""" + threeData[2] + """%' or
                             ip ILIKE '%""" + threeData[2] + """%')
+                        and
+                            collection_date >= '""" + DBSelectTime + """'  
 
                     """
 

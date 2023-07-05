@@ -59,7 +59,7 @@ article {
 
 /* BEGIN a4 css*/
 
-.weekly-report {
+.daily-report {
     width: 210mm;
     min-height: 297mm;
     padding: 20mm;
@@ -70,7 +70,7 @@ article {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.weekly-sub-page {
+.daily-sub-page {
     /* padding: 1cm; */
     height: 257mm;
     /*     border: 1px red solid;
@@ -90,7 +90,7 @@ article {
         height: 297mm;
     }
 
-    .weekly-report {
+    .daily-report {
         margin: 0;
         border: initial;
         border-radius: initial;
@@ -179,8 +179,8 @@ article {
 /* END brand logo */
 
 
-/* BEGIN weekly-report-content */
-.weekly-report-content {
+/* BEGIN daily-report-content */
+.daily-report-content {
     width: 100%;
     height: 100px;
     display: flex;
@@ -188,7 +188,7 @@ article {
     justify-content: space-between;
 }
 
-.weekly-report-content-right {
+.daily-report-content-right {
     width: 234px;
     height: 100px;
     display: flex;
@@ -196,29 +196,29 @@ article {
     justify-content: center;
 }
 
-.weekly-report-logo img {
+.daily-report-logo img {
     width: 170px;
     height: 30px;
 }
 
-.weekly-report-text {
+.daily-report-text {
     font-size: 25px;
     font-weight: 900;
     color: #000;
 }
 
-.weekly-report-content-left {
+.daily-report-content-left {
     width: 400px;
     height: 100px;
     padding: 20px 0;
 }
 
-.weekly-report-content-left ul {
+.daily-report-content-left ul {
     width: 400px;
     height: 60px;
 }
 
-.weekly-report-content-left ul li {
+.daily-report-content-left ul li {
     display: flex;
     height: 30px;
     align-items: center;
@@ -228,44 +228,44 @@ article {
     font-weight: 300;
 }
 
-.weekly-report-content-left ul li p:nth-child(1) {
+.daily-report-content-left ul li p:nth-child(1) {
     width: 100px;
     font-weight: bold;
     border: 1px solid #dbdbdb;
     background-color: #f8f8f8;
 }
 
-.weekly-report-content-left ul li p:nth-child(2) {
+.daily-report-content-left ul li p:nth-child(2) {
     width: 300px;
     text-align: left;
     text-indent: 8px;
     border: 1px solid #dbdbdb;
 }
 
-.weekly-report-content-left ul li:first-child p:nth-child(2) {
+.daily-report-content-left ul li:first-child p:nth-child(2) {
     border-bottom: 1px solid transparent;
     border-left: 0;
 }
 
-.weekly-report-content-left ul li:last-child p:nth-child(2) {
+.daily-report-content-left ul li:last-child p:nth-child(2) {
     border-left: 0;
 }
 
-/* END weekly-report-content */
+/* END daily-report-content */
 
 
-/* BEGIN weekly-asset-state */
-.weekly-asset-state {
-    height: 150px;
+/* BEGIN daily-asset-state */
+.daily-asset-state {
+    height: 220px;
 }
 
-.weekly-asset-state-title {
+.daily-asset-state-title {
     width: 100%;
     height: 30px;
     margin-bottom: 15px;
 }
 
-.weekly-asset-state-title p {
+.daily-asset-state-title p {
     width: 100%;
     height: 30px;
     font-size: 18px;
@@ -274,19 +274,19 @@ article {
     border-bottom: 2px solid #FF8A00;
 }
 
-.weekly-asset-state-content {
+.daily-asset-state-content {
     width: 100%;
-    height: 100px;
+    height: 175px;
     display: flex;
     justify-content: space-between;
 }
 
-.weekly-asset-state-item {
-    width: 153px;
+.daily-asset-state-item {
+    width: 315px;
     box-sizing: border-box;
 }
 
-.weekly-asset-state-frame {
+.daily-asset-state-frame {
     text-align: center;
     padding: 5px !important;
     display: flex;
@@ -294,18 +294,23 @@ article {
     justify-content: center;
 }
 
-.weekly-asset-state-text {
+.daily-asset-state-text {
     font-size: 10px;
     font-weight: bold;
 }
 
-.weekly-asset-state-count {
+.daily-asset-state-count {
     font-size: 40px;
     font-weight: bold;
     color: #FF8A00;
 }
 
-/* END weekly-asset-state */
+.daily-asset-state-per {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* END daily-asset-state */
 
 
 /* BEGIN asset-device-state */
@@ -408,12 +413,12 @@ article {
     border-bottom: 0;
 }
 
-#weeklyChart_actionAsset .apexcharts-legend {
+#dailyChart_actionAsset .apexcharts-legend {
     justify-content: space-between;
     padding: 0;
 }
 
-#weeklyChart_actionAsset .chartLegend {
+#dailyChart_actionAsset .chartLegend {
     padding-left: 3px;
 }
 
@@ -474,12 +479,12 @@ article {
     box-sizing: border-box;
 }
 
-#weeklyChart_completedAsset .apexcharts-legend {
+#dailyChart_completedAsset .apexcharts-legend {
     justify-content: space-between;
     padding: 0;
 }
 
-#weeklyChart_completedAsset .chartLegend {
+#dailyChart_completedAsset .chartLegend {
     padding-left: 3px;
 }
 
@@ -598,19 +603,19 @@ article {
     height: 300px;
 }
 
-.weeklyChart_text {
+.dailyChart_text {
     background: #fff !important;
     text-align: center;
     font-size: 12px;
     font-weight: bold;
 }
 
-#weeklyChart_usedCPU .apexcharts-canvas,
-#weeklyChart_usedMemory .apexcharts-canvas,
-#weeklyChart_usedDisk .apexcharts-canvas,
-#weeklyChart_usedSystem .apexcharts-canvas,
-#weeklyChart_usedSw1 .apexcharts-canvas,
-#weeklyChart_usedSw2 .apexcharts-canvas {
+#dailyChart_usedCPU .apexcharts-canvas,
+#dailyChart_usedMemory .apexcharts-canvas,
+#dailyChart_usedDisk .apexcharts-canvas,
+#dailyChart_usedSystem .apexcharts-canvas,
+#dailyChart_usedSw1 .apexcharts-canvas,
+#dailyChart_usedSw2 .apexcharts-canvas {
     background-color: #f8f8f8;
 }
 
