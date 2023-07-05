@@ -224,6 +224,47 @@ var dataList = {{ dataList| safe }};
 
     });
 
+
+$(document).ready(function() {
+    const tableBody = $("#myTable tbody");
+    function updateTableData(reportType) {
+        tableBody.empty();
+        for(let i=1; i<=5; i++) {
+            tableBody.append(`
+                <tr>
+                    <td>${i}</td>
+                    <td>
+                        <a href="../reportPage${reportType}${i}">
+                            ${reportType} 자산 리포트
+                        </a>
+                    </td>
+                    <td>2023-04-${22-i}</td>
+                    <td>
+                        <a href="http://localhost:8000/reportPage${reportType}${i}/" download="23042${22-i} ${reportType} 리포트">
+                            <button type="button" class="btn btn-outline-warning" value="print">
+                                다운로드
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            `);
+        }
+    }
+
+    // 버튼 이벤트 추가
+    $("#btn-daily").click(function() {
+        updateTableData('일간');
+    });
+
+    $("#btn-weekly").click(function() {
+        updateTableData('주간');
+    });
+
+    $("#btn-monthly").click(function() {
+        updateTableData('월간');
+    });
+});
+
 </script>
 </body>
 

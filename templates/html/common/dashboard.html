@@ -498,20 +498,15 @@
                         <div class="flex-grow-1">기간별 자산 리포트</div>
                     </div>
                     <!-- BEGIN #datatable -->
-                    <div style="display: flex; gap: 10%; width: 100%;">
-                        <div class="input-group" id="daterange" style="width:50%;">
-                            <input type="text" name="daterange" class="form-control" value="" placeholder="날짜를 선택해주세요" autocomplete="off">
-                            <input type="hidden" name="startDate" value="">
-                            <input type="hidden" name="endDate" value="">
-                            <span class="input-group-text">
-                                <i class="fa fa-calendar"></i>
-                            </span>
+                    <div class="btn-group">
+                            <div class="btn-group mb-3">
+                                <button type="button" id="btn-daily" class="mcdBtn btn btn-outline-warning btn-sm active">일간</button>
+                                <button type="button" id="btn-weekly" class="mcdBtn btn btn btn-outline-warning btn-sm">주간</button>
+                                <button type="button" id="btn-monthly" class="mcdBtn btn btn btn-outline-warning btn-sm">월간</button>
+                            </div>
                         </div>
-                        <button class="btn btn-outline-warning" type="button">미리보기</button>
-                    </div>
-                        <br>
                     <!-- END #datatable -->
-                        <table class="table table-report text-nowrap" width="100%">
+                        <table id="myTable" class="table table-report text-nowrap" width="100%">
                             <thead>
                             <tr>
                                 <th>No</th>
@@ -610,7 +605,7 @@
                     <div class="card-arrow-bottom-left"></div>
                     <div class="card-arrow-bottom-right"></div>
                 </div>
-                </div>
+            </div>
             <!-- END card-body -->
             </div>
                 <!-- END card -->
