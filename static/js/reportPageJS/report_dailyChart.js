@@ -252,7 +252,7 @@ var handleRenderdailyApexChart = function () {
 		},
 	};
 	var dailyDeviceAssetChart = new ApexCharts(
-		document.querySelector('#dailyChart_deviceAsset'),
+		document.querySelector('#dailyChart_deviceAsset1'),
 		dailyDeviceAssetChartOptions
 	);
 	dailyDeviceAssetChart.render();
@@ -892,7 +892,7 @@ $(document).ready(function () {
 	handleRenderdailyApexChart();
 
 	$(document).on('theme-reload', function () {
-		$('#dailyChart_deviceAsset, #dailyChart_actionAsset, #dailyChart_completedAsset, #weeklyChart_usedCPU, #weeklyChart_usedMemory, #weeklyChart_usedDisk, #weeklyChart_usedSystem, #weeklyChart_usedSw1, #weeklyChart_usedSw2').empty();
+		$('#dailyChart_deviceAsset, #dailyChart_deviceAsset1, #dailyChart_actionAsset, #dailyChart_completedAsset, #weeklyChart_usedCPU, #weeklyChart_usedMemory, #weeklyChart_usedDisk, #weeklyChart_usedSystem, #weeklyChart_usedSw1, #weeklyChart_usedSw2').empty();
 
 		handleRenderWeeklyApexChart();
 	});
