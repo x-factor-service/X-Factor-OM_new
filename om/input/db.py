@@ -608,7 +608,7 @@ def plug_in(table, day, type):
             elif day == 'alarmCaseMore':
                 query = """
                         select 
-                            ipv_address, computer_name, ram, cpu, drive, TF
+                            ipv_address, computer_name, ram, cpu, drive, TF, os_platform
                         from
                             minutely_statistics_list msl
                         inner join 
@@ -667,11 +667,8 @@ def plug_in(table, day, type):
             elif day == 'idleMore':
                 query = """
                             select
-                                computer_name, chassis_type, ipv_address, disk_total_used_space,
-                                CASE
-                                    WHEN last_logged_in_date LIKE '%%TSE-Error: Error: WshShell.Exec: 지정된 파일을 찾을 수 없습니다.%%' THEN '알수없음'
-                                    ELSE last_logged_in_date
-                                END
+                                computer_name, chassis_type, ipv_address, disk_total_used_space,regexp_replace(last_logged_in_date, '.*Error.*', '알수없음', 'gi') as last_logged_in_date
+
                             from
                                 idle_asset
                             where
@@ -686,6 +683,29 @@ def plug_in(table, day, type):
                             LIMIT """ + type[0] + """
                             OFFSET (""" + type[1] + """-1) * """ + type[0] + """
                         """
+
+            # elif day == 'idleMore':
+            #     query = """
+            #                            select
+            #                                computer_name, chassis_type, ipv_address, disk_total_used_space,
+            #                                CASE
+            #                                    WHEN last_logged_in_date LIKE '%%TSE-Error: Error: WshShell.Exec: 지정된 파일을 찾을 수 없습니다.%%' THEN '알수없음'
+            #                                    ELSE last_logged_in_date
+            #                                END
+            #                            from
+            #                                idle_asset
+            #                            where
+            #                                collection_date < '""" + yesterday + """'
+            #                            and
+            #                                (computer_name Ilike '%""" + type[2] + """%' or
+            #                                chassis_type Ilike '%""" + type[2] + """%' or
+            #                                ipv_address Ilike '%""" + type[2] + """%' or
+            #                                disk_total_used_space Ilike '%""" + type[2] + """%' or
+            #                                last_logged_in_date Ilike '%""" + type[2] + """%')
+            #                                order by computer_name desc
+            #                            LIMIT """ + type[0] + """
+            #                            OFFSET (""" + type[1] + """-1) * """ + type[0] + """
+            #                        """
             elif day == 'idleMoreCount':
                 query = """
                             select
@@ -1356,6 +1376,8 @@ def plug_in(table, day, type):
                         ('cpuusage', R[3]),
                         ('driveusage', R[4]),
                         ('date', R[5]),
+                        ('os', R[6]),
+
 
                     )
                 ))
