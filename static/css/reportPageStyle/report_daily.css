@@ -318,6 +318,9 @@ article {
 .asset-device-state {
     height: 355px;
 }
+.asset-device-state1 {
+    height: 150px;
+}
 
 .asset-device-state-title {
     width: 100%;
@@ -392,8 +395,8 @@ article {
 .asset-device-item:nth-child(2),
 .asset-device-item:nth-child(3),
 .asset-device-item:nth-child(4) {
-    border-right: 0;
-    border-bottom: 0;
+    border-right: 1;
+    border-bottom: 1;
 }
 
 .asset-device-item:nth-child(5) {
@@ -410,7 +413,20 @@ article {
 .asset-device-count:nth-child(2),
 .asset-device-count:nth-child(3),
 .asset-device-count:nth-child(4) {
-    border-bottom: 0;
+    border-bottom: 1;
+}
+
+.asset-device-name {
+    text-align: center;
+    height: 20px;
+    border: 1px solid #dbdbdb;
+}
+
+.asset-device-count:nth-child(1),
+.asset-device-count:nth-child(2),
+.asset-device-count:nth-child(3),
+.asset-device-count:nth-child(4) {
+    border-bottom: 1;
 }
 
 #dailyChart_actionAsset .apexcharts-legend {
