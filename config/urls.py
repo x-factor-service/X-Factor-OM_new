@@ -1,5 +1,9 @@
 from django.urls import path, include
-from common.controller import controllerCommon, controllerDashboard, controllerMore, controllerGuide, controllerSetting, controllerReport
+from common.controller import controllerCommon, controllerDashboard, controllerMore, controllerGuide
+from deploy import controllerDeploy
+from sbom import controllerSBOM
+from django.contrib import admin
+from django.urls import path
 
 urlpatterns = [
     path('', controllerCommon.login, name=''),
@@ -24,7 +28,12 @@ urlpatterns = [
     path('report_all_ug/', controllerGuide.report_all_ug, name='report_all_ug'),
     path('technical_support_ug/', controllerGuide.technical_support_ug, name='technical_support_ug'),
     path('faq_ug/', controllerGuide.faq_ug, name='faq_ug'),
-########################### 더보기 ##########################################
+    path('sbom/', controllerSBOM.sbom, name='sbom'),
+    path('sbom/paging/', controllerSBOM.sbom_paging, name='sbom_paging'),
+    path('sbom_detail/', controllerSBOM.sbom_detail, name='sbom_detail'),
+    path('deploy/', controllerDeploy.deploy, name='deploy'),
+    path('deploy_action/', controllerDeploy.deploy_action, name='deploy_action'),
+    path('deploy_action_val/', controllerDeploy.deploy_action_val, name='deploy_action_val'),
     path('certificate_more/', controllerMore.certificate_more, name='certificate_more'),
     path('certificate_more/paging/', controllerMore.certificate_more_paging, name='certificate_more_paging'),
     path('highCpuProc_more/', controllerMore.highCpuProc_more, name='highCpuProc_more'),

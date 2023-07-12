@@ -1,0 +1,94 @@
+{% extends 'common/base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- BEGIN #header -->
+
+<!-- END #header -->
+
+<!-- BEGIN #sidebar -->
+
+<!-- END #sidebar -->
+
+<!-- BEGIN #content -->
+<div id="content" class="app-content">
+    <!-- BEGIN row -->
+    <div class="row">
+        <!-- BEGIN col-3 -->
+        <div class="col-xl-10 col-lg-1">
+            <!-- BEGIN card -->
+            <div class="card" style="width: auto;">
+                <!-- BEGIN card-body -->
+                <div class="card-body">
+                    <!-- BEGIN title -->
+<!--                    <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo osVersion-moreInfo"><i class="fas fa-ellipsis-h"></i></button>-->
+
+                    <!-- END title -->
+                    <!-- BEGIN stat-lg -->
+                    <!-- END stat-lg -->
+                <!-- END card-body -->
+                <table id="sbom_detail_dataTable" class="table-sm-se w-100 text-white text-opacity-100" >
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Computer Name</th>
+                        <th>Ipv4 Address</th>
+                        <th>Packages Name</th>
+                        <th>Packages Version</th>
+                        <th>Packages Type</th>
+                        <th>Packages Path</th>
+                        <th>Count</th>
+                    </tr>
+                    </thead>
+                    <tbody class="fs-12px">
+                        {% for data in chartData.detail_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                {{ data.cn }}
+                            </td>
+                            <td>
+                                {{ data.ip }}
+                            </td>
+                            <td>
+                                {{ data.pn }}
+                            </td>
+                            <td style="text-align: center">
+                                {{ data.pv }}
+                            </td>
+                            <td>
+                                {{ data.type }}
+                            </td>
+                            <td>
+                                {{ data.parent }}
+                            </td>
+                            <td style="text-align: center">
+                                {{ data.count }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                            <!-- END #datatable -->
+                <!-- BEGIN card-arrow -->
+                <!-- END card-arrow -->
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+            <!-- END card -->
+        </div>
+
+    </div>
+    <!-- END row -->
+</div>
+<!-- END #content -->
+{#<script>#}
+{#	window.setTimeout('window.location.reload()',600000);#}
+{#</script>#}
+{% endblock %}
+
