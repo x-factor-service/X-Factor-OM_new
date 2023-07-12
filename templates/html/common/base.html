@@ -79,7 +79,7 @@
 </head>
 
 <body class="theme-orange">
-    {% if request.path == '/osVersion_moreInfo/' or request.path == '/serverBandBy_moreInfo/' or request.path == '/runningService_moreInfo/' or request.path == '/memory_moreInfo/' or request.path == '/cpu_moreInfo/' or request.path == '/disk_moreInfo/' or request.path == '/physicalServer_moreInfo/' or request.path == '/gpuServer_moreInfo/' or request.path == '/alarmCase_moreInfo/' or request.path == '/connectDestinationIp_moreInfo/' or request.path == '/connectSourceIp_moreInfo/' %}
+    {% if request.path == '/sbom_detail/' or request.path == '/osVersion_moreInfo/' or request.path == '/serverBandBy_moreInfo/' or request.path == '/runningService_moreInfo/' or request.path == '/memory_moreInfo/' or request.path == '/cpu_moreInfo/' or request.path == '/disk_moreInfo/' or request.path == '/physicalServer_moreInfo/' or request.path == '/gpuServer_moreInfo/' or request.path == '/alarmCase_moreInfo/' or request.path == '/connectDestinationIp_moreInfo/' or request.path == '/connectSourceIp_moreInfo/' %}
     {% elif request.path == '/documentation_ug/' or request.path == '/specification_ug/' or request.path == '/start_ug/' or request.path == '/dashboard_public_ug/' or request.path == '/dashboard_chart_ug/' or request.path == '/dashboard_etc_ug/' or request.path == '/weak_public_ug/' or request.path == '/weak_windows_ug/' or request.path == '/weak_linux_ug/' or request.path == '/report_public_ug/' or request.path == '/report_all_ug/' or request.path == '/technical_support_ug/' or request.path == '/faq_ug/' or request.path == '/setting_ug/' %}
     <div class="app">
       <!-- 네비게이션바 -->
@@ -96,6 +96,7 @@
         {% include "common/sidebar.html" %}
     {% endif %}
     <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+  <script src="{% static 'js/jquery/jquery-3.6.0.min.js' %}"></script>
     {% block content %}
     {% endblock %}
     <!-- 기본 템플릿 안에 삽입될 내용 End -->
@@ -103,7 +104,6 @@
   <!-- END #app -->
 
   <!-- Bootstrap JS -->
-  <script src="{% static 'js/jquery/jquery-3.6.0.min.js' %}"></script>
 
   <!-- ================== BEGIN core-js ================== -->
   <script src="{% static 'assets/js/vendor.min.js' %}"></script>
@@ -123,16 +123,16 @@
   <!-- ================== BEGIN Chart-js ================== -->
   <!-- ================== dashboard chart NC or Xfactor ================== -->
   {% if Customer == 'NC' or Customer == 'Xfactor'%}
-  <script src="{% static 'assets/js/demo/dashboard.demo.nc.banner.js' %}"></script>
+{#  <script src="{% static 'assets/js/demo/dashboard.demo.nc.banner.js' %}"></script>#}
 <!--  <script src="{% static 'assets/js/nouse/om.nouse.nc.banner.js' %}"></script>-->
-  <script src="{% static 'js/common/dashboardData.js'%}"></script>
+{#  <script src="{% static 'js/common/dashboardData.js'%}"></script>#}
 
   {% else %}
-  <script src="{% static 'assets/js/demo/dashboard.demo.js' %}"></script>
+{#  <script src="{% static 'assets/js/demo/dashboard.demo.js' %}"></script>#}
   {% endif %}
 
   <!-- ================== dashboard-js ================== -->
-  <script src="{% static 'js/common/dashboard.js' %}"></script>
+{#  <script src="{% static 'js/common/dashboard.js' %}"></script>#}
 
   <!-- ================== documentation_chart ================== -->
   {% if request.path == '/dashboard_chart_ug/' %}
@@ -158,7 +158,8 @@
   <script src="{% static 'assets/plugins/moment/min/moment.min.js' %}"></script>
   <script src="{% static 'assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
   <script src="{% static 'assets/plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
-  <script src="{% static 'assets/js/demo/table-plugins.demo.js' %}"></script>
+{#  <script src="{% static 'assets/js/demo/table-plugins.demo.js' %}"></script>#}
+  <script src="{% static 'assets/js/demo/sbom_table.js' %}"></script>
 <!-- ================== END TABLE-js ================== -->
 
 <script src="{% static 'js/common/nav.js' %}"></script>
