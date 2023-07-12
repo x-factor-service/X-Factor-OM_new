@@ -576,13 +576,13 @@ def send_email_view(request):
 
         items = []
         if 'True' in ram:
-            items.append('ram')
+            items.append('메모리 사용량 95% 초과')
         if 'True' in cpu:
-            items.append('cpu')
+            items.append('CPU 사용량 95% 초과')
         if 'True' in drive:
-            items.append('drive')
+            items.append('디스크 사용량 99% 초과')
         if 'True' in date:
-            items.append('date')
+            items.append('최근 30분 이내 오프라인 여부')
 
         body = ip + ' ip를 사용하는 컴퓨터가 경고가 발생하였습니다. \n' + name + ' 컴퓨터를 체크해주시길 바랍니다.'
 

@@ -122,7 +122,7 @@ def plug_in(type, threeData=None):
                 FROM
                     daily_statistics
                 WHERE 
-                    classification = 'dashboard_OS Platform'
+                    classification = 'mainCard_os'
                     AND statistics_collection_date >= '""" + weekDay + """'
                 GROUP BY statistics_collection_date
                 ORDER BY statistics_collection_date ASC
