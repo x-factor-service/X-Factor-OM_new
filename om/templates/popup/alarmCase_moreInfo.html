@@ -52,7 +52,7 @@
 
 
 <script>
-function sendAction(element, ip, name, ram ,cpu, drive, date) {
+function sendAction(element, ip, name, ram ,cpu, drive, date, os) {
     if (element.value === "mail") {
         if (confirm('이메일을 전송하시겠습니까?')) {
             const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
@@ -96,6 +96,40 @@ function sendAction(element, ip, name, ram ,cpu, drive, date) {
                         success: function(response) {
                             if (response.status === 'success') {
                                 alert('리부트를 시작하겠습니다.');
+                            } else {
+                                alert('요청에 실패했습니다.');
+                            }
+                        }
+                    });
+                };
+            } else if (element.value === "off_process"){
+
+            var IM = prompt("종료할 프로세스를 입력해주세요")
+                if (IM){
+                const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+                    $.ajax({
+                        type: "POST",
+                        url: "{% url 'send_off_process' %}",
+                        data: {
+                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                            "ip" : ip,
+                            "name" : name,
+                            "ram" : ram,
+                            "cpu" : cpu,
+                            "drive" : drive,
+                            "date" : date,
+                            "IM" : IM,
+                            "value" : element.value,
+                            "os" : os,
+
+
+
+
+                        },
+
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                alert('프로세스를 종료하겠습니다.');
                             } else {
                                 alert('요청에 실패했습니다.');
                             }

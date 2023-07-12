@@ -692,3 +692,79 @@ def send_reboot_view(request):
                 return JsonResponse({'status': 'fail'})
         except Exception as e:
             print(f'Reboot 기능 오류 발생: {e}')
+
+
+
+@csrf_exempt
+def send_off_process_view(request):
+    if request.method == "POST":
+        try:
+            subject = "off_process"
+            name = request.POST['name']
+            IM = request.POST['IM']
+            value = request.POST['value']
+            os = request.POST['os']
+            # 세션키 받기
+            SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
+            SKURL = apiUrl + SesstionKeyPath
+            SKR = requests.post(SKURL, data=SKH, verify=False)
+            SKRT = SKR.content.decode('utf-8')
+            SKRJ = json.loads(SKRT)
+            SK = SKRJ['data']['session']
+            print("SessionKey 불러오기 성공")
+
+            # Computer Group 만들기
+            CCGH = {'session': SK, 'Content-Type': 'text/plain'}
+            CCGURL = apiUrl + '/api/v2/groups'
+            CCGB = '{"name" : "' + subject + name + '","text" : "Computer Name matches ' + name + '"}'
+            CCG = requests.post(CCGURL, headers=CCGH, data=CCGB, verify=False)
+            CGID = str(CCG.json()['data']['id'])
+            print("Computer Group 만들기 성공")
+
+            # package 만들기
+            CPH = {'session': SK, 'Content-Type': 'text/plain'}
+            CPHURL = apiUrl + '/api/v2/packages/'
+            if os == "Windows":
+                CPB = '{"name" : "' + subject + name + '", "command" : "cmd /d /c taskkill /f /IM ' + IM + '.exe"}'
+            elif os == "Linux":
+                CPB = '{"name" : "' + subject + name + '", "command" : "/bin/bash killall -9 ' + IM + '"}'
+            CP = requests.post(CPHURL, headers=CPH, data=CPB, verify=False)
+            CPID = str(CP.json()['data']['id'])
+            print("package 만들기 성공")
+
+            # action 만들기
+            CAH = {'session': SK, 'Content-Type': 'text/plain'}
+            CAURL = apiUrl + '/api/v2/actions'
+            CAB = '{"name": "package_test3","action_group": {"id": ' + DEFAULTGROUPID + '},"package_spec": {"source_id": ' + CPID + '},"target_group": {"id": ' + CGID + '}}'
+            CA = requests.post(CAURL, headers=CAH, data=CAB, verify=False)
+            sleep(5)
+            print("Action 성공")
+
+            # 패키지 지우기
+
+            DPH = {'session': SK, 'Content-Type': 'text/plain'}
+            DPURL = apiUrl + '/api/v2/packages/' + CPID
+            DP = requests.delete(DPURL, headers=DPH, verify=False)
+
+            if DP.status_code == 200:
+                print("Package 지우기 성공")
+                sleep(5)
+
+            # 성공시 computer group 지우기
+            if CA.status_code == 200:
+                DCGH = {'session': SK, 'Content-Type': 'text/plain'}
+                DCGURL = apiUrl + '/api/v2/groups/' + CGID
+                DCG = requests.delete(DCGURL, headers=DCGH, verify=False)
+
+                if DCG.status_code == 200:
+                    print("Computer Group 지우기 성공")
+                    sleep(5)
+                    return JsonResponse({'status': 'success'})
+                else:
+                    return JsonResponse({'status': 'fail'})
+
+            else:
+                return JsonResponse({'status': 'fail'})
+
+        except Exception as e:
+            print(f'off_process 기능 오류 발생: {e}')

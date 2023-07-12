@@ -46,7 +46,7 @@ def plug_in(type, threeData=None):
                         from
                             minutely_statistics
                         where 
-                            item = 'Disk Used Percentage#3'
+                            item = 'disk95'
                             and statistics_collection_date >= '""" + DBSelectTime + """'
                     """
         # -----------------------------상단 메모리 사용률 도넛 차트------------------------------
@@ -57,7 +57,7 @@ def plug_in(type, threeData=None):
                         from
                             minutely_statistics
                         where 
-                            item = 'Memory Consumption#2'
+                            item = 'memory95'
                             and statistics_collection_date >= '""" + DBSelectTime + """'
                         """
         # -----------------------------상단 씨피유 사용률 도넛 차트------------------------------
@@ -79,7 +79,7 @@ def plug_in(type, threeData=None):
                         from
                             minutely_statistics
                         where 
-                            classification = 'dashboard_OS Platform'
+                            classification = 'os_counts'
                             AND item != 'unconfirmed'
                             and NOT item IN ('unconfirmed')
                             and statistics_collection_date >= '""" + DBSelectTime + """'
@@ -93,7 +93,7 @@ def plug_in(type, threeData=None):
                         from
                             minutely_statistics
                         where 
-                            classification = 'dashboard_wired/wireless 2'
+                            classification = 'wired_counts'
                             AND item != 'unconfirmed'
                             and NOT item IN ('unconfirmed')
                             and statistics_collection_date >= '""" + DBSelectTime + """'
@@ -107,7 +107,7 @@ def plug_in(type, threeData=None):
                         from
                             minutely_statistics
                         where 
-                            classification = 'dashboard_Is Virtual#3'
+                            classification = 'virtual_counts'
                             AND item != 'unconfirmed'
                             and NOT item IN ('unconfirmed')
                             and statistics_collection_date >= '""" + DBSelectTime + """'

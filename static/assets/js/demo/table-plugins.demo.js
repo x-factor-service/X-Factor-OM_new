@@ -1020,7 +1020,7 @@ var alarmCasehandleRenderDashboardPopupTableData = function () {
 			{data: 'cpuusage'},
 			{data: 'driveusage'},
 			{data: 'date'},
-			{data: 'index',
+			{data: 'os',
             className: 'select-checkbox',
             orderable: false}
 		],
@@ -1033,11 +1033,11 @@ var alarmCasehandleRenderDashboardPopupTableData = function () {
             {targets: 5, width: "12%", className: 'text-center'},
             {targets: 6, width: "11%", className: 'text-center'},
             {targets: 7, width: "11%", render: function(data, type, row) {
-            return `<select class="btn btn-outline-primary" onchange="sendAction(this,\'`+row.ip+`\',\'`+row.name+`\',\'`+row.ramusage+`\',\'`+row.cpuusage+`\',\'`+row.driveusage+`\',\'`+row.date+`\')">
+            return `<select class="btn btn-outline-primary" onchange="sendAction(this,\'`+row.ip+`\',\'`+row.name+`\',\'`+row.ramusage+`\',\'`+row.cpuusage+`\',\'`+row.driveusage+`\',\'`+row.date+`\',\'`+row.os+`\')">
                     <option value="">Action</option>
                     <option value="mail">Mail</option>
                     <option value="">Alarm</option>
-                    <option value="">Off Process</option>
+                    <option value="off_process">Off Process</option>
                     <option value="">Service Restart</option>
                     <option value="">Isolation</option>
                     <option value="reboot">Reboot</option>
