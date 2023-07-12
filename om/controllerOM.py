@@ -1,4 +1,5 @@
 from datetime import timedelta, datetime
+import psycopg2
 from django.shortcuts import render, redirect
 from om.dashboardFunctionOM import DashboardData
 from common.controller.controllerCommon import MenuSetting
@@ -29,6 +30,11 @@ DEFAULTGROUPID = SETTING['API']['defaultGroupID']
 PACKAGEID = SETTING['API']['packageID']
 Email_id = SETTING['EMAIL']['EMAIL_ID']
 Email_pwd = SETTING['EMAIL']['EMAIL_PWD']
+DBHost = SETTING['DB']['DBHost']
+DBPort = SETTING['DB']['DBPort']
+DBName = SETTING['DB']['DBName']
+DBUser = SETTING['DB']['DBUser']
+DBPwd = SETTING['DB']['DBPwd']
 
 menuListDB = MenuSetting()
 
@@ -568,6 +574,16 @@ def send_email_view(request):
         drive = request.POST['drive']
         date = request.POST['date']
 
+        items = []
+        if 'True' in ram:
+            items.append('ram')
+        if 'True' in cpu:
+            items.append('cpu')
+        if 'True' in drive:
+            items.append('drive')
+        if 'True' in date:
+            items.append('date')
+
         body = ip + ' ip를 사용하는 컴퓨터가 경고가 발생하였습니다. \n' + name + ' 컴퓨터를 체크해주시길 바랍니다.'
 
         # JSON 파일에서 이메일 ID, 비밀번호 및 수신자 이메일 목록 읽기
@@ -593,9 +609,38 @@ def send_email_view(request):
             server.sendmail(Email_id, to_emails, text)  # 여기서 'to_emails'는 배열
             server.quit()
             print('이메일이 성공적으로 전송되었습니다.')
+
+            # ------------------------------OM 리포트 알람 -------------------------------
+            conn = psycopg2.connect(
+            'host={0} port={1} dbname={2} user={3} password={4}'.format(DBHost, DBPort, DBName, DBUser, DBPwd))
+            cur = conn.cursor()
+            current_time = datetime.now()
+            cur.execute("SELECT COUNT(*) FROM report_statistics WHERE statistics_collection_date::date = %s", (current_time.date(),))
+            count = cur.fetchone()[0]
+            if count == 0:
+                for item in items:
+                    cur.execute("INSERT INTO report_statistics (classification, item, package_name, target, item_count, statistics_collection_date) VALUES (%s, %s, %s, %s, %s, %s)", ('daily_om_alarm', item, None, None, 1, current_time))
+            else:
+                for item in items:
+                    cur.execute(
+                        "SELECT item FROM report_statistics WHERE statistics_collection_date::date = %s AND item = %s",
+                        (current_time.date(), item))
+                    result = cur.fetchone()
+                    if result:
+                        cur.execute(
+                            "UPDATE report_statistics SET item_count = item_count::integer + 1, statistics_collection_date = %s WHERE statistics_collection_date::date = %s AND item = %s",
+                            (current_time, current_time.date(), item))
+                    else:
+                        cur.execute(
+                            "INSERT INTO report_statistics (classification, item, package_name, target, item_count, statistics_collection_date) VALUES (%s, %s, %s, %s, %s, %s)",
+                            ('daily_om_alarm', item, None, None, 1, current_time))
+            conn.commit()
+            cur.close()
+            conn.close()
+            return JsonResponse({'status': 'success'})
         except Exception as e:
             print(f'이메일 전송 중 오류 발생: {e}')
-        return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'error'})
     else:
         return JsonResponse({'status': 'fail'})
 

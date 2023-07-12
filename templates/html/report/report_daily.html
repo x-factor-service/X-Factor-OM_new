@@ -64,11 +64,11 @@
                             <div class="card h-100">
                                 <div class="card-body daily-asset-state-frame">
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <div id="dailyChart_deviceAsset"></div>
+                                        <div id="report_listData_unMgmt_chart"></div>
                                         <div class="flex-column">
                                             <p class="daily-asset-state-text">미관리 자산 증가율</p>
-                                            <p class="daily-asset-state-count">54</p>
-                                            <p class="daily-asset-state-per">▲28%</p>
+                                            <p class="daily-asset-state-count" id="calcSub_report_listData_unMgmt_counts"></p>
+                                            <p class="daily-asset-state-per" id="calcPerRound_report_listData_unMgmt_counts"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -85,10 +85,11 @@
                                 <div class="card-body daily-asset-state-frame">
                                     <div class="d-flex align-items-center justify-content-center">
 
-                                        <div id="dailyChart_deviceAsset1"></div>
+                                        <div id="report_listData_idle_chart"></div>
                                         <div class="flex-column">
                                             <p class="daily-asset-state-text">유휴장비 개수 증가율</p>
-                                            <p class="daily-asset-state-count">54</p>
+                                            <p class="daily-asset-state-count" id="calcSub_report_listData_idle_counts"></p>
+                                            <p class="daily-asset-state-per" id="calcPerRound_report_listData_idle_counts"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -226,18 +227,7 @@
                         </tbody>
                     </table>
                 </div>
-
-
-
-            </div>
-        </div>
-        <!-- END daily-report 1 page -->
-
-        <!-- BEGIN daily-report 2 page -->
-        <div class="daily-report">
-            <div class="daily-sub-page">
-                <!-- BEGIN failure-symptom-state -->
-            <div class="sub-content asset-device-state1">
+                <div class="sub-content asset-device-state1">
                     <div class="asset-device-state-title">
                         <p>배포 성공한 Package</p>
                     </div>
@@ -268,7 +258,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 <div class="sub-content asset-device-state1">
                     <div class="asset-device-state-title">
                         <p>배포 실패한 Package</p>
@@ -301,22 +290,99 @@
                     </table>
                 </div>
             </div>
-            <!-- END failure-symptom-state -->
+
+
+
+            </div>
         </div>
+        <!-- END daily-report 1 page -->
+
+        <!-- BEGIN daily-report 2 page -->
+<!--        <div class="daily-report">-->
+<!--            <div class="daily-sub-page">-->
+<!--                &lt;!&ndash; BEGIN failure-symptom-state &ndash;&gt;-->
+<!--            <div class="sub-content asset-device-state1">-->
+<!--                    <div class="asset-device-state-title">-->
+<!--                        <p>배포 성공한 Package</p>-->
+<!--                    </div>-->
+<!--                    <table style="width: 100%;">-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th class="asset-device-item text-center">배포 패키지명</th>-->
+<!--                                <th class="asset-device-item text-center">배포 대상</th>-->
+<!--                                <th class="asset-device-item text-center">배포율</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                            <tr>-->
+<!--                                <td class="asset-device-name text-center">Acrobat Reader DC (en-us)</td>-->
+<!--                                <td class="asset-device-name text-center">All computers</td>-->
+<!--                                <td class="asset-device-count text-center">28%</td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="asset-device-name text-center">Acrobat Reader DC (en-us)</td>-->
+<!--                                <td class="asset-device-name text-center">All computers</td>-->
+<!--                                <td class="asset-device-count text-center">28%</td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="asset-device-name text-center">Acrobat Reader DC (en-us)</td>-->
+<!--                                <td class="asset-device-name text-center">All computers</td>-->
+<!--                                <td class="asset-device-count text-center">28%</td>-->
+<!--                            </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+
+<!--                <div class="sub-content asset-device-state1">-->
+<!--                    <div class="asset-device-state-title">-->
+<!--                        <p>배포 실패한 Package</p>-->
+<!--                    </div>-->
+<!--                    <table style="width: 100%;">-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th class="asset-device-item text-center">서브넷 분류</th>-->
+<!--                                <th class="asset-device-item text-center">VM 자산 수</th>-->
+<!--                                <th class="asset-device-item text-center">PM 자산 수</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                            <tr>-->
+<!--                                <td class="asset-device-name text-center">172.18.0.0/21</td>-->
+<!--                                <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                                <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="asset-device-name text-center">172.20.0.0/21</td>-->
+<!--                                <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                                <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td class="asset-device-name text-center">172.20.92.0/21</td>-->
+<!--                                <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                                <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                            </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; END failure-symptom-state &ndash;&gt;-->
+<!--        </div>-->
     </div>
     <!-- END daily-report 2 page -->
 
 </div>
-
 <script src='/static/js/jquery/jquery-3.6.0.min.js'></script>
 <script src='/static/assets/plugins/bootstrap/dist/js/bootstrap.min.js'></script>
 <script src='/static/assets/js/vendor.min.js'></script>
 <script src='/static/assets/js/app.min.js'></script>
-
 <!-- apexchart -->
 <script src='/static/assets/plugins/apexcharts/dist/apexcharts.min.js'></script>
 <script src='/static/js/reportPageJS/report_dailyChart.js'></script>
-
+<script>
+var report_listData_unMgmt_idle = {{ report_listData_unMgmt_idle | safe }};
+var report_listData_alarm = {{ report_listData_alarm | safe }};
+var report_listData_subnet_isVm = {{ report_listData_subnet_isVm | safe }};
+</script>
 
 
 </body>

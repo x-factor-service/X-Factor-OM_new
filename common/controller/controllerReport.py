@@ -1,18 +1,17 @@
 from django.shortcuts import render
-from common.controller.controllerCommon import MenuSetting
-import json
-
-menuListDB = MenuSetting()
-
-with open("setting.json", encoding="UTF-8") as f:
-    SETTING = json.loads(f.read())
-Customer = SETTING['PROJECT']['CUSTOMER']
-WorldUse = SETTING['PROJECT']['MAP']['World']
-KoreaUse = SETTING['PROJECT']['MAP']['Korea']
-AreaUse = SETTING['PROJECT']['MAP']['Area']['use']
-AreaType = SETTING['PROJECT']['MAP']['Area']['type']
-Login_Method = SETTING['PROJECT']['LOGIN']
+from common.core.dashboardFunction import Dashboard
 
 def reportdaily(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
+    DCDL = Dashboard()
+    res_data = {}
+    if not 'sessionid' in request.session:
+        res_data['error'] = '먼저 로그인을 해주세요.'
+        return render(request, 'common/login.html', res_data)
+    else:
+        report_listData_unMgmt_idle = DCDL["report_listData_unMgmt_idle"]
+        report_listData_alarm = DCDL["report_listData_alarm"]
+        report_listData_subnet_isVm = DCDL["report_listData_subnet_isVm"]
+    returnData = {'report_listData_unMgmt_idle': report_listData_unMgmt_idle,
+                  'report_listData_alarm': report_listData_alarm,
+                  'report_listData_subnet_isVm': report_listData_subnet_isVm}
     return render(request, 'report/report_daily.html', returnData)

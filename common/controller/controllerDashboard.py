@@ -35,7 +35,6 @@ def dashboard(request):
         discover_lineData = DCDL["discover_lineData"]
         cert_listData = DCDL["cert_listData"]
         sbom_listData = DCDL["sbom_listData"]
-        report_listData = DCDL["report_listData"]
         idle_lineData = DCDL["idle_lineData"]
         highCpuProc_listData = DCDL["highCpuProc_listData"]
 
@@ -49,7 +48,6 @@ def dashboard(request):
                     "discover_lineData": discover_lineData,
                     "cert_listData": cert_listData,
                     "sbom_listData": sbom_listData,
-                    "report_listData": report_listData,
                     "idle_lineData": idle_lineData,
                     "highCpuProc_listData": highCpuProc_listData
                      }

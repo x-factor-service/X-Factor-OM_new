@@ -78,8 +78,33 @@ var handleRenderdailyApexChart = function () {
 		}
 	};
 
-	//dailyChart_deviceAsset
-	var dailyDeviceAssetChartOptions = {
+//dailyChart_deviceAsset 자산 통계 정보 - 미관리 자산 증가율
+
+    // 미관리자산 데이터만 가져오기
+var report_listData_unMgmt = report_listData_unMgmt_idle.filter(function(obj) {
+  return obj.name === 'unmanagement';
+});
+    // count만 가져오기
+var report_listData_unMgmt_counts = report_listData_unMgmt.map(function(obj) {
+  return obj.count;
+});
+    // 1일 전 데이터에서 2일 전 데이터 빼기, 퍼센트 계산
+var calcSub_report_listData_unMgmt_counts = parseInt(report_listData_unMgmt_counts[1]) - parseInt(report_listData_unMgmt_counts[0]);
+var calcPer_report_listData_unMgmt_counts = (parseInt(report_listData_unMgmt_counts[1]) - parseInt(report_listData_unMgmt_counts[0])) / parseInt(report_listData_unMgmt_counts[0]) * 100;
+    // 증감 부호
+var calcPerRound_report_listData_unMgmt_counts = Math.abs(calcPer_report_listData_unMgmt_counts.toFixed(2))
+if (calcPer_report_listData_unMgmt_counts < 0) {
+  calcPerRound_report_listData_unMgmt_counts = '▼' + calcPerRound_report_listData_unMgmt_counts;
+} else if (calcPer_report_listData_unMgmt_counts > 0) {
+  calcPerRound_report_listData_unMgmt_counts = '▲' + calcPerRound_report_listData_unMgmt_counts;
+}
+    // html에 값 넣기
+var countElement = document.querySelector('#calcSub_report_listData_unMgmt_counts');
+countElement.textContent = calcSub_report_listData_unMgmt_counts.toString();
+var countElement = document.querySelector('#calcPerRound_report_listData_unMgmt_counts');
+countElement.textContent = calcPerRound_report_listData_unMgmt_counts.toString() + '%';
+
+	var report_listData_unMgmt_chart = {
 		chart: {
 			width: '100%',
 			height: 150,
@@ -98,25 +123,14 @@ var handleRenderdailyApexChart = function () {
 			},
 		},
 		dataLabels: {
-			enabled: false
+			enabled: true,
+			style: {
+            colors: ['#ffffff']
+            }
 		},
 		legend: {
 			show: false
 		},
-		/* 		legend: {
-					show: true,
-					position: 'left',
-					width: '100%',
-					height: 150,
-					itemMargin: {
-						horizontal: 0,
-						vertical: 0
-					},
-					labels: {
-						colors: '#000',
-						fontSize: '9px'
-					}
-				}, */
 		stroke: {
 			show: true,
 			width: 1,
@@ -124,14 +138,14 @@ var handleRenderdailyApexChart = function () {
 		},
 		colors: [app.color.orange],
 		series: [{
-			data: [10, 21]
+			data: report_listData_unMgmt_counts
 		}],
 		grid: {
 			show: true
 		},
 		xaxis: {
 			categories: [
-				'어제', '오늘'
+				'2일 전', '1일 전'
 			],
 			labels: {
 				show: true,
@@ -162,13 +176,38 @@ var handleRenderdailyApexChart = function () {
 			}
 		},
 	};
-	var dailyDeviceAssetChart = new ApexCharts(
-		document.querySelector('#dailyChart_deviceAsset'),
-		dailyDeviceAssetChartOptions
+	var report_listData_unMgmt_chart = new ApexCharts(
+		document.querySelector('#report_listData_unMgmt_chart'),
+		report_listData_unMgmt_chart
 	);
-	dailyDeviceAssetChart.render();
+	report_listData_unMgmt_chart.render();
 
-	var dailyDeviceAssetChartOptions = {
+//dailyChart_deviceAsset 자산 통계 정보 - 유휴장비 개수 증가율
+var report_listData_idle = report_listData_unMgmt_idle.filter(function(obj) {
+  return obj.name === 'idle';
+});
+    // count만 가져오기
+var report_listData_idle_counts = report_listData_idle.map(function(obj) {
+  return obj.count;
+});
+    // 1일 전 데이터에서 2일 전 데이터 빼기, 퍼센트 계산
+var calcSub_report_listData_idle_counts = parseInt(report_listData_idle_counts[1]) - parseInt(report_listData_idle_counts[0]);
+var calcPer_report_listData_idle_counts = (parseInt(report_listData_idle_counts[1]) - parseInt(report_listData_idle_counts[0])) / parseInt(report_listData_idle_counts[0]) * 100;
+    // 증감 부호
+var calcPerRound_report_listData_idle_counts = Math.abs(calcPer_report_listData_idle_counts.toFixed(2))
+if (calcPer_report_listData_idle_counts < 0) {
+  calcPerRound_report_listData_idle_counts = '▼' + calcPerRound_report_listData_idle_counts;
+} else if (calcPer_report_listData_idle_counts > 0) {
+  calcPerRound_report_listData_idle_counts = '▲' + calcPerRound_report_listData_idle_counts;
+  calcSub_report_listData_idle_counts = '+' + calcSub_report_listData_idle_counts
+}
+    // html에 값 넣기
+var countElement = document.querySelector('#calcSub_report_listData_idle_counts');
+countElement.textContent = calcSub_report_listData_idle_counts.toString();
+var countElement = document.querySelector('#calcPerRound_report_listData_idle_counts');
+countElement.textContent = calcPerRound_report_listData_idle_counts.toString() + '%';
+
+	var report_listData_idle_chart = {
 		chart: {
 			width: '100%',
 			height: 150,
@@ -187,7 +226,10 @@ var handleRenderdailyApexChart = function () {
 			},
 		},
 		dataLabels: {
-			enabled: false
+			enabled: true,
+			style: {
+			    colors: ['#ffffff']
+			}
 		},
 		legend: {
 			show: false
@@ -213,14 +255,14 @@ var handleRenderdailyApexChart = function () {
 		},
 		colors: [app.color.orange],
 		series: [{
-			data: [10, 21]
+			data: report_listData_idle_counts
 		}],
 		grid: {
 			show: true
 		},
 		xaxis: {
 			categories: [
-				'어제', '오늘'
+				'2일 전', '1일 전'
 			],
 			labels: {
 				show: true,
@@ -251,11 +293,11 @@ var handleRenderdailyApexChart = function () {
 			}
 		},
 	};
-	var dailyDeviceAssetChart = new ApexCharts(
-		document.querySelector('#dailyChart_deviceAsset1'),
-		dailyDeviceAssetChartOptions
+	var report_listData_idle_chart = new ApexCharts(
+		document.querySelector('#report_listData_idle_chart'),
+		report_listData_idle_chart
 	);
-	dailyDeviceAssetChart.render();
+	report_listData_idle_chart.render();
 
 	//dailyChart_actionAsset
 	var dailyActionAssetChartOptions = {

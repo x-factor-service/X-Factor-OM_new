@@ -58,7 +58,7 @@
         "DBName": "postgres",
         "DBUser": "postgres",
         "DBPwd": "psql",
-        "DBSelectTime": 11,
+        "DBSelectTime": 12,
         "AssetTNM": "daily_asset",
         "StatisticsTNM": "daily_statistics",
         "MenuTNM": "web_menusetting",
@@ -84,9 +84,7 @@
         "EMAIL_ID": "dhlee@xionits.com",
         "EMAIL_PWD": "!akfls8653",
         "TO_EMAIL": [
-            "djlee@xionits.com",
-            "dhlee@xionits.com",
-            "ikchoi@xionits.com"
+            "skchoi@xionits.com"
         ]
     }
 }

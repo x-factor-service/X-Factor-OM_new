@@ -25,8 +25,10 @@ def Dashboard():
         allAsset_lineData = []
         cert_listData = []
         sbom_listData = []
-        report_listData = []
         idle_lineData = []
+        report_listData_unMgmt_idle = []
+        report_listData_alarm = []
+        report_listData_subnet_isVm = []
 
 
             #------------------------------상단 디스크 사용률 도넛 차트------------------------
@@ -101,12 +103,6 @@ def Dashboard():
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - cert_listData')
-            # -----------------------------하단 인증서더보기 -------------------------------------
-        # try:
-        #     cert_moreData = inputDb('cert_listDataMore')
-        # except:
-        #     logger.warning('dashboard_function.py - Error Occurred')
-        #     logger.warning('Error - memoryMoreDataList')
             # -----------------------------하단 최대 CPU 점유 프로세스더보기 -----------------------
         try:
             highCpuProc_listData = inputDb('highCpuProc_listData')
@@ -114,6 +110,24 @@ def Dashboard():
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - highCpuProc_listData')
+        # ---------------------------------하단 OM 일일 리포트 - 자산 통계 정보 ---------------------
+        try:
+            report_listData_unMgmt_idle = inputDb('report_listData_unMgmt_idle')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - report_listData_unMgmt_idle')
+        # ---------------------------------하단 OM 일일 리포트 - 전일 발송된 알람 정보 ---------------
+        try:
+            report_listData_alarm = inputDb('report_listData_alarm')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - report_listData_alarm')
+        # ---------------------------------하단 OM 일일 리포트 - IP대역별 관리 자산 현황 -------------
+        try:
+            report_listData_subnet_isVm = inputDb('report_listData_subnet_isVm')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - report_listData_subnet_isVm')
 
         RD = {
             'disk_donutData': disk_donutData,
@@ -126,9 +140,11 @@ def Dashboard():
             "discover_lineData": discover_lineData,
             "cert_listData": cert_listData,
             "sbom_listData": sbom_listData,
-            "report_listData": report_listData,
             "idle_lineData": idle_lineData,
-            "highCpuProc_listData": highCpuProc_listData
+            "highCpuProc_listData": highCpuProc_listData,
+            "report_listData_unMgmt_idle": report_listData_unMgmt_idle,
+            "report_listData_alarm": report_listData_alarm,
+            "report_listData_subnet_isVm": report_listData_subnet_isVm
             }
     else:
         print()

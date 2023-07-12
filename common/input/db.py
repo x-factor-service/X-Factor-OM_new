@@ -27,6 +27,7 @@ def plug_in(type, threeData=None):
         DBSelectTime = (datetime.today() - timedelta(minutes=DBSettingTime)).strftime("%Y-%m-%d %H:%M:%S")
         halfHourAgo = (datetime.today() - timedelta(minutes=35)).strftime("%Y-%m-%d %H:%M:%S")
         yesterday = (datetime.today() - timedelta(1)).strftime("%Y-%m-%d")
+        twodays = (datetime.today() - timedelta(2)).strftime("%Y-%m-%d")
         fiveDay = (datetime.today() - timedelta(5)).strftime("%Y-%m-%d")
         weekDay = (datetime.today() - timedelta(7)).strftime("%Y-%m-%d")
         # monthDay = (datetime.today() - timedelta(30)).strftime("%Y-%m-%d")
@@ -257,7 +258,6 @@ def plug_in(type, threeData=None):
                         LIMIT """ + threeData[0] + """
                         OFFSET (""" + threeData[1] + """-1) * """ + threeData[0] + """
                     """
-
         elif type == 'highCpuProc_listDataMoreCount':
             query = """
                         select
@@ -275,7 +275,46 @@ def plug_in(type, threeData=None):
                             collection_date >= '""" + DBSelectTime + """'  
 
                     """
-
+        # -----------------하단 OM 일일 리포트 - 자산 통계 정보-----------------
+        elif type == 'report_listData_unMgmt_idle':
+            query = """
+                        SELECT 
+                            item, TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count
+                        FROM 
+                            report_statistics
+                        WHERE 
+                            (item = 'unmanagement' OR item = 'idle')
+                            AND 
+                                (TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + yesterday + """' 
+                                OR 
+                                    TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + twodays + """') 
+                        ORDER BY
+                            statistics_collection_date ASC;            
+                    """
+        # -----------------하단 OM 일일 리포트 - 전일 발송된 알람 정보-----------
+        elif type == 'report_listData_alarm':
+            query = """
+                        SELECT
+                            item, TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count
+                        FROM
+                            report_statistics
+                        WHERE
+                            classification = 'daily_om_alarm'
+                            AND
+                                TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + yesterday + """'
+                    """
+        # ---------------------------------하단 OM 일일 리포트 - IP대역별 관리 자산 현황
+        elif type == 'report_listData_subnet_isVm':
+            query = """
+                        SELECT 
+                            classification, TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count, item
+                        FROM 
+                            report_statistics
+                        WHERE 
+                            (classification = 'daily_om_vm' OR classification = 'daily_om_pm')
+                        AND 
+                            (TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + yesterday + """' OR TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + twodays + """') 
+                    """
         Cur.execute(query)
         RS = Cur.fetchall()
         for R in RS:
@@ -292,12 +331,21 @@ def plug_in(type, threeData=None):
                         ('count', int(R[1]))
                     )
                 ))
-            elif type == 'cert_listData':
+            elif type in ['cert_listData', 'report_listData_unMgmt_idle', 'report_listData_alarm']:
                 SDL.append(dict(
                     (
                         ('name', R[0]),
                         ('date', R[1]),
                         ('count', R[2])
+                    )
+                ))
+            elif type in ['report_listData_subnet_isVm']:
+                SDL.append(dict(
+                    (
+                        ('name', R[0]),
+                        ('date', R[1]),
+                        ('count', R[2]),
+                        ('ip', R[3])
                     )
                 ))
             elif type == 'cert_listDataMore':
