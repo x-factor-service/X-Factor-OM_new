@@ -1,5 +1,5 @@
 from django.urls import path, include
-from common.controller import controllerCommon, controllerDashboard, controllerMore, controllerGuide
+from common.controller import controllerCommon, controllerDashboard, controllerMore, controllerGuide, controllerSetting, controllerReport
 from deploy import controllerDeploy
 from sbom import controllerSBOM
 from django.contrib import admin
