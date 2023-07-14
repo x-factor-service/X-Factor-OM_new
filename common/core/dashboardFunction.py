@@ -1,5 +1,6 @@
 import logging
 from common.input.db import plug_in as inputDb
+from common.core.transform import plug_in as tf
 import urllib3
 import json
 
@@ -28,7 +29,7 @@ def Dashboard():
         idle_lineData = []
         report_listData_unMgmt_idle = []
         report_listData_alarm = []
-        report_listData_subnet_isVm = []
+        report_listData_subnet_isVm_tf = []
 
 
             #------------------------------상단 디스크 사용률 도넛 차트------------------------
@@ -125,9 +126,10 @@ def Dashboard():
         # ---------------------------------하단 OM 일일 리포트 - IP대역별 관리 자산 현황 -------------
         try:
             report_listData_subnet_isVm = inputDb('report_listData_subnet_isVm')
+            report_listData_subnet_isVm_tf = tf(report_listData_subnet_isVm)
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - report_listData_subnet_isVm')
+            logger.warning('dashboardFunction.py - puError Occurred')
+            logger.warning('Error - report_listData_subnet_isVm_tf')
 
         RD = {
             'disk_donutData': disk_donutData,
@@ -144,7 +146,7 @@ def Dashboard():
             "highCpuProc_listData": highCpuProc_listData,
             "report_listData_unMgmt_idle": report_listData_unMgmt_idle,
             "report_listData_alarm": report_listData_alarm,
-            "report_listData_subnet_isVm": report_listData_subnet_isVm
+            "report_listData_subnet_isVm": report_listData_subnet_isVm_tf
             }
     else:
         print()

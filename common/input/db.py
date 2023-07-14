@@ -314,6 +314,8 @@ def plug_in(type, threeData=None):
                             (classification = 'daily_om_vm' OR classification = 'daily_om_pm')
                         AND 
                             (TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + yesterday + """' OR TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + twodays + """') 
+                        ORDER BY
+                            statistics_collection_date ASC, classification DESC; 
                     """
         Cur.execute(query)
         RS = Cur.fetchall()

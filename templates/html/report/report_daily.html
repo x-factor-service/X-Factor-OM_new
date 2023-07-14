@@ -134,7 +134,7 @@
 
                 <div class="sub-content asset-device-state1">
                     <div class="asset-device-state-title">
-                        <p>IP대역별 관리 자산 현황</p>
+                        <p>IP 대역별 관리 자산 현황</p>
                     </div>
                     <table style="width: 100%;">
                         <colgroup>
@@ -156,72 +156,36 @@
                         <tr>
                             <td class="asset-device-name text-center">{{ forloop.counter }}</td>
                             <td class="asset-device-count text-center">{{ data.ip }}</td>
-                            <td class="asset-device-count text-center">{{ data.name }}</td>
-                            <td class="asset-device-count text-center">{{ data.count }}</td>
+                            <td class="asset-device-count text-center">
+                                <div style="width:50%; float:left;">{{ data.daily_om_vm }}대</div>
+                                <div style="width:50%; float:left;">
+                                    {% if data.vm_change < 0 %}
+                                        ▼{{ data.vm_change|cut:"-" }}
+                                    {% elif data.vm_change > 0 %}
+                                        ▲{{ data.vm_change }}
+                                    {% elif data.vm_change == 0 %}
+                                        -
+                                    {% else %}
+                                        {{ data.vm_change }}
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td class="asset-device-count text-center">
+                                <div style="width:50%; float:left;">{{ data.daily_om_pm }}대</div>
+                                <div style="width:50%; float:left;">
+                                    {% if data.pm_change < 0 %}
+                                        ▼{{ data.pm_change|cut:"-" }}
+                                    {% elif data.pm_change > 0 %}
+                                        ▲{{ data.pm_change }}
+                                    {% elif data.pm_change == 0 %}
+                                        -
+                                    {% else %}
+                                        {{ data.pm_change }}
+                                    {% endif %}
+                                </div>
+                            </td>
                         </tr>
                         {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="sub-content asset-device-state1">
-                    <div class="asset-device-state-title">
-                        <p>배포 성공한 Package</p>
-                    </div>
-                    <table style="width: 100%;">
-                        <thead>
-                        <tr>
-                            <th class="asset-device-item text-center">배포 패키지명</th>
-                            <th class="asset-device-item text-center">배포 대상</th>
-                            <th class="asset-device-item text-center">배포율</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="asset-device-name text-center">Acrobat Reader DC (en-us)</td>
-                            <td class="asset-device-name text-center">All computers</td>
-                            <td class="asset-device-count text-center">28%</td>
-                        </tr>
-                        <tr>
-                            <td class="asset-device-name text-center">Acrobat Reader DC (en-us)</td>
-                            <td class="asset-device-name text-center">All computers</td>
-                            <td class="asset-device-count text-center">28%</td>
-                        </tr>
-                        <tr>
-                            <td class="asset-device-name text-center">Acrobat Reader DC (en-us)</td>
-                            <td class="asset-device-name text-center">All computers</td>
-                            <td class="asset-device-count text-center">28%</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="sub-content asset-device-state1">
-                    <div class="asset-device-state-title">
-                        <p>배포 실패한 Package</p>
-                    </div>
-                    <table style="width: 100%;">
-                        <thead>
-                        <tr>
-                            <th class="asset-device-item text-center">서브넷 분류</th>
-                            <th class="asset-device-item text-center">VM 자산 수</th>
-                            <th class="asset-device-item text-center">PM 자산 수</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="asset-device-name text-center">172.18.0.0/21</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                        </tr>
-                        <tr>
-                            <td class="asset-device-name text-center">172.20.0.0/21</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                        </tr>
-                        <tr>
-                            <td class="asset-device-name text-center">172.20.92.0/21</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
