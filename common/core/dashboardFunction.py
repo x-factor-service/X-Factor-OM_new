@@ -1,6 +1,6 @@
 import logging
 from common.input.db import plug_in as inputDb
-from common.core.transform import plug_in as tf
+from common.core.transform import plug_in as reportTf, plug_in_date as reportDate
 import urllib3
 import json
 
@@ -123,10 +123,11 @@ def Dashboard():
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - report_listData_alarm')
-        # ---------------------------------하단 OM 일일 리포트 - IP대역별 관리 자산 현황 -------------
+        # ---------------------------------하단 OM 일일 리포트 - IP대역별 관리 자산 현황 / 작성일 출력
         try:
             report_listData_subnet_isVm = inputDb('report_listData_subnet_isVm')
-            report_listData_subnet_isVm_tf = tf(report_listData_subnet_isVm)
+            report_listData_subnet_isVm_tf = reportTf(report_listData_subnet_isVm)
+            report_date = reportDate()
         except:
             logger.warning('dashboardFunction.py - puError Occurred')
             logger.warning('Error - report_listData_subnet_isVm_tf')
@@ -146,7 +147,8 @@ def Dashboard():
             "highCpuProc_listData": highCpuProc_listData,
             "report_listData_unMgmt_idle": report_listData_unMgmt_idle,
             "report_listData_alarm": report_listData_alarm,
-            "report_listData_subnet_isVm": report_listData_subnet_isVm_tf
+            "report_listData_subnet_isVm": report_listData_subnet_isVm_tf,
+            "report_date": report_date
             }
     else:
         print()

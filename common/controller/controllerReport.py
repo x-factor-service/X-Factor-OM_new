@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from common.core.dashboardFunction import Dashboard
 
-def reportdaily(request):
+def report_detail(request):
     DCDL = Dashboard()
     res_data = {}
     if not 'sessionid' in request.session:

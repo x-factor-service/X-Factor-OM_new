@@ -160,6 +160,7 @@
   <script src="{% static 'assets/plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
   <script src="{% static 'assets/js/demo/table-plugins.demo.js' %}"></script>
   <script src="{% static 'assets/js/demo/sbom_table.js' %}"></script>
+  <script src="{% static 'assets/js/demo/report_daily.js' %}"></script>
     <!-- ================== END TABLE-js ================== -->
 
 <script src="{% static 'js/common/nav.js' %}"></script>
@@ -226,7 +227,11 @@
           var id = $(this).data('id');
           window.open("../highCpuProc_more?id=" + id, "highCpuProc_more", "width=1200, height=650");
         });
-
+        $('.report_date').on('click',function(e){
+          e.preventDefault();
+          var id = $(this).data('id');
+          window.open("../report_detail?id=" + id, "report_detail", "width=1200, height=650");
+        });
     });
 
 

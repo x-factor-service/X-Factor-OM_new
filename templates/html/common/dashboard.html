@@ -493,19 +493,25 @@
             <div>
                 <div class="card" style="height:440px;">
                     <div class="card-body">
-                    <!-- title -->
-                    <div class="d-flex fw-bold fs-12px mb-2">
-                        <div class="flex-grow-1">기간별 자산 리포트</div>
-                    </div>
-                    <!-- BEGIN #datatable -->
-                    <div class="btn-group">
+                        <!-- title -->
+                        <div class="d-flex fw-bold fs-12px mb-2">
+                            <div class="flex-grow-1">기간별 자산 리포트</div>
+                        </div>
+                        <!-- BEGIN #datatable -->
+                        <div class="btn-group">
                             <div class="btn-group mb-3">
-                                <button type="button" id="btn-daily" class="mcdBtn btn btn-outline-warning btn-sm active">일간</button>
-                                <button type="button" id="btn-weekly" class="mcdBtn btn btn btn-outline-warning btn-sm">주간</button>
-                                <button type="button" id="btn-monthly" class="mcdBtn btn btn btn-outline-warning btn-sm">월간</button>
+                                <button type="button" id="btn-daily"
+                                        class="mcdBtn btn btn-outline-warning btn-sm active">일간
+                                </button>
+                                <button type="button" id="btn-weekly" class="mcdBtn btn btn btn-outline-warning btn-sm">
+                                    주간
+                                </button>
+                                <button type="button" id="btn-monthly"
+                                        class="mcdBtn btn btn btn-outline-warning btn-sm">월간
+                                </button>
                             </div>
                         </div>
-                    <!-- END #datatable -->
+                        <!-- END #datatable -->
                         <table id="myTable" class="table table-report text-nowrap" width="100%">
                             <thead>
                             <tr>
@@ -516,99 +522,37 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {% for data in dataList.report_date %}
                             <tr>
-                                <td>1</td>
+                                <td>{{ forloop.counter }}</td>
                                 <td>
-                                    <a href="../reportPagedaily">
+                                    <a href="#" class="report_date" data-id="{{data}}">
                                         일간 자산 리포트
                                     </a>
                                 </td>
-                                <td>2023-04-21</td>
+                                <td>{{data}}</td>
                                 <td>
-                                    <a href="http://localhost:8000/reportPagedaily/"download="230421 일간 리포트">
+                                    <a href="http://localhost:8000/reportPagedaily/" download="230421 일간 리포트">
                                         <button type="button" class="btn btn-outline-warning" value="print">
                                             다운로드
                                         </button>
                                     </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>
-                                    <a href="../reportPagedaily1">
-                                        일간 자산 리포트
-                                    </a>
-                                </td>
-                                <td>2023-04-20</td>
-                                <td>
-                                    <a href="http://localhost:8000/reportPagedaily1/"download="230420 일간 리포트">
-                                        <button type="button" class="btn btn-outline-warning" value="print">
-                                            다운로드
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>
-                                    <a href="../reportPagedaily2">
-                                        일간 자산 리포트
-                                    </a>
-                                </td>
-                                <td>2023-04-19</td>
-                                <td>
-                                    <a href="http://localhost:8000/reportPagedaily2/"download="230419 일간 리포트">
-                                        <button type="button" class="btn btn-outline-warning" value="print">
-                                            다운로드
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>
-                                    <a href="../reportPagedaily3">
-                                        일간 자산 리포트
-                                    </a>
-                                </td>
-                                <td>2023-04-18</td>
-                                <td>
-                                    <a href="http://localhost:8000/reportPagedaily3/"download="230418 일간 리포트">
-                                        <button type="button" class="btn btn-outline-warning" value="print">
-                                            다운로드
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>
-                                    <a href="../reportPagedaily4">
-                                        일간 자산 리포트
-                                    </a>
-                                </td>
-                                <td>2023-04-17</td>
-                                <td>
-                                    <a href="http://localhost:8000/reportPagedaily4/"download="230417 일간 리포트">
-                                        <button type="button" class="btn btn-outline-warning" value="print">
-                                            다운로드
-                                        </button>
-                                    </a>
-                                </td>
-                            </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
-                <div class="card-arrow">
-                    <div class="card-arrow-top-left"></div>
-                    <div class="card-arrow-top-right"></div>
-                    <div class="card-arrow-bottom-left"></div>
-                    <div class="card-arrow-bottom-right"></div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
                 </div>
+                <!-- END card-body -->
             </div>
-            <!-- END card-body -->
-            </div>
-                <!-- END card -->
+            <!-- END card -->
         </div>
 
         <!-- END col-6 -->
