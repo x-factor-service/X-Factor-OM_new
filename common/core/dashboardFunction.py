@@ -13,7 +13,7 @@ Customer = SETTING['PROJECT']['CUSTOMER']
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 #####################################  메인 대시보드 페이지  ################################################
-def Dashboard():
+def Dashboard(type=None):
     logger = logging.getLogger(__name__)
     if Customer == 'NC' or Customer == 'Xfactor':
         disk_donutData = []
@@ -113,21 +113,21 @@ def Dashboard():
             logger.warning('Error - highCpuProc_listData')
         # ---------------------------------하단 OM 일일 리포트 - 자산 통계 정보 ---------------------
         try:
-            report_listData_unMgmt_idle = inputDb('report_listData_unMgmt_idle')
+            report_listData_unMgmt_idle = inputDb('report_listData_unMgmt_idle', type)
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - report_listData_unMgmt_idle')
         # ---------------------------------하단 OM 일일 리포트 - 전일 발송된 알람 정보 ---------------
         try:
-            report_listData_alarm = inputDb('report_listData_alarm')
+            report_listData_alarm = inputDb('report_listData_alarm', type)
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - report_listData_alarm')
         # ---------------------------------하단 OM 일일 리포트 - IP대역별 관리 자산 현황 / 작성일 출력
         try:
-            report_listData_subnet_isVm = inputDb('report_listData_subnet_isVm')
-            report_listData_subnet_isVm_tf = reportTf(report_listData_subnet_isVm)
             report_date = reportDate()
+            report_listData_subnet_isVm = inputDb('report_listData_subnet_isVm', type)
+            report_listData_subnet_isVm_tf = reportTf(report_listData_subnet_isVm)
         except:
             logger.warning('dashboardFunction.py - puError Occurred')
             logger.warning('Error - report_listData_subnet_isVm_tf')

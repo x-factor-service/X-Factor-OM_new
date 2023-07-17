@@ -40,7 +40,7 @@ urlpatterns = [
     path('highCpuProc_more/paging/', controllerMore.highCpuProc_more_paging, name='highCpuProc_more_paging'),
     path('setting/', controllerSetting.setting, name='setting'),
 ########################## 리포트 ###########################################
-    path('report_detail/', controllerReport.report_detail, name='report_detail')
+    path('report_date/', controllerReport.report_date, name='report_date')
 ]
 # path('admin/', admin.site.urls),
 # path('om/', include(om.urls), name="om"),

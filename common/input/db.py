@@ -277,6 +277,8 @@ def plug_in(type, threeData=None):
                     """
         # -----------------하단 OM 일일 리포트 - 자산 통계 정보-----------------
         elif type == 'report_listData_unMgmt_idle':
+            report_yesterday = (threeData - timedelta(days=1)).strftime('%Y-%m-%d')
+            report_twodays = (threeData - timedelta(days=2)).strftime('%Y-%m-%d')
             query = """
                         SELECT 
                             item, TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count
@@ -285,14 +287,16 @@ def plug_in(type, threeData=None):
                         WHERE 
                             (item = 'unmanagement' OR item = 'idle')
                             AND 
-                                (TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + yesterday + """' 
+                                (TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + report_yesterday + """' 
                                 OR 
-                                    TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + twodays + """') 
+                                    TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + report_twodays + """') 
                         ORDER BY
                             statistics_collection_date ASC;            
                     """
         # -----------------하단 OM 일일 리포트 - 전일 발송된 알람 정보-----------
         elif type == 'report_listData_alarm':
+            report_yesterday = (threeData - timedelta(days=1)).strftime('%Y-%m-%d')
+            report_twodays = (threeData - timedelta(days=2)).strftime('%Y-%m-%d')
             query = """
                         SELECT
                             item, TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count
@@ -301,10 +305,12 @@ def plug_in(type, threeData=None):
                         WHERE
                             classification = 'daily_om_alarm'
                             AND
-                                TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + yesterday + """'
+                                TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + report_yesterday + """'
                     """
         # ---------------------------------하단 OM 일일 리포트 - IP대역별 관리 자산 현황
         elif type == 'report_listData_subnet_isVm':
+            report_yesterday = (threeData - timedelta(days=1)).strftime('%Y-%m-%d')
+            report_twodays = (threeData - timedelta(days=2)).strftime('%Y-%m-%d')
             query = """
                         SELECT 
                             classification, TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count, item
@@ -313,7 +319,7 @@ def plug_in(type, threeData=None):
                         WHERE 
                             (classification = 'daily_om_vm' OR classification = 'daily_om_pm')
                         AND 
-                            (TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + yesterday + """' OR TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + twodays + """') 
+                            (TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + report_yesterday + """' OR TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + report_twodays + """') 
                         ORDER BY
                             statistics_collection_date ASC, classification DESC; 
                     """

@@ -160,7 +160,6 @@
   <script src="{% static 'assets/plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
   <script src="{% static 'assets/js/demo/table-plugins.demo.js' %}"></script>
   <script src="{% static 'assets/js/demo/sbom_table.js' %}"></script>
-  <script src="{% static 'assets/js/demo/report_daily.js' %}"></script>
     <!-- ================== END TABLE-js ================== -->
 
 <script src="{% static 'js/common/nav.js' %}"></script>
@@ -170,7 +169,6 @@
 <script type="text/javascript" src="{% static 'js/d3/d3v4.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/d3/queue.v1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/common/topojson.v1.min.js' %}"></script>
-
 
   <script>
 
@@ -217,22 +215,42 @@
 
 
     $(document).ready(function() {
-        $('.certificate-link').on('click',function(e){
-          e.preventDefault();
-          var id = $(this).data('id');
-          window.open("../certificate_more?id=" + id, "certificate_more", "width=1200, height=650");
+      $('.certificate-link').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        window.open("../certificate_more?id=" + id, "certificate_more", "width=1200, height=650");
+      });
+
+      $('.highCpuProc-link').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        window.open("../highCpuProc_more?id=" + id, "highCpuProc_more", "width=1200, height=650");
+      });
+
+      $(".report_date").on('click', function(e) {
+        e.preventDefault();
+        var date = $(this).closest('tr').find('td:nth-child(3)').text();
+        var width = 1200;
+        var height = 900;
+        var left = (screen.width - width) / 2;
+        var top = (screen.height - height) / 2;
+        var options = `width=${width}, height=${height}, left=${left}, top=${top}, scrollbars=yes`;
+        window.open("../report_date/?date=" + date, "_blank", options);
+        $.ajax({
+          url: '/report_date/',
+          data: {
+            'date': date
+          },
+          dataType: 'json',
+          success: function(data) {
+            if (data.success) {
+              console.log('success');
+            }
+          }
         });
-        $('.highCpuProc-link').on('click',function(e){
-          e.preventDefault();
-          var id = $(this).data('id');
-          window.open("../highCpuProc_more?id=" + id, "highCpuProc_more", "width=1200, height=650");
-        });
-        $('.report_date').on('click',function(e){
-          e.preventDefault();
-          var id = $(this).data('id');
-          window.open("../report_detail?id=" + id, "report_detail", "width=1200, height=650");
-        });
+      });
     });
+
 
 
 $(document).ready(function() {

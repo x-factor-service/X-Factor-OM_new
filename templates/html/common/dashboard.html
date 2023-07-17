@@ -526,15 +526,13 @@
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td>
-                                    <a href="#" class="report_date" data-id="{{data}}">
                                         일간 자산 리포트
-                                    </a>
                                 </td>
                                 <td>{{data}}</td>
                                 <td>
-                                    <a href="http://localhost:8000/reportPagedaily/" download="230421 일간 리포트">
-                                        <button type="button" class="btn btn-outline-warning" value="print">
-                                            다운로드
+                                    <a href="#" class="report_date" data-id="{{data}}">
+                                        <button type="button" class="btn btn-outline-warning report_download" value="print">
+                                            미리보기
                                         </button>
                                     </a>
                                 </td>

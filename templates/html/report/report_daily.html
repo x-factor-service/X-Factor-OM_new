@@ -18,6 +18,7 @@
 
 <body class="theme-orange">
 <div id="app" class="app pt-0">
+    <button id="downloadPdfBtn">PDF로 저장</button>
     <div class="daily-report-wrap">
         <!-- BEGIN daily-report 1 page -->
         <div class="daily-report">
@@ -43,11 +44,11 @@
                         <ul>
                             <li>
                                 <p>리포트 생성일</p>
-                                <p>2023-07-04</p>
+                                <p>{{report_create_date}}</p>
                             </li>
                             <li>
                                 <p>데이터 기간</p>
-                                <p>2023-07-03 00:00:00 ~ 2023-07-04 23:59:59</p>
+                                <p>{{report_start_date}} 00:00:00 ~ {{report_end_date}} 23:59:59</p>
                             </li>
                         </ul>
                     </div>
@@ -227,9 +228,9 @@
                     <table style="width: 100%;">
                         <thead>
                         <tr>
-                            <th class="asset-device-item text-center">서브넷 분류</th>
-                            <th class="asset-device-item text-center">VM 자산 수</th>
-                            <th class="asset-device-item text-center">PM 자산 수</th>
+                            <th class="asset-device-item text-center">배포 패키지명</th>
+                            <th class="asset-device-item text-center">배포 대상</th>
+                            <th class="asset-device-item text-center">에러 메시지</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -339,8 +340,18 @@
 <!-- apexchart -->
 <script src='/static/assets/plugins/apexcharts/dist/apexcharts.min.js'></script>
 <script src='/static/js/reportPageJS/report_dailyChart.js'></script>
+<script src='/static/js/library/html2pdf.bundle.js'></script>
 <script>
 var report_listData_unMgmt_idle = {{ report_listData_unMgmt_idle | safe }};
+
+document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+    html2pdf().set({
+        filename: 'report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    }).from(document.getElementById('app')).save();
+});
 
 </script>
 
