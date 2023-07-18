@@ -1,0 +1,216 @@
+{% extends 'common/base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- BEGIN #header -->
+
+<!-- END #header -->
+
+<!-- BEGIN #sidebar -->
+
+<!-- END #sidebar -->
+
+<!-- BEGIN #content -->
+<div id="content" class="app-content">
+    <div class="row">
+        <!-- BEGIN col-9 -->
+        <div class="col-5" id="colVal1">
+            <!-- BEGIN card -->
+            <div class="card mb-5">
+                <!-- BEGIN card-body -->
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between;">
+                    <div style="text-align: left; font-size: 30px; font-weight: bold">Packages</div>
+                    <form class="d-flex" style="justify-content: right">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="height: 40px">
+                        <button class="btn btn-outline-success" type="submit" style="height: 40px">Search</button>
+                    </form>
+                    </div>
+                    <!-- BEGIN title -->
+                    <!-- <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo osVersion-moreInfo"><i class="fas fa-ellipsis-h"></i></button> -->
+                    <!-- END title -->
+                    <!-- BEGIN stat-lg -->
+                    <!-- END stat-lg -->
+                    <div class=" deploy-scroll">
+                    <table id="" class="table-sm-se w-100 text-white text-opacity-100">
+                    <thead>
+                    <tr>
+{#                        <th style="width: 2%"> </th>#}
+                        <th style="width: 20%">Display Name</th>
+                        <th style="width: 15%">Content Set</th>
+                        <th style="width: 30%">Command</th>
+                    </tr>
+                    </thead>
+                    <tbody class="fs-12px mb-2">
+                        {% for data in chartData.packageList %}
+                        <tr class="clickP">
+{#                            <td id="checkRow"><input class="form-check-input" type="checkbox" id="chkRow1" value={{ data.Display_name }}></td>#}
+                            <td>
+                                {{ data.Display_name }}
+                            </td>
+                            <td>
+                                {{ data.Content_set }}
+                            </td>
+                            <td>
+                                {{ data.Command }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                    </div>
+                    <!-- BEGIN card-arrow -->
+                    <!-- END card-arrow -->
+                </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                <!-- END card-body -->
+            </div>
+            <!-- END card -->
+        </div>
+        <div id="deploy_action" class="col-2 card" style="max-height: 577px;">
+            <label style="text-align: center; font-size: 25px; margin-top: 10px;">Deploy action</label>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+            <br>
+            <form method="post" action="{% url 'deploy_action_val' %}">
+                {% csrf_token %}
+            <div class="card">
+                <label style="color: white">package</label>
+                <div class="card-body">
+                <div class="mini-deploy-scroll">
+                    <div id="outputP"></div>
+                </div>
+                </div>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+            </div>
+            <br>
+            <div class="card">
+                <label style="color: white">computer group</label>
+                <div class="card-body">
+                <div class="mini-deploy-scroll">
+                    <div id="outputC"></div>
+                </div>
+                </div>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+            </div>
+                <input type="hidden" id="outputPValue" name="outputPValue">
+                <input type="hidden" id="outputCValue" name="outputCValue">
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <button type="submit" class="btn btn-outline-success fs-17px" id="action_btn" style="width: 150px; height: 40px;" value="action">action</button>
+            </div>
+            </form>
+        </div>
+        <div class="col-5" id="colVal2">
+            <!-- BEGIN card -->
+            <div class="card mb-5">
+                <!-- BEGIN card-body -->
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between;">
+                    <div style="text-align: left; font-size: 30px; font-weight: bold">Computer Groups</div>
+                    <form class="d-flex" style="justify-content: right">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="height: 40px">
+                        <button class="btn btn-outline-success" id="action_btn" type="submit" style="height: 40px">Search</button>
+                    </form>
+                    </div>
+                    <!-- BEGIN title -->
+                    <!-- <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo osVersion-moreInfo"><i class="fas fa-ellipsis-h"></i></button> -->
+                    <!-- END title -->
+                    <!-- BEGIN stat-lg -->
+                    <!-- END stat-lg -->
+                    <div class="deploy-scroll">
+                    <table id="" class="table-sm-se w-100 text-white text-opacity-100" >
+                    <thead>
+                    <tr>
+{#                        <th style="width: 2%"> </th>#}
+                        <th style="width: 10%">Name</th>
+                        <th style="width: 15%">Content Set</th>
+                        <th style="width: 30%">Expression</th>
+                    </tr>
+                    </thead>
+                    <tbody class="fs-12px mb-2">
+                        {% for data in chartData.groupsList %}
+                        <tr class="clickC">
+{#                            <td id="checkRow"><input class="form-check-input" type="checkbox" id="chkRow2" value="{{ data.Name }}"></td>#}
+                            <td>
+                                {{ data.Name }}
+                            </td>
+                            <td>
+                                {{ data.Content_set }}
+                            </td>
+                            <td>
+                                {{ data.Expression }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                    </div>
+                    <!-- BEGIN card-arrow -->
+                    <!-- END card-arrow -->
+                </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                <!-- END card-body -->
+            </div>
+            <!-- END card -->
+        </div>
+        <!-- BEGIN col-3 -->
+        <div class="col-12" style="margin-bottom: 200px">
+            <div class="card">
+            <div class="card-body">
+
+            <div class="d-flex fw-bold fs-12px">
+                <div class="flex-grow-1">Action Log</div>
+            </div>
+
+                <table id="" class="table-sm-se w-100 text-white text-opacity-100" >
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th> </th>
+                        <th> </th>
+                        <th> </th>
+                        <th> </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                </table>
+
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+{% endblock %}

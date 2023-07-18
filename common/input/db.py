@@ -370,4 +370,5 @@ def plug_in(type, threeData=None):
                 SDL.append(R)
         return SDL
     except Exception as e:
-        print(str(type) +'Statistics Table connection(Select) Failure _'+ str(e))
+        if str(type) not in ['report_listData_unMgmt_idle', 'report_listData_alarm', 'report_listData_subnet_isVm']:
+            print(str(type) + ' Statistics Table connection(Select) Failure _' + str(e))

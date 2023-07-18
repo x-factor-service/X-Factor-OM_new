@@ -1,5 +1,5 @@
 from django.urls import path, include
-from common.controller import controllerCommon, controllerDashboard, controllerMore, controllerGuide, controllerSetting, controllerReport
+from common.controller import controllerCommon, controllerDashboard, controllerMore, controllerGuide, controllerSetting, controllerReport, controllerReg
 from deploy import controllerDeploy
 from sbom import controllerSBOM
 from django.contrib import admin
@@ -40,7 +40,8 @@ urlpatterns = [
     path('highCpuProc_more/paging/', controllerMore.highCpuProc_more_paging, name='highCpuProc_more_paging'),
     path('setting/', controllerSetting.setting, name='setting'),
 ########################## 리포트 ###########################################
-    path('report_date/', controllerReport.report_date, name='report_date')
+    path('report_date/', controllerReport.report_date, name='report_date'),
+    path('reg_setting/', controllerReg.reg_setting, name='reg_setting')
 ]
 # path('admin/', admin.site.urls),
 # path('om/', include(om.urls), name="om"),

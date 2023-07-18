@@ -129,8 +129,8 @@ def Dashboard(type=None):
             report_listData_subnet_isVm = inputDb('report_listData_subnet_isVm', type)
             report_listData_subnet_isVm_tf = reportTf(report_listData_subnet_isVm)
         except:
-            logger.warning('dashboardFunction.py - puError Occurred')
-            logger.warning('Error - report_listData_subnet_isVm_tf')
+            logger.debug('dashboardFunction.py - puError Occurred')
+            logger.debug('Error - report_listData_subnet_isVm_tf')
 
         RD = {
             'disk_donutData': disk_donutData,
