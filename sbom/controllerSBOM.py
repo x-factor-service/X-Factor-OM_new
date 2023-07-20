@@ -92,6 +92,34 @@ def sbom_detail(request):
         detail_list.append({'cn': sbomD[i][0], 'ip': sbomD[i][1], 'pn': sbomD[i][2],
                             'pv': sbomD[i][3], 'type': sbomD[i][4], 'parent': sbomD[i][5],
                             'count': sbomD[i][6]})
+    chartData = {'detail_list': detail_list}
+    returnData = {'menuList': menuListDB, 'Customer': Customer, 'chartData': chartData}
+    return render(request, 'common/sbom_detail.html', returnData)
+
+@csrf_exempt
+def sbom_cve_paging(request):
+    draw = int(request.POST.get('draw'))
+    start = int(request.POST.get('start'))
+    length = int(request.POST.get('length'))
+    search = request.POST.get('search[value]')
+    page = math.ceil(start / length) + 1
+    data = [str(length), str(page), str(search)]
+    Data = SDPI('sbom_cve', 'cpuMore', data)
+    Count = SDPI('sbom_cve_count', '', data)
+    RD = {'item': Data}
+    returnData = {'data': RD,
+                  'draw': draw,
+                  'recordsTotal': Count,
+                  'recordsFiltered': Count,
+                  }
+    return JsonResponse(returnData)
+
+
+
+
+
+
+
 
     # SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
     # SKURL = apiUrl + SesstionKeyPath

@@ -30,6 +30,7 @@ urlpatterns = [
     path('faq_ug/', controllerGuide.faq_ug, name='faq_ug'),
     path('sbom/', controllerSBOM.sbom, name='sbom'),
     path('sbom/paging/', controllerSBOM.sbom_paging, name='sbom_paging'),
+    path('sbom/paging_cve/', controllerSBOM.sbom_cve_paging, name='sbom_cve_paging'),
     path('sbom_detail/', controllerSBOM.sbom_detail, name='sbom_detail'),
     path('deploy/', controllerDeploy.deploy, name='deploy'),
     path('deploy_action/', controllerDeploy.deploy_action, name='deploy_action'),
