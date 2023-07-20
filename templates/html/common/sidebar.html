@@ -9,7 +9,7 @@
             <div class="menu-header"></div>
             {% for menu in menuList %}
             {% if menu.menuUse == '1' %}
-            {% if menu.menuName == "Dashboard" or menu.menuName == "IT OM" or menu.menuName == "Setting" or menu.menuName == "Registry" or menu.menuName == "Deploy" or menu.menuName == "SBOM" or menu.menuName == "Setting"%}
+            {% if menu.menuName == "Dashboard" or menu.menuName == "IT OM" or menu.menuName == "Setting" or menu.menuName == "Deploy" or menu.menuName == "SBOM" or menu.menuName == "Setting"%}
             {% if request.get_full_path|cut:'/' == menu.menuUrl %}
             <div class="menu-item active">
                 {% else %}
