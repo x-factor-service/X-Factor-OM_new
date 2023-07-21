@@ -158,31 +158,35 @@
                             <td class="asset-device-name text-center">{{ forloop.counter }}</td>
                             <td class="asset-device-count text-center">{{ data.ip }}</td>
                             <td class="asset-device-count text-center">
-                                <div style="width:50%; float:left;">{{ data.daily_om_vm }}대</div>
-                                <div style="width:50%; float:left;">
-                                    {% if data.vm_change < 0 %}
-                                        ▼{{ data.vm_change|cut:"-" }}
-                                    {% elif data.vm_change > 0 %}
-                                        ▲{{ data.vm_change }}
-                                    {% elif data.vm_change == 0 %}
-                                        -
-                                    {% else %}
-                                        {{ data.vm_change }}
-                                    {% endif %}
+                                <div class="d-flex justify-content-center" style="width: 100%;">
+                                    <div style="width:40%;">{{ data.daily_om_vm }}대</div>
+                                    <div style="width:40%;">
+                                        {% if data.vm_change < 0 %}
+                                            ▼{{ data.vm_change|cut:"-" }}
+                                        {% elif data.vm_change > 0 %}
+                                            ▲{{ data.vm_change }}
+                                        {% elif data.vm_change == 0 %}
+                                            -
+                                        {% else %}
+                                            {{ data.vm_change }}
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </td>
                             <td class="asset-device-count text-center">
-                                <div style="width:50%; float:left;">{{ data.daily_om_pm }}대</div>
-                                <div style="width:50%; float:left;">
-                                    {% if data.pm_change < 0 %}
-                                        ▼{{ data.pm_change|cut:"-" }}
-                                    {% elif data.pm_change > 0 %}
-                                        ▲{{ data.pm_change }}
-                                    {% elif data.pm_change == 0 %}
-                                        -
-                                    {% else %}
-                                        {{ data.pm_change }}
-                                    {% endif %}
+                                <div class="d-flex justify-content-center" style="width: 100%;">
+                                    <div style="width:40%;">{{ data.daily_om_pm }}대</div>
+                                    <div style="width:40%;">
+                                        {% if data.pm_change < 0 %}
+                                            ▼{{ data.pm_change|cut:"-" }}
+                                        {% elif data.pm_change > 0 %}
+                                            ▲{{ data.pm_change }}
+                                        {% elif data.pm_change == 0 %}
+                                            -
+                                        {% else %}
+                                            {{ data.pm_change }}
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </td>
                         </tr>

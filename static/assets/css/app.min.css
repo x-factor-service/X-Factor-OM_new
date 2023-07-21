@@ -30865,4 +30865,5 @@ input:checked+labl::before{
 .sbom-table-fix {
     table-layout: fixed;
     width: 100%;
+    cursor: default;
 }

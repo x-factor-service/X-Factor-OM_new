@@ -30,16 +30,16 @@ var sbom_dataTable = function () {
             {targets: 0, width: "5%", className: 'text-center'},
             {
                 targets: 1, width: "15%", className: '', render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #b6effb"; title="' + row.name + '" data-toggle="tooltip" onclick="openPopupWindow(\''+aa+row.cpe+'\', 1500, 600)">' + data + '<input type="hidden" name="cpe" value=row.cpe></a></span>'
+                    return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #b6effb"; title="' + row.name + '" data-toggle="tooltip" onclick="openPopupWindow(\''+aa+row.cpe+'\', 1500, 600)">' + data + '<input type="hidden" name="cpe" value=row.cpe></a></span>'
                 }
             },
             {
                 targets: 2, width: "10%", className: '', render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; title="' + row.version + '" data-toggle="tooltip">' + data + '</span>'
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.version + '" data-toggle="tooltip">' + data + '</span>'
                 }
             },
             {targets: 3, width: "50%", style: 'text-center text-truncate', render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; title="' + row.cpe + '" data-toggle="tooltip">' + data + '</span>'
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.cpe + '" data-toggle="tooltip">' + data + '</span>'
                 }},
             {targets: 4, width: "10%", className: 'text-center'},
             {targets: 5, width: "10%", className: 'text-center'},
@@ -69,22 +69,22 @@ var sbom_dataTable = function () {
         drawCallback: function () {
             var current_page = dashboardpopupTable.page;
             var total_pages = dashboardpopupTable.page.info().pages;
-            $('#nexts').remove();
-            $('#after').remove();
+            $('#sbom_nexts').remove();
+            $('#sbom_after').remove();
 
             if (total_pages > 10) {
-                $('<button type="button" class="btn" id="nexts">≫</button>')
+                $('<button type="button" class="btn" id="sbom_nexts">≫</button>')
                     .insertAfter('#sbom_dataTable_paginate .paginate_button:last');
-                $('<button type="button" class="btn" id="after">≪</button>')
+                $('<button type="button" class="btn" id="sbom_after">≪</button>')
                     .insertBefore('#sbom_dataTable_paginate .paginate_button:first');
             }
         }
     });
 
-    $(document).on('click', '#nexts, #after', function() {
+    $(document).on('click', '#sbom_nexts, #sbom_after', function() {
         var current_page = dashboardpopupTable.page();
         var total_pages = dashboardpopupTable.page.info().pages;
-        if ($(this).attr('id') == 'nexts') {
+        if ($(this).attr('id') == 'sbom_nexts') {
                 if (current_page + 10 < total_pages) {
                     dashboardpopupTable.page(current_page + 10).draw('page');
                 } else {
@@ -95,7 +95,7 @@ var sbom_dataTable = function () {
                 }
     });
     $(document).ready(function() {
-    var customStyle = '<style>#nexts, #after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
+    var customStyle = '<style>#sbom_nexts, #sbom_after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
     $('head').append(customStyle);
     });
 
@@ -296,22 +296,22 @@ var sbom_cveTable = function () {
         drawCallback: function () {
             var current_page = dashboardpopupTable.page;
             var total_pages = dashboardpopupTable.page.info().pages;
-            $('#nexts').remove();
-            $('#after').remove();
+            $('#cve_nexts').remove();
+            $('#cve_after').remove();
 
             if (total_pages > 10) {
-                $('<button type="button" class="btn" id="nexts">≫</button>')
+                $('<button type="button" class="btn" id="cve_nexts">≫</button>')
                     .insertAfter('#sbom_dataTable_paginate .paginate_button:last');
-                $('<button type="button" class="btn" id="after">≪</button>')
+                $('<button type="button" class="btn" id="cve_after">≪</button>')
                     .insertBefore('#sbom_dataTable_paginate .paginate_button:first');
             }
         }
     });
 
-    $(document).on('click', '#nexts, #after', function() {
+    $(document).on('click', '#cve_nexts, #after', function() {
         var current_page = dashboardpopupTable.page();
         var total_pages = dashboardpopupTable.page.info().pages;
-        if ($(this).attr('id') == 'nexts') {
+        if ($(this).attr('id') == 'cve_nexts') {
                 if (current_page + 10 < total_pages) {
                     dashboardpopupTable.page(current_page + 10).draw('page');
                 } else {
@@ -322,7 +322,7 @@ var sbom_cveTable = function () {
                 }
     });
     $(document).ready(function() {
-    var customStyle = '<style>#nexts, #after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
+    var customStyle = '<style>#cve_nexts, #cve_after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
     $('head').append(customStyle);
     });
 
@@ -337,4 +337,6 @@ $(document).ready(function () {
     // }
         sbom_cveTable();
 });
+
+
 
