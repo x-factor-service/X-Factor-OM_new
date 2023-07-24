@@ -236,6 +236,7 @@ $(document).ready(function () {
         var tdValue = $clickedRow.find('td:eq(0)').text();
   // 클릭한 행의 상태에 따라 동작을 처리합니다.
     if (isClicked) {
+
     // 클릭한 행이 이미 선택된 상태인 경우 선택 해제
     $clickedRow.removeClass('clicked');
     $clickedRow.css('background-color', '');
