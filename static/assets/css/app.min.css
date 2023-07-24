@@ -30885,3 +30885,10 @@ input:checked+labl::before{
     text-align : left;
     width : 150px;
 }
+
+/* sbom css 추가*/
+.sbom-table-fix {
+    table-layout: fixed;
+    width: 100%;
+    cursor: default;
+}

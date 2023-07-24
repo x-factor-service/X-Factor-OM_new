@@ -97,6 +97,7 @@ if (calcPer_report_listData_unMgmt_counts < 0) {
   calcPerRound_report_listData_unMgmt_counts = '▼' + calcPerRound_report_listData_unMgmt_counts;
 } else if (calcPer_report_listData_unMgmt_counts > 0) {
   calcPerRound_report_listData_unMgmt_counts = '▲' + calcPerRound_report_listData_unMgmt_counts;
+  calcSub_report_listData_unMgmt_counts = '+' + calcSub_report_listData_unMgmt_counts;
 }
     // html에 값 넣기
 var countElement = document.querySelector('#calcSub_report_listData_unMgmt_counts');
@@ -199,7 +200,7 @@ if (calcPer_report_listData_idle_counts < 0) {
   calcPerRound_report_listData_idle_counts = '▼' + calcPerRound_report_listData_idle_counts;
 } else if (calcPer_report_listData_idle_counts > 0) {
   calcPerRound_report_listData_idle_counts = '▲' + calcPerRound_report_listData_idle_counts;
-  calcSub_report_listData_idle_counts = '+' + calcSub_report_listData_idle_counts
+  calcSub_report_listData_idle_counts = '+' + calcSub_report_listData_idle_counts;
 }
     // html에 값 넣기
 var countElement = document.querySelector('#calcSub_report_listData_idle_counts');

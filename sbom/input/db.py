@@ -95,7 +95,34 @@ def plug_in(table, day, type):
                     type Ilike '%""" + type[2] + """%' or
                     count Ilike '%""" + type[2] + """%')
                 """
-
+        if table == 'sbom_cve':
+            query = """
+                select
+                    comp_ver, cve_id, score, vuln_last_reported
+                from
+                    sbom_cve
+                where
+                    comp_ver Ilike '%""" + type[2] + """%' or
+                    cve_id Ilike '%""" + type[2] + """%' or
+                    score Ilike '%""" + type[2] + """%' or
+                    vuln_last_reported Ilike '%""" + type[2] + """%'
+                order by
+                    number desc
+                LIMIT """ + type[0] + """
+                OFFSET (""" + type[1] + """ -1) * """ + type[0] + """           
+            """
+        if table == 'sbom_cve_count':
+            query = """
+                select
+                    count(*)
+                from
+                    sbom_cve
+                where
+                    comp_ver Ilike '%""" + type[2] + """%' or
+                    cve_id Ilike '%""" + type[2] + """%' or
+                    score Ilike '%""" + type[2] + """%' or
+                    vuln_last_reported Ilike '%""" + type[2] + """%'         
+            """
         Cur.execute(query)
         RS = Cur.fetchall()
         for i, R in enumerate(RS, start=1):

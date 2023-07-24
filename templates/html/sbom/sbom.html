@@ -11,11 +11,11 @@
 <!-- END #sidebar -->
 
 <!-- BEGIN #content -->
-<div id="content" class="app-content">
+<div id="content" class="app-content d-flex">
     <!-- BEGIN row -->
-    <div class="row">
+    <div class="row d-flex justify-content-between">
         <!-- BEGIN col-3 -->
-        <div class="col-xl-12 col-lg-1">
+        <div class="col-xl-12 col-lg-1" style="width:60%">
             <!-- BEGIN card -->
             <div class="card mb-5">
                 <!-- BEGIN card-body -->
@@ -27,14 +27,14 @@
                     <!-- BEGIN stat-lg -->
                     <!-- END stat-lg -->
                 <!-- END card-body -->
-                <table id="sbom_dataTable" class="table-sm-se w-100 text-white text-opacity-100" >
+                <table id="sbom_dataTable" class="table-sm-se w-100 text-white text-opacity-100 sbom-table-fix" >
                     <thead>
                     <tr>
                         <th>No</th>
                         <th>Packages Name</th>
-                        <th>Packages Version</th>
-                        <th>Packages CPE</th>
-                        <th>Packages Type</th>
+                        <th>Version</th>
+                        <th>CPE</th>
+                        <th>Type</th>
                         <th>Count</th>
                     </tr>
                     </thead>
@@ -52,12 +52,48 @@
             </div>
             <!-- END card -->
         </div>
+        <div class="col-xl-12 col-lg-1" style="width:40%"%>
+            <!-- BEGIN card -->
+            <div class="card mb-5">
+                <!-- BEGIN card-body -->
+                <div class="card-body h-1000px text-white text-opacity-100"><div style="text-align: center; font-size: 40px; font-weight: bold">공개 소프트웨어 보안 취약점</div>
+                    <!-- BEGIN title -->
+<!--                    <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo osVersion-moreInfo"><i class="fas fa-ellipsis-h"></i></button>-->
 
+                    <!-- END title -->
+                    <!-- BEGIN stat-lg -->
+                    <!-- END stat-lg -->
+                <!-- END card-body -->
+                <table id="sbom_cveTable" class="table-sm-se w-100 text-white text-opacity-100 sbom-table-fix" >
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>컴포넌트명 및 버전</th>
+                        <th>CVE ID</th>
+                        <th>심각도</th>
+                        <th>최종 보고일</th>
+                    </tr>
+                    </thead>
+                </table>
+                </div>
+                            <!-- END #datatable -->
+                <!-- BEGIN card-arrow -->
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+                <!-- END card-arrow -->
+            </div>
+            <!-- END card -->
+        </div>
     </div>
-    <!-- END row -->
 </div>
+
 <!-- END #content -->
 <script>
+
 	window.setTimeout('window.location.reload()',600000);
 </script>
 {% endblock %}

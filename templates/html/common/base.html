@@ -79,8 +79,8 @@
 </head>
 
 <body class="theme-orange">
-    {% if request.path == '/sbom_detail/' or request.path == '/osVersion_moreInfo/' or request.path == '/serverBandBy_moreInfo/' or request.path == '/runningService_moreInfo/' or request.path == '/memory_moreInfo/' or request.path == '/cpu_moreInfo/' or request.path == '/disk_moreInfo/' or request.path == '/physicalServer_moreInfo/' or request.path == '/gpuServer_moreInfo/' or request.path == '/alarmCase_moreInfo/' or request.path == '/connectDestinationIp_moreInfo/' or request.path == '/connectSourceIp_moreInfo/' or request.path == '/reportdaily/' or request.path == '/certificate_more/' or request.path == '/highCpuProc_more/'%}
-    {% elif request.path == '/documentation_ug/' or request.path == '/specification_ug/' or request.path == '/start_ug/' or request.path == '/dashboard_public_ug/' or request.path == '/dashboard_chart_ug/' or request.path == '/dashboard_etc_ug/' or request.path == '/weak_public_ug/' or request.path == '/weak_windows_ug/' or request.path == '/weak_linux_ug/' or request.path == '/report_public_ug/' or request.path == '/report_all_ug/' or request.path == '/technical_support_ug/' or request.path == '/faq_ug/' or request.path == '/setting_ug/' %}
+    {% if request.path == '/sbom_detail/' or request.path == '/osVersion_moreInfo/' or request.path == '/serverBandBy_moreInfo/' or request.path == '/runningService_moreInfo/' or request.path == '/memory_moreInfo/' or request.path == '/cpu_moreInfo/' or request.path == '/disk_moreInfo/' or request.path == '/physicalServer_moreInfo/' or request.path == '/gpuServer_moreInfo/' or request.path == '/alarmCase_moreInfo/' or request.path == '/connectDestinationIp_moreInfo/' or request.path == '/connectSourceIp_moreInfo/' or request.path == '/reportdaily/' or request.path == '/certificate_more/' or request.path == '/highCpuProc_more/' %}
+    {% elif request.path == '/documentation_ug/' or request.path == '/specification_ug/' or request.path == '/start_ug/' or request.path == '/dashboard_public_ug/' or request.path == '/dashboard_chart_ug/' or request.path == '/dashboard_etc_ug/' or request.path == '/weak_public_ug/' or request.path == '/weak_windows_ug/' or request.path == '/weak_linux_ug/' or request.path == '/report_public_ug/' or request.path == '/report_all_ug/' or request.path == '/technical_support_ug/' or request.path == '/faq_ug/' or request.path == '/setting_ug/'%}
     <div class="app">
       <!-- 네비게이션바 -->
       {% include "common/navbar.html" %}
@@ -171,9 +171,7 @@
 <script type="text/javascript" src="{% static 'js/d3/queue.v1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/common/topojson.v1.min.js' %}"></script>
 
-
   <script>
-
     var dataList = {{ dataList| safe }};
     //console.log(dataList)
 
@@ -217,18 +215,42 @@
 
 
     $(document).ready(function() {
-        $('.certificate-link').on('click',function(e){
-          e.preventDefault();
-          var id = $(this).data('id');
-          window.open("../certificate_more?id=" + id, "certificate_more", "width=1200, height=650");
-        });
-        $('.highCpuProc-link').on('click',function(e){
-          e.preventDefault();
-          var id = $(this).data('id');
-          window.open("../highCpuProc_more?id=" + id, "highCpuProc_more", "width=1200, height=650");
-        });
+      $('.certificate-link').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        window.open("../certificate_more?id=" + id, "certificate_more", "width=1200, height=650");
+      });
 
+      $('.highCpuProc-link').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        window.open("../highCpuProc_more?id=" + id, "highCpuProc_more", "width=1200, height=650");
+      });
+
+      $(".report_date").on('click', function(e) {
+        e.preventDefault();
+        var date = $(this).closest('tr').find('td:nth-child(3)').text();
+        var width = 1200;
+        var height = 900;
+        var left = (screen.width - width) / 2;
+        var top = (screen.height - height) / 2;
+        var options = `width=${width}, height=${height}, left=${left}, top=${top}, scrollbars=yes`;
+        window.open("../report_date/?date=" + date, "_blank", options);
+        $.ajax({
+          url: '/report_date/',
+          data: {
+            'date': date
+          },
+          dataType: 'json',
+          success: function(data) {
+            if (data.success) {
+              console.log('success');
+            }
+          }
+        });
+      });
     });
+
 
 
 $(document).ready(function() {
@@ -258,18 +280,20 @@ $(document).ready(function() {
     }
 
     // 버튼 이벤트 추가
-    $("#btn-daily").click(function() {
-        updateTableData('일간');
-    });
+<!--    $("#btn-daily").click(function() {-->
+<!--        updateTableData('일간');-->
+<!--    });-->
 
-    $("#btn-weekly").click(function() {
-        updateTableData('주간');
-    });
+<!--    $("#btn-weekly").click(function() {-->
+<!--        updateTableData('주간');-->
+<!--    });-->
 
-    $("#btn-monthly").click(function() {
-        updateTableData('월간');
-    });
+<!--    $("#btn-monthly").click(function() {-->
+<!--        updateTableData('월간');-->
+<!--    });-->
 });
+
+
 
 </script>
 </body>

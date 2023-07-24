@@ -37,6 +37,7 @@ def dashboard(request):
         sbom_listData = DCDL["sbom_listData"]
         idle_lineData = DCDL["idle_lineData"]
         highCpuProc_listData = DCDL["highCpuProc_listData"]
+        report_date = DCDL["report_date"]
 
         dataList = {'disk_donutData': disk_donutData,
                     'memory_donutData': memory_donutData,
@@ -49,7 +50,8 @@ def dashboard(request):
                     "cert_listData": cert_listData,
                     "sbom_listData": sbom_listData,
                     "idle_lineData": idle_lineData,
-                    "highCpuProc_listData": highCpuProc_listData
+                    "highCpuProc_listData": highCpuProc_listData,
+                    "report_date": report_date
                      }
         returnData = {'menuList': menuListDB, 'dataList': dataList, 'Login_Method': Login_Method, 'Customer' : Customer}
         #print(returnData)

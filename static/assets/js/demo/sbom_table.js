@@ -30,16 +30,16 @@ var sbom_dataTable = function () {
             {targets: 0, width: "5%", className: 'text-center'},
             {
                 targets: 1, width: "15%", className: '', render: function (data, type, row) {
-                    return '<span style="color: #b6effb"; title="' + row.name + '" data-toggle="tooltip" onclick="openPopupWindow(\''+aa+row.cpe+'\', 1500, 600)">' + data + '<input type="hidden" name="cpe" value=row.cpe></a></span>'
+                    return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #b6effb"; title="' + row.name + '" data-toggle="tooltip" onclick="openPopupWindow(\''+aa+row.cpe+'\', 1500, 600)">' + data + '<input type="hidden" name="cpe" value=row.cpe></a></span>'
                 }
             },
             {
                 targets: 2, width: "10%", className: '', render: function (data, type, row) {
-                    return '<span title="' + row.version + '" data-toggle="tooltip">' + data + '</span>'
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.version + '" data-toggle="tooltip">' + data + '</span>'
                 }
             },
             {targets: 3, width: "50%", style: 'text-center text-truncate', render: function (data, type, row) {
-                    return '<span title="' + row.cpe + '" data-toggle="tooltip">' + data + '</span>'
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.cpe + '" data-toggle="tooltip">' + data + '</span>'
                 }},
             {targets: 4, width: "10%", className: 'text-center'},
             {targets: 5, width: "10%", className: 'text-center'},
@@ -69,22 +69,22 @@ var sbom_dataTable = function () {
         drawCallback: function () {
             var current_page = dashboardpopupTable.page;
             var total_pages = dashboardpopupTable.page.info().pages;
-            $('#nexts').remove();
-            $('#after').remove();
+            $('#sbom_nexts').remove();
+            $('#sbom_after').remove();
 
             if (total_pages > 10) {
-                $('<button type="button" class="btn" id="nexts">≫</button>')
+                $('<button type="button" class="btn" id="sbom_nexts">≫</button>')
                     .insertAfter('#sbom_dataTable_paginate .paginate_button:last');
-                $('<button type="button" class="btn" id="after">≪</button>')
+                $('<button type="button" class="btn" id="sbom_after">≪</button>')
                     .insertBefore('#sbom_dataTable_paginate .paginate_button:first');
             }
         }
     });
 
-    $(document).on('click', '#nexts, #after', function() {
+    $(document).on('click', '#sbom_nexts, #sbom_after', function() {
         var current_page = dashboardpopupTable.page();
         var total_pages = dashboardpopupTable.page.info().pages;
-        if ($(this).attr('id') == 'nexts') {
+        if ($(this).attr('id') == 'sbom_nexts') {
                 if (current_page + 10 < total_pages) {
                     dashboardpopupTable.page(current_page + 10).draw('page');
                 } else {
@@ -95,7 +95,7 @@ var sbom_dataTable = function () {
                 }
     });
     $(document).ready(function() {
-    var customStyle = '<style>#nexts, #after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
+    var customStyle = '<style>#sbom_nexts, #sbom_after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
     $('head').append(customStyle);
     });
 
@@ -209,6 +209,124 @@ function openPopupWindow(url, width, height){
 //
 // };
 
+var sbom_cveTable = function () {
+    var dashboardpopupTable = $('#sbom_cveTable').DataTable({
+        dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
+        lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
+        responsive: true,
+        searching: true,
+        ordering: false,
+        serverSide: true,
+        displayLength: false,
+        ajax: {
+            url: 'paging_cve/',
+            type: "POST",
+            dataSrc: function (res) {
+                var data = res.data.item;
+                return data;
+            }
+        },
+        columns: [
+            {data: 'index', width: "10%"},
+            {data: 'ip', width: "35%"},
+            {data: 'name', width: "25%"},
+            {data: 'use', width: "15%"},
+            {data: 'usage', width: "15%"},
+        ],
+        columnDefs: [
+            {
+                targets: 0,
+                width: "10%",
+                className: 'text-center',
+                render: function (data, type, row) {
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.index + '" data-toggle="tooltip">' + data + '</div>'
+                }
+            },
+            {
+                targets: 1,
+                width: "35%",
+                render: function (data, type, row) {
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.ip + '" data-toggle="tooltip">' + data + '</div>'
+                }
+            },
+            {
+                targets: 2,
+                width: "25%",
+                render: function (data, type, row) {
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.name + '" data-toggle="tooltip">' + data + '</div>'
+                }
+            },
+            {
+                targets: 3,
+                width: "15%",
+                render: function (data, type, row) {
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.use + '" data-toggle="tooltip">' + data + '</div>'
+                }
+            },
+            {
+                targets: 4,
+                width: "15%",
+                render: function (data, type, row) {
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.usage + '" data-toggle="tooltip">' + data + '</div>'
+                }
+            },
+        ],
+        language: {
+            "decimal": "",
+            "info": "전체 _TOTAL_건",
+            "infoEmpty": "데이터가 없습니다.",
+            "emptyTable": "데이터가 없습니다.",
+            "thousands": ",",
+            "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+            "loadingRecords": "로딩 중입니다.",
+            "processing": "",
+            "zeroRecords": "검색 결과 없음",
+            "paginate": {
+                "first": "처음",
+                "last": "끝",
+                "next": "다음",
+                "previous": "이전"
+            },
+            "search": "검색:",
+            "infoFiltered": "(전체 _MAX_ 건 중 검색결과)",
+            "infoPostFix": "",
+        },
+        pagingType: 'numbers',
+
+        drawCallback: function () {
+            var current_page = dashboardpopupTable.page;
+            var total_pages = dashboardpopupTable.page.info().pages;
+            $('#cve_nexts').remove();
+            $('#cve_after').remove();
+
+            if (total_pages > 10) {
+                $('<button type="button" class="btn" id="cve_nexts">≫</button>')
+                    .insertAfter('#sbom_dataTable_paginate .paginate_button:last');
+                $('<button type="button" class="btn" id="cve_after">≪</button>')
+                    .insertBefore('#sbom_dataTable_paginate .paginate_button:first');
+            }
+        }
+    });
+
+    $(document).on('click', '#cve_nexts, #after', function() {
+        var current_page = dashboardpopupTable.page();
+        var total_pages = dashboardpopupTable.page.info().pages;
+        if ($(this).attr('id') == 'cve_nexts') {
+                if (current_page + 10 < total_pages) {
+                    dashboardpopupTable.page(current_page + 10).draw('page');
+                } else {
+                    dashboardpopupTable.page(total_pages - 1).draw('page');
+                }
+                } else {
+                    dashboardpopupTable.page(Math.max(current_page - 10, 0)).draw('page');
+                }
+    });
+    $(document).ready(function() {
+    var customStyle = '<style>#cve_nexts, #cve_after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
+    $('head').append(customStyle);
+    });
+
+};
 
 $(document).ready(function () {
 
@@ -217,5 +335,8 @@ $(document).ready(function () {
         sbom_dataTable();
         // sbom_detail_dataTable();
     // }
+        sbom_cveTable();
 });
+
+
 

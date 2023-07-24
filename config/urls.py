@@ -31,6 +31,7 @@ urlpatterns = [
     path('faq_ug/', controllerGuide.faq_ug, name='faq_ug'),
     path('sbom/', controllerSBOM.sbom, name='sbom'),
     path('sbom/paging/', controllerSBOM.sbom_paging, name='sbom_paging'),
+    path('sbom/paging_cve/', controllerSBOM.sbom_cve_paging, name='sbom_cve_paging'),
     path('sbom_detail/', controllerSBOM.sbom_detail, name='sbom_detail'),
     path('deploy/', controllerDeploy.deploy, name='deploy'),
     path('deploy/package/', controllerDeploy.package_paging, name='package_paging'),
@@ -45,7 +46,7 @@ urlpatterns = [
     path('highCpuProc_more/paging/', controllerMore.highCpuProc_more_paging, name='highCpuProc_more_paging'),
     path('setting/', controllerSetting.setting, name='setting'),
 ########################## 리포트 ###########################################
-    path('reportdaily/', controllerReport.reportdaily, name='reportdaily')
+    path('report_date/', controllerReport.report_date, name='report_date')
 ]
 # path('admin/', admin.site.urls),
 # path('om/', include(om.urls), name="om"),
