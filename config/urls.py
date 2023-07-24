@@ -1,6 +1,7 @@
 from django.urls import path, include
 from common.controller import controllerCommon, controllerDashboard, controllerMore, controllerGuide, controllerSetting, controllerReport
 from deploy import controllerDeploy
+from registry import controllerRegistry
 from sbom import controllerSBOM
 from django.contrib import admin
 from django.urls import path
@@ -32,8 +33,12 @@ urlpatterns = [
     path('sbom/paging/', controllerSBOM.sbom_paging, name='sbom_paging'),
     path('sbom_detail/', controllerSBOM.sbom_detail, name='sbom_detail'),
     path('deploy/', controllerDeploy.deploy, name='deploy'),
-    path('deploy_action/', controllerDeploy.deploy_action, name='deploy_action'),
+    path('deploy/package/', controllerDeploy.package_paging, name='package_paging'),
+    path('deploy/computerGroup/', controllerDeploy.computerGroup_paging, name='computerGroup_paging'),
     path('deploy_action_val/', controllerDeploy.deploy_action_val, name='deploy_action_val'),
+    path('registry/', controllerRegistry.registry, name='registry'),
+    path('change_registry/', controllerRegistry.change_registry, name='change_registry'),
+
     path('certificate_more/', controllerMore.certificate_more, name='certificate_more'),
     path('certificate_more/paging/', controllerMore.certificate_more_paging, name='certificate_more_paging'),
     path('highCpuProc_more/', controllerMore.highCpuProc_more, name='highCpuProc_more'),

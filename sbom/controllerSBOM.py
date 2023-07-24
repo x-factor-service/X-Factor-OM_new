@@ -61,10 +61,10 @@ def sbom(request):
             chartData = {}
 
             returnData = {'menuList': menuListDB, 'chartData': chartData, 'Customer': Customer, 'Login_Method': Login_Method}
-        return render(request, 'common/sbom.html', returnData)
+        return render(request, 'sbom/sbom.html', returnData)
 def report(request):
     returnData = {'menuList': menuListDB, 'Customer': Customer}
-    return render(request, 'common/sbom.html', returnData)
+    return render(request, 'sbom/sbom.html', returnData)
 
 @csrf_exempt
 def sbom_paging(request):
@@ -75,6 +75,7 @@ def sbom_paging(request):
     page = math.ceil(start / length) + 1
     data = [ str(length), str(page), str(search)]
     Data = SDPI('sbom_paging', 'sbom', data)
+    print(Data)
     Count = SDPI('sbom_paging_count', '', data)
     RD = {'item': Data}
     returnData = {'data': RD,
@@ -145,7 +146,7 @@ def sbom_detail(request):
     # print('GET 요청 실패: ', response.status_code)
     chartData = {'detail_list': detail_list}
     returnData = {'menuList': menuListDB, 'Customer': Customer, 'chartData': chartData}
-    return render(request, 'common/sbom_detail.html', returnData)
+    return render(request, 'sbom/sbom_detail.html', returnData)
 
 # @csrf_exempt
 # def sbom_detail_paging(request):
@@ -209,83 +210,7 @@ def sbom_detail(request):
     #               'recordsFiltered': Count,
     #               }
     # return
-# def reportdaily(request):
-#     returnData = {'menuList': menuListDB, 'Customer': Customer,}
-#     return render(request, 'web/report_daily.html', returnData)
-#
-#
-# def reportmonthly(request):
-#     returnData = {'menuList': menuListDB, 'Customer': Customer,}
-#     return render(request, 'web/report_monthly.html', returnData)
 
-#############################리포트 수정부분 #########################################
-def reportdaily(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/report_daily.html', returnData)
-
-def reportPagedaily(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/reportPage_daily.html', returnData)
-
-def reportPagedaily1(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/reportPage_daily1.html', returnData)
-
-def reportPagedaily2(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/reportPage_daily2.html', returnData)
-
-def reportPagedaily3(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/reportPage_daily3.html', returnData)
-
-def reportPagedaily4(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/reportPage_daily4.html', returnData)
-
-
-
-
-
-def reportmonthly(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/report_monthly.html', returnData)
-
-def reportPageweekly(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/reportPage_weekly.html', returnData)
-
-def reportPageweekly1(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/reportPage_weekly1.html', returnData)
-
-def reportPageweekly2(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/reportPage_weekly2.html', returnData)
-def reportPageweekly3(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/reportPage_weekly3.html', returnData)
-
-def reportPageweekly4(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/reportPage_weekly4.html', returnData)
-#############################리포트 수정부분 #########################################
-
-
-
-def reportannual(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/report_annual.html', returnData)
-
-
-def ncBanner(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/dashboard_NC_banner.html', returnData)
-
-
-def customizing(request):
-    returnData = {'menuList': menuListDB, 'Customer': Customer,}
-    return render(request, 'web/customizing.html', returnData)
 
 
 ############################ 팝업 ############################################

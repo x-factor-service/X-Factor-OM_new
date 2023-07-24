@@ -1,0 +1,331 @@
+{% extends 'common/base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- BEGIN #header -->
+
+<!-- END #header -->
+
+<!-- BEGIN #sidebar -->
+
+<!-- END #sidebar -->
+
+<!-- BEGIN #content -->
+<div id="content" class="app-content">
+    <!-- BEGIN row -->
+    <div class="row">
+        <!-- BEGIN col-9 -->
+        <div class="col-3" id="colVal1">
+            <!-- BEGIN card -->
+            <div class="card mb-5">
+                <!-- BEGIN card-body -->
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between;">
+                    <div style="text-align: left; font-size: 30px; font-weight: bold">Packages</div>
+                    </div>
+                    <div class="deploy-scroll">
+                    <table id="" class="table-sm-se w-100 text-white text-opacity-100">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">Display Name</th>
+                        <th style="width: 15%">Content Set</th>
+                        <th style="width: 30%">Command</th>
+                    </tr>
+                    </thead>
+{#                        <tbody class="fs-12px mb-2">#}
+{#                        {% for data in chartData.packageList %}#}
+{#                        <tr class="clickP">#}
+{#                            <td id="checkRow"><input class="form-check-input" type="checkbox" id="chkRow2" value="{{ data.Name }}"></td>#}
+{#                            <td>#}
+{#                                {{ data.Display_name }}#}
+{#                            </td>#}
+{#                            <td>#}
+{#                                {{ data.Content_set }}#}
+{#                            </td>#}
+{#                            <td>#}
+{#                                {{ data.Command }}#}
+{#                            </td>#}
+{#                        </tr>#}
+{#                        {% endfor %}#}
+{#                    </tbody>#}
+                    </table>
+                    </div>
+                    <!-- BEGIN card-arrow -->
+                    <!-- END card-arrow -->
+                </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                <!-- END card-body -->
+            </div>
+            <!-- END card -->
+        </div>
+
+        <div class="col-2" id="colVal2" style="display: none">
+            <!-- BEGIN card -->
+            <div class="card mb-5">
+                <!-- BEGIN card-body -->
+                <div class="card-body" style="height: 577px">
+                    <div style="display: flex; justify-content: space-between;">
+                    <div style="text-align: left; font-size: 30px; font-weight: bold">Registry mod</div>
+                    </div>
+                    <br>
+                    <br>
+                    <form action="{% url 'change_registry' %}" method="post">
+                        {% csrf_token %}
+                        <div>OS Architecture
+                        <input class="form-control" type="text" name="os" style="width: 265px; background-color: transparent;">
+                        </div>
+                        <br>
+                        <div>Registry Key Name</div>
+                        <input class="form-control" type="text" name="path" style="width: 265px;">
+                        <br>
+                        <div>Value Name</div>
+                        <input class="form-control" type="text" name="value" style="width: 265px;">
+                        <br>
+                        <div>Value Data</div>
+                        <input class="form-control" type="text" name="data" style="width: 265px;">
+                        <br>
+                        <div>Value Type</div>
+                        <input class="form-control" type="text" name="type" style="width: 265px;">
+                        <br><br>
+                        <div style="justify-content: center; display: flex">
+                        <button type="submit" class="btn btn-default" style= "width: 150px">create</button>
+                        </div>
+                    </form>
+                    <br>
+
+                    <!-- BEGIN card-arrow -->
+                    <!-- END card-arrow -->
+                </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                <!-- END card-body -->
+            </div>
+            <!-- END card -->
+        </div>
+
+        <div id="" class="col-2 card" style="max-height: 577px;">
+            <label style="text-align: center; font-size: 25px; margin-top: 10px;">Deploy action</label>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+            <br>
+            <form method="post" action="{% url 'deploy_action_val' %}">
+                {% csrf_token %}
+            <div class="card">
+                <label style="color: white">package</label>
+                <div class="card-body">
+                <div class="mini-deploy-scroll">
+                    <div id="outputP"></div>
+                </div>
+                </div>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+            </div>
+            <br>
+            <div class="card">
+                <label style="color: white">computer group</label>
+                <div class="card-body">
+                <div class="mini-deploy-scroll">
+                    <div id="outputC"></div>
+                </div>
+                </div>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+            </div>
+                <input type="hidden" id="outputPValue" name="outputPValue">
+                <input type="hidden" id="outputCValue" name="outputCValue">
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <button type="submit" class="btn btn-outline-success fs-17px" id="action_btn" style="width: 150px; height: 40px; border-color: orange; color: orange;"
+                        onmouseover="this.style.backgroundColor='#ffe6b9';" onmouseout="this.style.backgroundColor=''" value="action">action</button>
+            </div>
+            </form>
+        </div>
+        <div class="col-5" id="colVal2">
+            <!-- BEGIN card -->
+            <div class="card mb-5">
+                <!-- BEGIN card-body -->
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between;">
+                    <div style="text-align: left; font-size: 30px; font-weight: bold">Computer Groups</div>
+                    </div>
+                    <!-- BEGIN title -->
+                    <!-- <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo osVersion-moreInfo"><i class="fas fa-ellipsis-h"></i></button> -->
+                    <!-- END title -->
+                    <!-- BEGIN stat-lg -->
+                    <!-- END stat-lg -->
+                    <div class="deploy-scroll">
+                    <table id="" class="table-sm-se w-100 text-white text-opacity-100" >
+                    <thead>
+                    <tr>
+{#                        <th style="width: 2%"> </th>#}
+                        <th style="width: 10%">Name</th>
+                        <th style="width: 15%">Content Set</th>
+                        <th style="width: 30%">Expression</th>
+                    </tr>
+                    </thead>
+{#                    <tbody class="fs-12px mb-2">#}
+{#                        {% for data in chartData.groupsList %}#}
+{#                        <tr class="clickC">#}
+{#                            <td id="checkRow"><input class="form-check-input" type="checkbox" id="chkRow2" value="{{ data.Name }}"></td>#}
+{#                            <td>#}
+{#                                {{ data.Name }}#}
+{#                            </td>#}
+{#                            <td>#}
+{#                                {{ data.Content_set }}#}
+{#                            </td>#}
+{#                            <td>#}
+{#                                {{ data.Expression }}#}
+{#                            </td>#}
+{#                        </tr>#}
+{#                        {% endfor %}#}
+{#                    </tbody>#}
+                    </table>
+                    </div>
+                    <!-- BEGIN card-arrow -->
+                    <!-- END card-arrow -->
+                </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                <!-- END card-body -->
+            </div>
+            <!-- END card -->
+        </div>
+        <!-- BEGIN col-3 -->
+        <div class="col-12" style="margin-bottom: 200px">
+            <div class="card">
+            <div class="card-body">
+
+            <div class="d-flex fw-bold fs-12px">
+                <div class="flex-grow-1">Action Log</div>
+            </div>
+            <div class="action-log-scroll">
+                <table id="action_log" class="table-sm-se w-100 text-white text-opacity-100" >
+                    <tbody>
+                    {% for data in chartData.actionLogList %}
+                    <tr>
+                        <td>{{ data.admin }} 계정이 {{ data.package }} package를 {{ data.computer_group }} group에게 deploy {{ data.comment }}! - {{ data.creation_date }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+            </div>
+    </div>
+    <!-- END row -->
+</div>
+<!-- END #content -->
+<style>
+.highlight {
+    background-color: orange;
+}
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+    // tr 요소들을 선택합니다.
+    var toggleP = document.querySelectorAll('.clickP');
+    {#console.log(toggleP)#}
+    // div 요소를 선택합니다.
+    var resultP = document.getElementById('outputP');
+    // 토글 상태를 추적하기 위한 객체를 생성합니다.
+    var stateP = {};
+    // 각 토글 row 요소에 클릭 이벤트 핸들러를 등록합니다.
+    function clickEvent() {
+        var index = Array.from(toggleP).indexOf(this);
+        // 초기 토글 상태를 false로 설정합니다.
+        if (!stateP.hasOwnProperty(index)) {
+            stateP[index] = false;
+        }
+        // td 요소의 값을 가져오거나 제거하여 div에 추가하거나 제거합니다.
+        var rere = '&lt; ';
+        var tdValue = this.querySelector('td:nth-child(1)').textContent;
+        if (!stateP[index]) {
+            resultP.innerHTML += tdValue.trim() + '<br>';
+            this.style.backgroundColor = 'orange';
+            Array.from(toggleP).forEach(function (item) {
+                if (item !== this) {
+                    item.removeEventListener('click', clickEvent);
+                }
+            }, this);
+        } else {
+            Array.from(toggleP).forEach(function (item) {
+                item.addEventListener('click', clickEvent);
+            });
+            resultP.innerHTML = resultP.innerHTML.replace(tdValue.trim() + '<br>', '');
+            this.removeAttribute('style');
+        }
+        // 토글 상태를 변경합니다.
+        stateP[index] = !stateP[index];
+    }
+    Array.from(toggleP).forEach(function (item) {
+        console.log(toggleP)
+        item.addEventListener('click', clickEvent);
+    });
+
+    // tr 요소들을 선택합니다.
+    var toggleC = document.querySelectorAll('.clickC');
+    // div 요소를 선택합니다.
+    var resultC = document.getElementById('outputC');
+    // 토글 상태를 추적하기 위한 객체를 생성합니다.
+    var stateC = {};
+    // 각 토글 row 요소에 클릭 이벤트 핸들러를 등록합니다.
+    Array.from(toggleC).forEach(function (item) {
+        item.addEventListener('click', function () {
+            var index = Array.from(toggleC).indexOf(this);
+            // 초기 토글 상태를 false로 설정합니다.
+            if (!stateC.hasOwnProperty(index)) {
+                stateC[index] = false;
+            }
+            // td 요소의 값을 가져오거나 제거하여 div에 추가하거나 제거합니다.
+            var rere = '&lt; ';
+            var tdValue = this.querySelector('td:nth-child(1)').textContent;
+            if (!stateC[index]) {
+                resultC.innerHTML += tdValue.trim() + '<br>';
+                this.style.backgroundColor = 'orange';
+            } else {
+                resultC.innerHTML = resultC.innerHTML.replace(tdValue.trim() + '<br>', '');
+                this.removeAttribute('style');
+            }
+            // 토글 상태를 변경합니다.
+            stateC[index] = !stateC[index];
+        });
+    });
+
+    window.setTimeout('window.location.reload()', 600000);
+});
+
+</script>
+{% endblock %}

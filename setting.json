@@ -62,7 +62,8 @@
         "AssetTNM": "daily_asset",
         "StatisticsTNM": "daily_statistics",
         "MenuTNM": "web_menusetting",
-        "UserTNM": "web_user"
+        "UserTNM": "web_user",
+        "LOG": "action_log"
     },
     "FILE": {
         "asset": {

@@ -1,26 +1,18 @@
+import base64
 import logging
-from datetime import timedelta, datetime
 from pprint import pprint
 
-import pandas as pd
-from django.core import serializers
 from django.shortcuts import render, redirect
-from sbom.dashboardFunctionSBOM import DashboardData
 from common.controller.controllerCommon import MenuSetting
 from deploy.transformDeploy import transform as DETR
 from deploy.output.deployOutput import plug_in as DEOP
 from deploy.input.db import plug_in as DIPI
-from om.input.db import plug_in as PDPI
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from time import sleep
-from sbom.input.db import plug_in as SDPI
+from registry.scripts import local_machine
 import requests
-import smtplib
 import json
-import math
+
 logger = logging.getLogger(__name__)
 
 with open("setting.json", encoding="UTF-8") as f:
@@ -42,7 +34,8 @@ Email_pwd = SETTING['EMAIL']['EMAIL_PWD']
 
 menuListDB = MenuSetting()
 
-def deploy(request):
+
+def registry(request):
     res_data = {}
     if not 'sessionid' in request.session:
         res_data['error'] = '먼저 로그인을 해주세요.'
@@ -87,7 +80,77 @@ def deploy(request):
             request.POST = None
             request._post = None
             request._files = None
-        return render(request, 'deploy/deploy.html', returnData)
+
+        return render(request, 'registry/registry.html', returnData)
+
+
+def change_registry(request):
+    os = request.POST.get('os')
+    path = request.POST.get('path')
+    value = request.POST.get('value')
+    data = request.POST.get('data')
+    type = request.POST.get('type')
+    comName = request.POST.get('outputCGValue')
+
+    SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
+    SKURL = apiUrl + SesstionKeyPath
+    SKR = requests.post(SKURL, data=SKH, verify=False)
+    SKRT = SKR.content.decode('utf-8')
+    SKRJ = json.loads(SKRT)
+    SK = SKRJ['data']['session']
+    PSQ = {'session': SK, 'Content-Type': 'application/json'}
+    PURL = apiUrl + '/api/v2/packages'
+
+    print(comName)
+    CURL = apiUrl + '/api/v2/groups/by-name/' + comName
+    print(CURL)
+    CSR = requests.get(CURL, headers=PSQ, verify=False)
+    CSRT = CSR.content.decode('utf-8')
+    CSRJ = json.loads(CSRT)
+    print(CSRJ)
+
+    body = {
+        "action_group": {
+            "id": 4
+        },
+        "package_spec": {
+            "id": 89,
+            "source_id": 0,
+            "parameters": [
+                {
+                    "key": "$1",
+                    "value": os
+                },
+                {
+                    "key": "$2",
+                    "value": path
+                },
+                {
+                    "key": "$3",
+                    "value": value
+                },
+                {
+                    "key": "$4",
+                    "value": data
+                },
+                {
+                    "key": "$5",
+                    "value": type
+                }
+            ]
+        },
+        "name": "Sample Action",
+        "expire_seconds": 3600,
+        "target_group": {
+            "id": CSRJ['data']['id']
+        }
+    }
+    print(body)
+    CA = requests.post(PURL, headers=PSQ, json=body, verify=False)
+    print(CA.json())
+
+    return redirect('deploy')
+
 
 def report(request):
     returnData = {'menuList': menuListDB, 'Customer': Customer}

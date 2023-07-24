@@ -96,6 +96,7 @@
         {% include "common/sidebar.html" %}
     {% endif %}
     <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+  <script src="{% static 'js/jquery/jquery-3.6.0.min.js' %}"></script>
     {% block content %}
     {% endblock %}
     <!-- 기본 템플릿 안에 삽입될 내용 End -->
@@ -103,7 +104,6 @@
   <!-- END #app -->
 
   <!-- Bootstrap JS -->
-  <script src="{% static 'js/jquery/jquery-3.6.0.min.js' %}"></script>
 
   <!-- ================== BEGIN core-js ================== -->
   <script src="{% static 'assets/js/vendor.min.js' %}"></script>
@@ -160,6 +160,7 @@
   <script src="{% static 'assets/plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
   <script src="{% static 'assets/js/demo/table-plugins.demo.js' %}"></script>
   <script src="{% static 'assets/js/demo/sbom_table.js' %}"></script>
+  <script src="{% static 'assets/js/demo/deploy_table.js' %}"></script>
     <!-- ================== END TABLE-js ================== -->
 
 <script src="{% static 'js/common/nav.js' %}"></script>
