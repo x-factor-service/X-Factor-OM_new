@@ -9,7 +9,6 @@ from deploy.output.deployOutput import plug_in as DEOP
 from deploy.input.db import plug_in as DIPI
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from registry.scripts import local_machine
 import requests
 import json
 
