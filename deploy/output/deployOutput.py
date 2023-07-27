@@ -30,8 +30,8 @@ def plug_in(data, cycle):
                     %s, %s, %s, %s, %s, '""" + today + """'
                 )
             """
-        print(data.package)
-        print(data.package[0])
+
+
         for i in range(len(data.package)):
             PA = data.package[i]
             CG = data.computer_group[i]

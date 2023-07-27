@@ -104,7 +104,6 @@ def deploy_action_val(request):
         print("pass")
         pass
     else:
-        print('123123213123123123123')
         packName = request.POST.get('outputPValue')
         comName = request.POST.get('outputCValue')
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
@@ -145,7 +144,7 @@ def deploy_action_val(request):
         }
         CAQ = requests.post(AURL, headers=PSQ, json=body, verify=False)
         if CAQ.status_code == 200:
-            DPAD = DETR(CAQ.json(), request.user)
+            DPAD = DETR(CAQ.json(), request.user, 'deploy')
             DEOP(DPAD, 'action_log')
 
         return redirect('deploy')

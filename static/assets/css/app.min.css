@@ -30656,8 +30656,8 @@ body .note-modal-backdrop {
 
 /* mini delpoy scroll*/
 .mini-deploy-scroll{
-    height: 150px;
-    max-height: 150px;
+    height: 100px;
+    max-height: 100px;
     overflow-y: auto;
 }
 .mini-deploy-scroll::-webkit-scrollbar {
@@ -30892,3 +30892,20 @@ input:checked+labl::before{
     width: 100%;
     cursor: default;
 }
+
+tr {
+  user-drag: none; /* 드래그 막기 */
+  -webkit-user-drag: none; /* Chrome, Safari 등 Webkit 기반 브라우저에서도 드래그 막기 */
+  user-select: none; /* 텍스트 선택 막기 */
+  -webkit-user-select: none; /* Chrome, Safari 등 Webkit 기반 브라우저에서도 텍스트 선택 막기 */
+}
+
+.error {
+    border: 1px solid orange; /* 빨간색 테두리 스타일 설정 */
+}
+
+#errorDiv {
+        color: orange;
+        text-align: center;
+    }
+
