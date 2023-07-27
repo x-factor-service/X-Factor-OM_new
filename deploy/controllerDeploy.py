@@ -56,7 +56,7 @@ def deploy(request):
             SKRJ = json.loads(SKRT)
             SK = SKRJ['data']['session']
 
-            print("SessionKey 불러오기 성공")
+            #print("SessionKey 불러오기 성공")
 
             PSQ = {'session': SK, 'Content-Type': 'application/json'}
             PURL = apiUrl + '/api/v2/packages'
@@ -76,11 +76,13 @@ def deploy(request):
             for i in range(len(dataG['data'])-1):
                 groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
 
-            actionLogList = []
-            actionLog = DIPI('action_log', '', '')
-            for i in range(len(actionLog)):
-                actionLogList.append({'package': actionLog[i][0], 'computer_group': actionLog[i][1], 'comment': actionLog[i][2], 'admin': actionLog[i][3], 'creation_date': actionLog[i][4]})
-
+            try:
+                actionLogList = []
+                actionLog = DIPI('action_log', '', '')
+                for i in range(len(actionLog)):
+                    actionLogList.append({'package': actionLog[i][0], 'computer_group': actionLog[i][1], 'comment': actionLog[i][2], 'admin': actionLog[i][3], 'creation_date': actionLog[i][4]})
+            except:
+                actionLogList = []
             chartData = {'packageList': packageList, 'groupsList': groupsList, 'actionLogList': actionLogList}
             returnData = {'menuList': menuListDB, 'chartData': chartData, 'Customer': Customer, 'Login_Method': Login_Method}
 
@@ -161,7 +163,7 @@ def package_paging(request):
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 
-        print("SessionKey 불러오기 성공")
+        #print("SessionKey 불러오기 성공")
 
         PSQ = {'session': SK, 'Content-Type': 'application/json'}
         PURL = apiUrl + '/api/v2/packages'
@@ -197,7 +199,7 @@ def computerGroup_paging(request):
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 
-        print("SessionKey 불러오기 성공")
+        #print("SessionKey 불러오기 성공")
 
         PSQ = {'session': SK, 'Content-Type': 'application/json'}
         PURL = apiUrl + '/api/v2/packages'

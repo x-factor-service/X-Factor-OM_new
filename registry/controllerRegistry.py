@@ -48,7 +48,7 @@ def registry(request):
             SKRJ = json.loads(SKRT)
             SK = SKRJ['data']['session']
 
-            print("SessionKey 불러오기 성공")
+            #print("SessionKey 불러오기 성공")
 
             PSQ = {'session': SK, 'Content-Type': 'application/json'}
             PURL = apiUrl + '/api/v2/packages'
@@ -160,8 +160,8 @@ def deploy_action(request):
     return render(request, 'deploy/deploy.html', returnData)
 
 def deploy_action_val(request):
-    print(request.user)
-    print(request.POST.get('outputPValue'))
+    #print(request.user)
+    #print(request.POST.get('outputPValue'))
     if request.POST.get('outputPValue') == None or request.POST.get('outputCValue') == None or request.POST.get('outputPValue') == '' or request.POST.get('outputCValue') == '':
         pass
     else:
@@ -174,7 +174,7 @@ def deploy_action_val(request):
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 
-        print("SessionKey 불러오기 성공")
+        #print("SessionKey 불러오기 성공")
 
         PSQ = {'session': SK, 'Content-Type': 'application/json'}
         PURL = apiUrl + '/api/v2/packages/by-name/' + packName

@@ -75,7 +75,7 @@ def sbom_paging(request):
     page = math.ceil(start / length) + 1
     data = [ str(length), str(page), str(search)]
     Data = SDPI('sbom_paging', 'sbom', data)
-    print(Data)
+    #print(Data)
     Count = SDPI('sbom_paging_count', '', data)
     RD = {'item': Data}
     returnData = {'data': RD,
