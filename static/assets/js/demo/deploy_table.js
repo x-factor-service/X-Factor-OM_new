@@ -6,7 +6,7 @@ var deploy_package = function () {
         lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
         responsive: true,
         searching: true,
-        ordering: false,
+        ordering: true,
         serverSide: true,
         displayLength: false,
         paging: false,
@@ -204,33 +204,33 @@ var deploy_computerGroup = function () {
 
 $(document).ready(function () {
 
+    var $clickedRow = ''
     var resultP = document.getElementById('outputP');
     var resultC = document.getElementById('outputC');
-
     $("#packageDataTable").on('click', 'tbody tr', function () {
-        var $clickedRow = $(this);
+        $clickedRow = $(this);
         var isClicked = $clickedRow.hasClass('clicked');
+        $clickedRow.addClass('clicked');
         var tdValue = $clickedRow.find('td:eq(0)').text();
-        console.log(tdValue)
-  // 클릭한 행의 상태에 따라 동작을 처리합니다.
-    if (isClicked) {
-    // 클릭한 행이 이미 선택된 상태인 경우 선택 해제
-    $clickedRow.removeClass('clicked');
-    $clickedRow.css('background-color', '');
-    resultP.innerHTML = resultP.innerHTML.replace(tdValue + '<br>', '');
-    // $('tbody tr').removeClass('disabled');
-    $('#packageDataTable tbody tr').css('pointer-events', 'auto');
-    } else {
-    // 클릭한 행을 선택 상태로 하이라이트하고 다른 행의 클릭을 비활성화
-    $('#packageDataTable tbody tr').not($clickedRow).css('pointer-events', 'none');
-    // $('tbody tr').not($clickedRow).addClass('disabled');
-    $clickedRow.addClass('clicked');
-    resultP.innerHTML += tdValue + '<br>';
-    $clickedRow.css('background-color', 'orange');
-    }
-});
+         // 클릭한 행의 상태에 따라 동작을 처리합니다.
+        if (isClicked) {
+            // 클릭한 행이 이미 선택된 상태인 경우 선택 해제
+            $clickedRow.removeClass('clicked');
+            $clickedRow.css('background-color', '');
+            resultP.innerHTML = resultP.innerHTML.replace(tdValue + '<br>', '');
+            // $('tbody tr').removeClass('disabled');
+            $('#packageDataTable tbody tr').css('pointer-events', 'auto');
+        } else {
+            // 클릭한 행을 선택 상태로 하이라이트하고 다른 행의 클릭을 비활성화
+            $('#packageDataTable tbody tr').not($clickedRow).css('pointer-events', 'none');
+            // $('tbody tr').not($clickedRow).addClass('disabled');
+            $clickedRow.addClass('clicked');
+            resultP.innerHTML = tdValue + '<br>';
+            $clickedRow.css('background-color', 'orange');
+        }
+    });
 
-     $("#computerGroupDataTable").on('click', 'tbody tr', function () {
+    $("#computerGroupDataTable").on('click', 'tbody tr', function () {
         var $clickedRow = $(this);
         var isClicked = $clickedRow.hasClass('clicked');
         var tdValue = $clickedRow.find('td:eq(0)').text();
@@ -257,18 +257,38 @@ $(document).ready(function () {
     // if ($("#sbom_dataTable").length > 0) {
     var outputCValue = document.getElementById('outputC').textContent;
     document.getElementById('outputCValue').value = outputCValue;
+    var errorMsgDiv = document.getElementById('errorMsg');
+    var outputP = document.getElementById('cb1');
+    var outputC = document.getElementById('cb2');
+    var inputs = document.querySelectorAll('.outputP, .outputC');
+
+    inputs.forEach(function (input) {
+        input.addEventListener('input', function () {
+            errorMsgDiv.textContent = '';
+        });
+    });
 
     document.getElementById('action_btn').addEventListener('click', function (event) {
         var outputPValue = document.getElementById('outputP').textContent;
         var outputCValue = document.getElementById('outputC').textContent;
 
-        // if (outputPValue === '' || outputCValue === '') {
-        //     event.preventDefault();
-        //     alert('package 또는 computer group을 선택해주세요.');
-        //     return;
-        // }
-        document.getElementById('outputPValue').value = outputPValue;
-        document.getElementById('outputCValue').value = outputCValue;
+        inputs.forEach(function (input) {
+            if (input.value === '') {
+                input.classList.add('error-border');
+                event.preventDefault();
+            }
+        });
+
+        // 에러 메시지 출력
+        if (outputPValue === '' || outputCValue === '') {
+            event.preventDefault();
+            errorMsgDiv.textContent = 'package 또는 computer group을 선택해주세요.';
+        }else {
+            // 두 개의 값이 모두 있는 경우 에러 메시지 제거
+            errorMsgDiv.textContent = ' <br><br>';
+            document.getElementById('outputPValue').value = outputPValue;
+            document.getElementById('outputCValue').value = outputCValue;
+        }
     });
         deploy_package();
         deploy_computerGroup();

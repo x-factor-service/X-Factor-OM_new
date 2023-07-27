@@ -84,13 +84,12 @@ def registry(request):
 
 
 def change_registry(request):
-    os = request.POST.get('os')
+    arch = request.POST.get('arch')
     path = request.POST.get('path')
+    name = request.POST.get('name')
     value = request.POST.get('value')
-    data = request.POST.get('data')
     type = request.POST.get('type')
     comName = request.POST.get('outputCGValue')
-
     SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
     SKURL = apiUrl + SesstionKeyPath
     SKR = requests.post(SKURL, data=SKH, verify=False)
@@ -98,55 +97,56 @@ def change_registry(request):
     SKRJ = json.loads(SKRT)
     SK = SKRJ['data']['session']
     PSQ = {'session': SK, 'Content-Type': 'application/json'}
-    PURL = apiUrl + '/api/v2/packages'
+    PURL = apiUrl + '/api/v2/actions'
 
-    print(comName)
     CURL = apiUrl + '/api/v2/groups/by-name/' + comName
-    print(CURL)
     CSR = requests.get(CURL, headers=PSQ, verify=False)
     CSRT = CSR.content.decode('utf-8')
     CSRJ = json.loads(CSRT)
-    print(CSRJ)
 
     body = {
         "action_group": {
             "id": 4
         },
         "package_spec": {
-            "id": 89,
-            "source_id": 0,
+            "source_id": 89,
             "parameters": [
                 {
                     "key": "$1",
-                    "value": os
+                    "value": arch,
+                    "type": 1
                 },
                 {
                     "key": "$2",
-                    "value": path
+                    "value": path,
+                    "type": 1
                 },
                 {
                     "key": "$3",
-                    "value": value
+                    "value": name,
+                    "type": 1
                 },
                 {
                     "key": "$4",
-                    "value": data
+                    "value": value,
+                    "type": 1
                 },
                 {
                     "key": "$5",
-                    "value": type
+                    "value": type,
+                    "type": 1
                 }
             ]
         },
         "name": "Sample Action",
-        "expire_seconds": 3600,
         "target_group": {
             "id": CSRJ['data']['id']
         }
     }
-    print(body)
     CA = requests.post(PURL, headers=PSQ, json=body, verify=False)
-    print(CA.json())
+    if CA.status_code == 200:
+        RGAD = DETR(CA.json(), request.user, 'registry')
+        DEOP(RGAD, 'action_log')
 
     return redirect('deploy')
 
@@ -163,10 +163,8 @@ def deploy_action_val(request):
     print(request.user)
     print(request.POST.get('outputPValue'))
     if request.POST.get('outputPValue') == None or request.POST.get('outputCValue') == None or request.POST.get('outputPValue') == '' or request.POST.get('outputCValue') == '':
-        print("pass")
         pass
     else:
-        print('123123213123123123123')
         packName = request.POST.get('outputPValue')
         comName = request.POST.get('outputCValue')
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'

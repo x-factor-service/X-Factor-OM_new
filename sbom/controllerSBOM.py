@@ -95,7 +95,7 @@ def sbom_detail(request):
                             'count': sbomD[i][6]})
     chartData = {'detail_list': detail_list}
     returnData = {'menuList': menuListDB, 'Customer': Customer, 'chartData': chartData}
-    return render(request, 'common/sbom_detail.html', returnData)
+    return render(request, 'sbom/sbom_detail.html', returnData)
 
 @csrf_exempt
 def sbom_cve_paging(request):

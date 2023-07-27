@@ -15,16 +15,23 @@ alarmCaseSix = SETTING['PROJECT']['Alarm']['Case']['Six']
 alarmCaseSeven = SETTING['PROJECT']['Alarm']['Case']['Seven']
 
 
-def transform(data, user):
+def transform(data, user, type):
     DFL = []
     columns = ['package', 'computer_group', 'comment', 'admin', 'creation_date']
-    PCK = data['data']['package_spec']['name']
-    CG = data['data']['target_group']['name']
     CMM = 'success!'
-    AD = user
-    CD = datetime.strptime(data['data']['creation_time'], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
+    if type == 'deploy':
+        PCK = data['data']['package_spec']['name']
+        CG = data['data']['target_group']['name']
+        AD = user
+        CD = datetime.strptime(data['data']['creation_time'], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
     # CD = datetime.strptime(data['data']['creation_time'], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d %H:%M:%S")
-    DFL.append([PCK, CG, CMM, AD, CD])
+        DFL.append([PCK, CG, CMM, AD, CD])
+    elif type == 'registry':
+        RN = data['data']['name']
+        CG = data['data']['target_group']['name']
+        AD = user
+        CD = datetime.strptime(data['data']['creation_time'], "%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
+        DFL.append([RN, CG, CMM, AD, CD])
     df = pd.DataFrame(DFL, columns=columns)
     pd.set_option('display.expand_frame_repr', False)
     return df

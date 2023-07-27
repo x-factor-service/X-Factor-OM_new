@@ -138,11 +138,10 @@ def Dashboard(type=None):
         # ---------------------------------하단 OM 일일 리포트 - 배포 성공한 Package
         try:
             report_listData_action = inputDb('report_listData_action', type)
-            #print(report_listData_action)
             report_listData_action_tf = report_actionTf(report_listData_action)
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - report_listData_action')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - report_listData_action')
         RD = {
             'disk_donutData': disk_donutData,
             'memory_donutData': memory_donutData,

@@ -98,13 +98,12 @@ def deploy_action(request):
     return render(request, 'deploy/deploy.html', returnData)
 
 def deploy_action_val(request):
-    print(request.user)
-    print(request.POST.get('outputPValue'))
+    #print(request.user)
+    #print(request.POST.get('outputPValue'))
     if request.POST.get('outputPValue') == None or request.POST.get('outputCValue') == None or request.POST.get('outputPValue') == '' or request.POST.get('outputCValue') == '':
         print("pass")
         pass
     else:
-        print('123123213123123123123')
         packName = request.POST.get('outputPValue')
         comName = request.POST.get('outputCValue')
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
@@ -114,7 +113,7 @@ def deploy_action_val(request):
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 
-        print("SessionKey 불러오기 성공")
+        #print("SessionKey 불러오기 성공")
 
         PSQ = {'session': SK, 'Content-Type': 'application/json'}
         PURL = apiUrl + '/api/v2/packages/by-name/' + packName
@@ -145,7 +144,7 @@ def deploy_action_val(request):
         }
         CAQ = requests.post(AURL, headers=PSQ, json=body, verify=False)
         if CAQ.status_code == 200:
-            DPAD = DETR(CAQ.json(), request.session['sessionid'])
+            DPAD = DETR(CAQ.json(), request.session['sessionid'], 'deploy')
             DEOP(DPAD, 'action_log')
 
         return redirect('deploy')
