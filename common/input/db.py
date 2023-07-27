@@ -296,7 +296,6 @@ def plug_in(type, threeData=None):
         # -----------------하단 OM 일일 리포트 - 전일 발송된 알람 정보-----------
         elif type == 'report_listData_alarm':
             report_yesterday = (threeData - timedelta(days=1)).strftime('%Y-%m-%d')
-            report_twodays = (threeData - timedelta(days=2)).strftime('%Y-%m-%d')
             query = """
                         SELECT
                             item, TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count
@@ -322,6 +321,17 @@ def plug_in(type, threeData=None):
                             (TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + report_yesterday + """' OR TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + report_twodays + """') 
                         ORDER BY
                             statistics_collection_date ASC, classification DESC; 
+                    """
+        # -----------------하단 OM 일일 리포트 - 배포 성공한 Package-----------
+        elif type == 'report_listData_action':
+            report_yesterday = (threeData - timedelta(days=1)).strftime('%Y-%m-%d')
+            query = """
+                        SELECT
+                            admin, package, computer_group
+                        FROM
+                            action_log
+                        WHERE
+                            log_collection_date::date = '""" + report_yesterday + """'
                     """
         Cur.execute(query)
         RS = Cur.fetchall()
@@ -356,6 +366,14 @@ def plug_in(type, threeData=None):
                         ('ip', R[3])
                     )
                 ))
+            elif type in ['report_listData_action']:
+                SDL.append(dict(
+                    (
+                        ('user', R[0]),
+                        ('package', R[1]),
+                        ('group', R[2])
+                    )
+                ))
             elif type == 'cert_listDataMore':
                 SDL.append(dict(
                     (
@@ -370,5 +388,5 @@ def plug_in(type, threeData=None):
                 SDL.append(R)
         return SDL
     except Exception as e:
-        if str(type) not in ['report_listData_unMgmt_idle', 'report_listData_alarm', 'report_listData_subnet_isVm']:
+        if str(type) not in ['report_listData_unMgmt_idle', 'report_listData_alarm', 'report_listData_subnet_isVm', 'report_listData_action']:
             print(str(type) + ' Statistics Table connection(Select) Failure _' + str(e))

@@ -41,7 +41,9 @@ var sbom_dataTable = function () {
             {targets: 3, width: "50%", style: 'text-center text-truncate', render: function (data, type, row) {
                     return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.cpe + '" data-toggle="tooltip">' + data + '</span>'
                 }},
-            {targets: 4, width: "10%", className: 'text-center'},
+            {targets: 4, width: "10%", style: 'text-center text-truncate', render: function (data, type, row) {
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.type + '" data-toggle="tooltip">' + data + '</span>'
+                }},
             {targets: 5, width: "10%", className: 'text-center'},
         ],
         language: {

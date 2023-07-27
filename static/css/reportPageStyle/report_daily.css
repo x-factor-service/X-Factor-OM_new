@@ -397,10 +397,6 @@ article {
     border-bottom: 1;
 }
 
-.asset-device-item:nth-child(5) {
-    border-right: 0;
-}
-
 .asset-device-count {
     text-align: center;
     height: 20px;

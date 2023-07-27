@@ -145,7 +145,7 @@ def deploy_action_val(request):
         }
         CAQ = requests.post(AURL, headers=PSQ, json=body, verify=False)
         if CAQ.status_code == 200:
-            DPAD = DETR(CAQ.json(), request.user)
+            DPAD = DETR(CAQ.json(), request.session['sessionid'])
             DEOP(DPAD, 'action_log')
 
         return redirect('deploy')

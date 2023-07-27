@@ -1,0 +1,556 @@
+{% extends 'common/base.html' %} {% block content %} {% load static %}
+
+ {% if messages %}
+<ul class="messages">
+	 {% for message in messages %}
+	<li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+	 {% endfor %}
+</ul>
+ {% endif %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/setting/setting.css' %}">
+<section class="layout">
+    <div class="app-content-jy">
+        <div style="flex: 1; display: flex; height:100%">
+            <div style="flex: 1; height:100%">
+                <div class="card-jy">
+                    <div class="card-body-jy">
+                        <div>
+                            <div style="font-size:large; font-weight:bold">
+                                메일 세팅
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form method="post">
+                                 {% csrf_token %}
+                                <div class="form-row">
+
+                                    <span style="font-weight: bold;">Email : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="email" id="email" name="email" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">PWD : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="password" id="pw" name="pw" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">To Email : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="email" id="to_email1" name="to_email1" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">To Email : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="email" id="to_email2" name="to_email2" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                 <div class="form-row">
+                                        <span style="font-weight: bold;">To Email : </span>
+                                        <span style="border: 2px solid orange;">
+                                        <input type="email" id="to_email3" name="to_email3" placeholder="" style="background-color: transparent; border: none;">
+                                        </span>
+                                </div>
+
+
+
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left">
+                        </div>
+                        <div class="card-arrow-top-right">
+                        </div>
+                        <div class="card-arrow-bottom-left">
+                        </div>
+                        <div class="card-arrow-bottom-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-content-jy">
+        <div style="flex: 1; display: flex; height:100%">
+            <div style="flex: 1; height:100%">
+                <div class="card-jy">
+                    <div class="card-body-jy">
+                        <div>
+                            <div style="font-size:large; font-weight:bold">
+                                API
+                            </div>
+                        </div>
+                        <div class="form-container">
+
+                            <form method="post">
+                                 {% csrf_token %}
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">apiUrl : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="text" id="apiUrl" name="apiUrl" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">packageID : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="text" id="packageID" name="packageID" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">username : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="text" id="username" name="username" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">password : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="password" id="password" name="password" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left">
+                        </div>
+                        <div class="card-arrow-top-right">
+                        </div>
+                        <div class="card-arrow-bottom-left">
+                        </div>
+                        <div class="card-arrow-bottom-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-content-jy">
+        <div style="flex: 1; display: flex; height:100%">
+            <div style="flex: 1; height:100%">
+                <div class="card-jy">
+                    <div class="card-body-jy">
+                        <div>
+                            <div style="font-size:large; font-weight:bold">
+                                DB
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form method="post">
+                                 {% csrf_token %}
+                                <div class="form-row">
+
+                                    <span style="font-weight: bold;">DBHost : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="text" id="DBHost" name="DBHost" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">DBPort : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="text" id="DBPort" name="DBPort" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">DBName : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="text" id="DBName" name="DBName" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">DBUser : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="text" id="DBUser" name="DBUser" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                 <div class="form-row">
+                                        <span style="font-weight: bold;">DBPwd : </span>
+                                        <span style="border: 2px solid orange;">
+                                        <input type="password" id="DBPwd" name="DBPwd" placeholder="" style="background-color: transparent; border: none;">
+                                        </span>
+                                </div>
+
+                                 <div class="form-row">
+                                        <span style="font-weight: bold;">DBSelectTime : </span>
+                                        <span style="border: 2px solid orange;">
+                                        <input type="text" id="DBSelectTime" name="DBSelectTime" placeholder="" style="background-color: transparent; border: none;">
+                                        </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left">
+                        </div>
+                        <div class="card-arrow-top-right">
+                        </div>
+                        <div class="card-arrow-bottom-left">
+                        </div>
+                        <div class="card-arrow-bottom-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-content-jy">
+        <div style="flex: 1; display: flex; height:100%">
+            <div style="flex: 1; height:100%">
+                <div class="card-jy">
+                    <div class="card-body-jy">
+                        <div>
+                            <div style="font-size:large; font-weight:bold">
+                                카드 제목
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form method="post">
+                                 {% csrf_token %}
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                 <div class="form-row">
+                                        <span style="font-weight: bold;">추가 : </span>
+                                        <span style="border: 2px solid orange;">
+                                        <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                        </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left">
+                        </div>
+                        <div class="card-arrow-top-right">
+                        </div>
+                        <div class="card-arrow-bottom-left">
+                        </div>
+                        <div class="card-arrow-bottom-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-content-jy">
+        <div style="flex: 1; display: flex; height:100%">
+            <div style="flex: 1; height:100%">
+                <div class="card-jy">
+                    <div class="card-body-jy">
+                        <div>
+                            <div style="font-size:large; font-weight:bold">
+                                카드 제목
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form method="post">
+                                 {% csrf_token %}
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                 <div class="form-row">
+                                        <span style="font-weight: bold;">추가 : </span>
+                                        <span style="border: 2px solid orange;">
+                                        <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                        </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left">
+                        </div>
+                        <div class="card-arrow-top-right">
+                        </div>
+                        <div class="card-arrow-bottom-left">
+                        </div>
+                        <div class="card-arrow-bottom-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-content-jy">
+        <div style="flex: 1; display: flex; height:100%">
+            <div style="flex: 1; height:100%">
+                <div class="card-jy">
+                    <div class="card-body-jy">
+                        <div>
+                            <div style="font-size:large; font-weight:bold">
+                                카드 제목
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form method="post">
+                                 {% csrf_token %}
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                 <div class="form-row">
+                                        <span style="font-weight: bold;">추가 : </span>
+                                        <span style="border: 2px solid orange;">
+                                        <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                        </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left">
+                        </div>
+                        <div class="card-arrow-top-right">
+                        </div>
+                        <div class="card-arrow-bottom-left">
+                        </div>
+                        <div class="card-arrow-bottom-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-content-jy">
+        <div style="flex: 1; display: flex; height:100%">
+            <div style="flex: 1; height:100%">
+                <div class="card-jy">
+                    <div class="card-body-jy">
+                        <div>
+                            <div style="font-size:large; font-weight:bold">
+                                카드 제목
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form method="post">
+                                 {% csrf_token %}
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                 <div class="form-row">
+                                        <span style="font-weight: bold;">추가 : </span>
+                                        <span style="border: 2px solid orange;">
+                                        <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                        </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left">
+                        </div>
+                        <div class="card-arrow-top-right">
+                        </div>
+                        <div class="card-arrow-bottom-left">
+                        </div>
+                        <div class="card-arrow-bottom-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-content-jy">
+        <div style="flex: 1; display: flex; height:100%">
+            <div style="flex: 1; height:100%">
+                <div class="card-jy">
+                    <div class="card-body-jy">
+                        <div>
+                            <div style="font-size:large; font-weight:bold">
+                                카드 제목
+                            </div>
+                        </div>
+                        <div class="form-container">
+                            <form method="post">
+                                 {% csrf_token %}
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange; ">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
+                                    <span style="font-weight: bold;">추가 : </span>
+                                    <span style="border: 2px solid orange;">
+                                    <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                    </span>
+                                </div>
+
+                                 <div class="form-row">
+                                        <span style="font-weight: bold;">추가 : </span>
+                                        <span style="border: 2px solid orange;">
+                                        <input type="" id="" name="" placeholder="" style="background-color: transparent; border: none;">
+                                        </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left">
+                        </div>
+                        <div class="card-arrow-top-right">
+                        </div>
+                        <div class="card-arrow-bottom-left">
+                        </div>
+                        <div class="card-arrow-bottom-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    window.setTimeout(function() {
+    window.location.reload();
+}, 600000);
+const jsonFilePath = '/setting.json';
+
+
+    function loadJsonData() {
+        fetch(jsonFilePath)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('email').placeholder = data.EMAIL.EMAIL_ID;
+                document.getElementById('pw').placeholder = 'Enter your password';
+                document.getElementById('to_email1').placeholder = data.EMAIL.TO_EMAIL[0];
+                document.getElementById('to_email2').placeholder = data.EMAIL.TO_EMAIL[1];
+                document.getElementById('to_email3').placeholder = data.EMAIL.TO_EMAIL[2];
+            })
+            .catch(error => console.error('Error fetching JSON:', error));
+    }
+
+    window.onload = loadJsonData;
+
+
+
+</script>
+{% endblock %}

@@ -199,63 +199,66 @@
                         <p>배포 성공한 Package</p>
                     </div>
                     <table style="width: 100%;">
+                        <colgroup>
+                            <col style="width: 10%;">
+                            <col style="width: 20%;">
+                            <col style="width: 30%;">
+                            <col style="width: 30%;">
+                            <col style="width: 10%;">
+                        </colgroup>
                         <thead>
                         <tr>
-                            <th class="asset-device-item text-center">배포 패키지명</th>
-                            <th class="asset-device-item text-center">배포 대상</th>
-                            <th class="asset-device-item text-center">배포율</th>
+                            <th class="asset-device-item text-center">No</th>
+                            <th class="asset-device-item text-center">실행자</th>
+                            <th class="asset-device-item text-center">패키지명</th>
+                            <th class="asset-device-item text-center">대상</th>
+                            <th class="asset-device-item text-center">횟수</th>
                         </tr>
                         </thead>
                         <tbody>
+                        {% for data in report_listData_action_tf %}
                         <tr>
-                            <td class="asset-device-name text-center">Acrobat Reader DC (en-us)</td>
-                            <td class="asset-device-name text-center">All computers</td>
-                            <td class="asset-device-count text-center">28%</td>
+                            <td class="asset-device-name text-center">{{ forloop.counter }}</td>
+                            <td class="asset-device-name text-center">{{ data.user }}</td>
+                            <td class="asset-device-name text-center">{{ data.package }}</td>
+                            <td class="asset-device-name text-center">{{ data.group }}</td>
+                            <td class="asset-device-name text-center">{{ data.count }}</td>
                         </tr>
-                        <tr>
-                            <td class="asset-device-name text-center">Acrobat Reader DC (en-us)</td>
-                            <td class="asset-device-name text-center">All computers</td>
-                            <td class="asset-device-count text-center">28%</td>
-                        </tr>
-                        <tr>
-                            <td class="asset-device-name text-center">Acrobat Reader DC (en-us)</td>
-                            <td class="asset-device-name text-center">All computers</td>
-                            <td class="asset-device-count text-center">28%</td>
-                        </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
-                <div class="sub-content asset-device-state1">
-                    <div class="asset-device-state-title">
-                        <p>배포 실패한 Package</p>
-                    </div>
-                    <table style="width: 100%;">
-                        <thead>
-                        <tr>
-                            <th class="asset-device-item text-center">배포 패키지명</th>
-                            <th class="asset-device-item text-center">배포 대상</th>
-                            <th class="asset-device-item text-center">에러 메시지</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="asset-device-name text-center">172.18.0.0/21</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                        </tr>
-                        <tr>
-                            <td class="asset-device-name text-center">172.20.0.0/21</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                        </tr>
-                        <tr>
-                            <td class="asset-device-name text-center">172.20.92.0/21</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                            <td class="asset-device-count text-center">000대 ▲28%</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+<!--                <div class="sub-content asset-device-state1">-->
+<!--                    <div class="asset-device-state-title">-->
+<!--                        <p>배포 실패한 Package</p>-->
+<!--                    </div>-->
+<!--                    <table style="width: 100%;">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th class="asset-device-item text-center">배포 패키지명</th>-->
+<!--                            <th class="asset-device-item text-center">배포 대상</th>-->
+<!--                            <th class="asset-device-item text-center">에러 메시지</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        <tr>-->
+<!--                            <td class="asset-device-name text-center">172.18.0.0/21</td>-->
+<!--                            <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                            <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td class="asset-device-name text-center">172.20.0.0/21</td>-->
+<!--                            <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                            <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td class="asset-device-name text-center">172.20.92.0/21</td>-->
+<!--                            <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                            <td class="asset-device-count text-center">000대 ▲28%</td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
             </div>
 
 

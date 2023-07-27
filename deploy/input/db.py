@@ -54,11 +54,11 @@ def plug_in(table, day, type):
         if table == 'action_log':
             query = """
                 select
-                    package, computer_group, comment, admin, creation_date
+                    package, computer_group, comment, admin, log_collection_date
                 from
                     action_log
                 order by
-                    creation_date desc
+                    log_collection_date desc
             """
 
         # if table == 'sbom_paging':

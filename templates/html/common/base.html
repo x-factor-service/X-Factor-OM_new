@@ -172,9 +172,7 @@
 <script type="text/javascript" src="{% static 'js/common/topojson.v1.min.js' %}"></script>
 
   <script>
-    var dataList = {{ dataList| safe }};
-    //console.log(dataList)
-
+    var dataList = {{ dataList|default:"{}"|safe }};
 
 //datepicker
         $(function() {

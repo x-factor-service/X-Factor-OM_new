@@ -17,12 +17,14 @@ def report_date(request):
         report_listData_unMgmt_idle = DCDL["report_listData_unMgmt_idle"]
         report_listData_alarm = DCDL["report_listData_alarm"]
         report_listData_subnet_isVm = DCDL["report_listData_subnet_isVm"]
+        report_listData_action_tf = DCDL["report_listData_action_tf"]
     returnData = {'report_start_date': report_start_date,
                   'report_end_date': report_end_date,
                   'report_create_date': report_create_date,
                   'report_listData_unMgmt_idle': report_listData_unMgmt_idle,
                   'report_listData_alarm': report_listData_alarm,
-                  'report_listData_subnet_isVm': report_listData_subnet_isVm}
+                  'report_listData_subnet_isVm': report_listData_subnet_isVm,
+                  'report_listData_action_tf': report_listData_action_tf}
     return render(request, 'report/report_daily.html', returnData)
 
 

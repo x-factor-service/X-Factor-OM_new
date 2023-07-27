@@ -1,6 +1,6 @@
 import logging
 from common.input.db import plug_in as inputDb
-from common.core.transform import plug_in as reportTf, plug_in_date as reportDate
+from common.core.transform import plug_in as reportTf, plug_in_date as reportDate, plug_in_action as report_actionTf
 import urllib3
 import json
 
@@ -30,6 +30,7 @@ def Dashboard(type=None):
         report_listData_unMgmt_idle = []
         report_listData_alarm = []
         report_listData_subnet_isVm_tf = []
+        report_listData_action_tf = []
 
 
             #------------------------------상단 디스크 사용률 도넛 차트------------------------
@@ -114,24 +115,34 @@ def Dashboard(type=None):
         # ---------------------------------하단 OM 일일 리포트 - 자산 통계 정보 ---------------------
         try:
             report_listData_unMgmt_idle = inputDb('report_listData_unMgmt_idle', type)
+            logger.info('dashboardFunction.py - report_listData_unMgmt_idle - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - report_listData_unMgmt_idle')
         # ---------------------------------하단 OM 일일 리포트 - 전일 발송된 알람 정보 ---------------
         try:
             report_listData_alarm = inputDb('report_listData_alarm', type)
+            logger.info('dashboardFunction.py - report_listData_alarm - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - report_listData_alarm')
         # ---------------------------------하단 OM 일일 리포트 - IP대역별 관리 자산 현황 / 작성일 출력
         try:
-            report_date = reportDate()
+            report_date = reportDate() # 작성일 출력
             report_listData_subnet_isVm = inputDb('report_listData_subnet_isVm', type)
             report_listData_subnet_isVm_tf = reportTf(report_listData_subnet_isVm)
+            logger.info('dashboardFunction.py - report_listData_alarm - Success')
         except:
-            logger.debug('dashboardFunction.py - puError Occurred')
+            logger.debug('dashboardFunction.py - Error Occurred')
             logger.debug('Error - report_listData_subnet_isVm_tf')
-
+        # ---------------------------------하단 OM 일일 리포트 - 배포 성공한 Package
+        try:
+            report_listData_action = inputDb('report_listData_action', type)
+            #print(report_listData_action)
+            report_listData_action_tf = report_actionTf(report_listData_action)
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - report_listData_action')
         RD = {
             'disk_donutData': disk_donutData,
             'memory_donutData': memory_donutData,
@@ -148,7 +159,8 @@ def Dashboard(type=None):
             "report_listData_unMgmt_idle": report_listData_unMgmt_idle,
             "report_listData_alarm": report_listData_alarm,
             "report_listData_subnet_isVm": report_listData_subnet_isVm_tf,
-            "report_date": report_date
+            "report_date": report_date,
+            "report_listData_action_tf": report_listData_action_tf
             }
     else:
         print()

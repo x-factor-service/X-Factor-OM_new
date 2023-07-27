@@ -93,7 +93,6 @@ var handleRenderChartNCOMG = function () {
           },
         },
         plotOptions: {
-
           radialBar: {
             hollow: {
               margin: -50,
@@ -144,16 +143,31 @@ var handleRenderChartNCOMG = function () {
         },
         fill: {
           type: 'gradient',
-          colors: '#fe8c00',
+          colors: '#40E0D0',
           gradient: {
-            shade: 'dark',
-            type: 'horizontal',
-            shadeIntensity: 0.5,
-            gradientToColors: ['#f83600'],
-            inverseColors: true,
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 100]
+                shade: 'dark',
+                type: 'horizontal',
+                shadeIntensity: 0.5,
+                colorStops: [
+                    {
+                        offset: 0,
+                        color: '#C00000',
+                        opacity: 1
+                    },
+                    {
+                        offset: 50,
+                        color: '#F9660B',
+                        opacity: 1
+                    },
+                    {
+                        offset: 100,
+                        color: '#F5C061',
+                        opacity: 1
+                    }
+                ],
+                inverseColors: true,
+                opacityFrom: 1,
+                opacityTo: 1,
           }
         },
         stroke: {
@@ -231,16 +245,31 @@ var handleRenderChartNCOMG = function () {
         },
         fill: {
           type: 'gradient',
-          colors: '#fe8c00',
+          colors: '#40E0D0',
           gradient: {
-            shade: 'dark',
-            type: 'horizontal',
-            shadeIntensity: 0.5,
-            gradientToColors: ['#f83600'],
-            inverseColors: true,
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 100]
+                shade: 'dark',
+                type: 'horizontal',
+                shadeIntensity: 0.5,
+                colorStops: [
+                    {
+                        offset: 0,
+                        color: '#C00000',
+                        opacity: 1
+                    },
+                    {
+                        offset: 50,
+                        color: '#F9660B',
+                        opacity: 1
+                    },
+                    {
+                        offset: 100,
+                        color: '#F5C061',
+                        opacity: 1
+                    }
+                ],
+                inverseColors: true,
+                opacityFrom: 1,
+                opacityTo: 1,
           }
         },
         stroke: {
@@ -288,7 +317,7 @@ var handleRenderChartNCOMG = function () {
             return [name+' ' + val.toFixed(1) + '%']
           },
           style: {
-            fontSize: '16px',
+            fontSize: '14px',
             colors: [app.color.white],
             fontWeight: 400
           },
@@ -359,7 +388,7 @@ var handleRenderChartNCOMG = function () {
             return [name+' ' + val.toFixed(1) + '%']
           },
           style: {
-            fontSize: '16px',
+            fontSize: '14px',
             colors: [app.color.white],
             fontWeight: 400
           },
@@ -371,7 +400,7 @@ var handleRenderChartNCOMG = function () {
           show: false,
           position: 'left',
         },
-        colors: ["#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
+        colors: ["#b76306", "#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
         labels: wire_pieDataItem,
         series: wire_pieDataCount,
         tooltip: {
@@ -430,7 +459,7 @@ var handleRenderChartNCOMG = function () {
             return [name+' ' + val.toFixed(1) + '%']
           },
           style: {
-            fontSize: '16px',
+            fontSize: '14px',
             colors: [app.color.white],
             fontWeight: 400
           },
@@ -442,7 +471,7 @@ var handleRenderChartNCOMG = function () {
           show: false,
           position: 'left',
         },
-        colors: ["#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
+        colors: ["#b76306", "#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
         labels: virtual_pieDataItem,
         series: virtual_pieDataCount,
         tooltip: {

@@ -16,7 +16,7 @@ def plug_in(data, cycle):
         DBPWD = SETTING['DB']['DBPwd']
         TNM = SETTING['DB']['LOG']
 
-        today = datetime.today().strftime("%Y-%m-%d")
+        today = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
 
         insertConn = psycopg2.connect(
             'host={0} port={1} dbname={2} user={3} password={4}'.format(DBHOST, DBPORT, DBNM, DBUNM, DBPWD))
@@ -30,8 +30,8 @@ def plug_in(data, cycle):
                     %s, %s, %s, %s, %s, '""" + today + """'
                 )
             """
-        print(data.package)
-        print(data.package[0])
+        # print(data.package)
+        # print(data.package[0])
         for i in range(len(data.package)):
             PA = data.package[i]
             CG = data.computer_group[i]
@@ -40,7 +40,7 @@ def plug_in(data, cycle):
             CD = data.creation_date[i]
 
             dataList = PA, CG, CM, str(AD), CD
-            print(dataList)
+            #print(dataList)
             insertCur.execute(IQ, (dataList))
         insertConn.commit()
         insertConn.close()
