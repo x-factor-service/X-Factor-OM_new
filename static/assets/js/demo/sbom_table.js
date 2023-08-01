@@ -7,7 +7,7 @@ var sbom_dataTable = function () {
         lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
         responsive: true,
         searching: true,
-        ordering: false,
+        ordering: true,
         serverSide: true,
         displayLength: false,
         ajax: {
@@ -217,7 +217,7 @@ var sbom_cveTable = function () {
         lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
         responsive: true,
         searching: true,
-        ordering: false,
+        ordering: true,
         serverSide: true,
         displayLength: false,
         ajax: {
@@ -229,16 +229,17 @@ var sbom_cveTable = function () {
             }
         },
         columns: [
-            {data: 'index', width: "10%"},
-            {data: 'ip', width: "35%"},
-            {data: 'name', width: "25%"},
-            {data: 'use', width: "15%"},
-            {data: 'usage', width: "15%"},
+            {data: 'index', width: "6%"},
+            {data: 'name', width: "29%"},
+            {data: 'version', width: "15%"},
+            {data: 'cpe', width: "20%"},
+            {data: 'type', width: "15%"},
+            {data: 'count', width: "15%"}
         ],
         columnDefs: [
             {
                 targets: 0,
-                width: "10%",
+                width: "6%",
                 className: 'text-center',
                 render: function (data, type, row) {
                     return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.index + '" data-toggle="tooltip">' + data + '</div>'
@@ -246,30 +247,40 @@ var sbom_cveTable = function () {
             },
             {
                 targets: 1,
-                width: "35%",
+                width: "29%",
                 render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.ip + '" data-toggle="tooltip">' + data + '</div>'
+                    return '<div style="cursor: pointer; color: #D3FFBF"; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.name + '" data-toggle="tooltip">' + data + '</div>'
                 }
             },
             {
                 targets: 2,
-                width: "25%",
+                width: "15%",
                 render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.name + '" data-toggle="tooltip">' + data + '</div>'
+                    if (data === null) {
+                        data = '';
+                    }
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.version + '" data-toggle="tooltip">' + data + '</div>'
                 }
             },
             {
                 targets: 3,
-                width: "15%",
+                width: "20%",
                 render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.use + '" data-toggle="tooltip">' + data + '</div>'
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.cpe + '" data-toggle="tooltip">' + data + '</div>'
                 }
             },
             {
                 targets: 4,
                 width: "15%",
                 render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.usage + '" data-toggle="tooltip">' + data + '</div>'
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.type + '" data-toggle="tooltip">' + data + '</div>'
+                }
+            },
+            {
+                targets: 5,
+                width: "15%",
+                render: function (data, type, row) {
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.count + '" data-toggle="tooltip">' + data + '</div>'
                 }
             },
         ],
@@ -331,14 +342,17 @@ var sbom_cveTable = function () {
 };
 
 $(document).ready(function () {
+    sbom_dataTable();
+    sbom_cveTable();
 
-    // if ($("#sbom_dataTable").length > 0) {
-
-        sbom_dataTable();
-        // sbom_detail_dataTable();
-    // }
-        sbom_cveTable();
+    // 클릭한 셀의 값을 가져와서 검색창에 설정
+    $('#sbom_cveTable').on('click', 'td', function() {
+        var value = $(this).text();
+        var sbom_dataTable = $('#sbom_dataTable').DataTable();
+        sbom_dataTable.search(value).draw();
+    });
 });
+
 
 
 

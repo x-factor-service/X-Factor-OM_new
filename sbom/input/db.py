@@ -98,10 +98,11 @@ def plug_in(table, day, type):
         if table == 'sbom_cve':
             query = """
                 select
-                    comp_ver, cve_id, score, vuln_last_reported
+                    comp_name, comp_ver, cve_id, score, vuln_last_reported
                 from
                     sbom_cve
                 where
+                    comp_name Ilike '%""" + type[2] + """%' or
                     comp_ver Ilike '%""" + type[2] + """%' or
                     cve_id Ilike '%""" + type[2] + """%' or
                     score Ilike '%""" + type[2] + """%' or

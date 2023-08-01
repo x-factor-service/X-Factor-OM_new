@@ -105,7 +105,7 @@ def sbom_cve_paging(request):
     search = request.POST.get('search[value]')
     page = math.ceil(start / length) + 1
     data = [str(length), str(page), str(search)]
-    Data = SDPI('sbom_cve', 'cpuMore', data)
+    Data = SDPI('sbom_cve', 'sbom', data)
     Count = SDPI('sbom_cve_count', '', data)
     RD = {'item': Data}
     returnData = {'data': RD,
