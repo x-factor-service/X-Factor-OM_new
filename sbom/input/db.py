@@ -62,6 +62,10 @@ def plug_in(table, day, type):
             """
 
         if table == 'sbom_paging':
+            column_names = ["name", "version", "cpe", "type", "count"]
+            order_column_name = column_names[int(type[4]) - 1]
+            order_direction = type[5]
+
             query = """
                 select
                     name, version, cpe, type, count
@@ -69,14 +73,20 @@ def plug_in(table, day, type):
                     sbom_list
                 where
                     name != 'Not Scanned' and name != '[too many results]'
-                and
-                    (name Ilike '%""" + type[2] + """%' or
-                    version Ilike '%""" + type[2] + """%' or
-                    cpe Ilike '%""" + type[2] + """%' or
-                    type Ilike '%""" + type[2] + """%' or
-                    count Ilike '%""" + type[2] + """%')
+                AND
+                    (name ILIKE '%""" + type[2] + """%' OR
+                    version ILIKE '%""" + type[2] + """%' OR
+                    cpe ILIKE '%""" + type[2] + """%' OR
+                    type ILIKE '%""" + type[2] + """%' OR
+                    count ILIKE '%""" + type[2] + """%')
+                AND
+                    (name ILIKE '%""" + type[3] + """%' OR
+                    version ILIKE '%""" + type[3] + """%' OR
+                    cpe ILIKE '%""" + type[3] + """%' OR
+                    type ILIKE '%""" + type[3] + """%' OR
+                    count ILIKE '%""" + type[3] + """%')
                 order by
-                    count::INTEGER desc, name asc
+                    """ + order_column_name + """ """ + order_direction + """
                 LIMIT """ + type[0] + """
                 OFFSET (""" + type[1] + """ -1) * """ + type[0] + """
                 """
@@ -88,17 +98,32 @@ def plug_in(table, day, type):
                     sbom_list
                 where
                     name != 'Not Scanned'
-                and
-                    (name Ilike '%""" + type[2] + """%' or
-                    version Ilike '%""" + type[2] + """%' or
-                    cpe Ilike '%""" + type[2] + """%' or
-                    type Ilike '%""" + type[2] + """%' or
-                    count Ilike '%""" + type[2] + """%')
+                                AND
+                    (name ILIKE '%""" + type[2] + """%' OR
+                    version ILIKE '%""" + type[2] + """%' OR
+                    cpe ILIKE '%""" + type[2] + """%' OR
+                    type ILIKE '%""" + type[2] + """%' OR
+                    count ILIKE '%""" + type[2] + """%')
+                AND
+                    (name ILIKE '%""" + type[3] + """%' OR
+                    version ILIKE '%""" + type[3] + """%' OR
+                    cpe ILIKE '%""" + type[3] + """%' OR
+                    type ILIKE '%""" + type[3] + """%' OR
+                    count ILIKE '%""" + type[3] + """%')
                 """
         if table == 'sbom_cve':
+            column_names = ["comp_name", "comp_ver", "cve_id", "score", "vuln_last_reported", "number"]
+            order_column_index = int(type[3]) - 1
+            order_column_name = column_names[order_column_index]
+            order_direction = type[4]
+
+            if order_column_name == "score":
+                order_by_clause = "CAST(substring(score FROM '\\d+\\.\\d+') AS FLOAT) " + order_direction
+            else:
+                order_by_clause = order_column_name + " " + order_direction
             query = """
                 select
-                    comp_name, comp_ver, cve_id, score, vuln_last_reported
+                    comp_name, comp_ver, cve_id, score, vuln_last_reported, number
                 from
                     sbom_cve
                 where
@@ -107,8 +132,7 @@ def plug_in(table, day, type):
                     cve_id Ilike '%""" + type[2] + """%' or
                     score Ilike '%""" + type[2] + """%' or
                     vuln_last_reported Ilike '%""" + type[2] + """%'
-                order by
-                    number desc
+                order by """ + order_by_clause + """
                 LIMIT """ + type[0] + """
                 OFFSET (""" + type[1] + """ -1) * """ + type[0] + """           
             """
@@ -119,6 +143,7 @@ def plug_in(table, day, type):
                 from
                     sbom_cve
                 where
+                    comp_name Ilike '%""" + type[2] + """%' or
                     comp_ver Ilike '%""" + type[2] + """%' or
                     cve_id Ilike '%""" + type[2] + """%' or
                     score Ilike '%""" + type[2] + """%' or
@@ -223,6 +248,20 @@ def plug_in(table, day, type):
                         ('ip', R[0]),
                         ('name', R[1]),
                         ('count', R[2]),
+
+                    )
+                ))
+            elif day == 'sbom_cve':
+                index = (int(type[1]) - 1) * int(type[0]) + i
+                SDL.append(dict(
+                    (
+                        ('index', index),
+                        ('comp_name', R[0]),
+                        ('comp_ver', R[1]),
+                        ('cve_id', R[2]),
+                        ('score', R[3]),
+                        ('vuln_last_reported', R[4]),
+                        ('number', R[5])
 
                     )
                 ))
