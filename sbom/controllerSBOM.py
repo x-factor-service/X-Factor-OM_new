@@ -62,6 +62,7 @@ def sbom(request):
 
             returnData = {'menuList': menuListDB, 'chartData': chartData, 'Customer': Customer, 'Login_Method': Login_Method}
         return render(request, 'sbom/sbom.html', returnData)
+
 def report(request):
     returnData = {'menuList': menuListDB, 'Customer': Customer}
     return render(request, 'sbom/sbom.html', returnData)
@@ -72,10 +73,19 @@ def sbom_paging(request):
     start = int(request.POST.get('start'))
     length = int(request.POST.get('length'))
     search = request.POST.get('search[value]')
+    search_values = search.split('||')
+    search_1 = search_values[0]
+    if len(search_values) > 1:
+        search_2 = search_values[1]
+    else:
+        search_2 = ""
+    order_column = int(request.POST.get('order[0][column]'))
+    order_direction = request.POST.get('order[0][dir]')
+
     page = math.ceil(start / length) + 1
-    data = [ str(length), str(page), str(search)]
+    data = [str(length), str(page), str(search_1), str(search_2), order_column, order_direction]
     Data = SDPI('sbom_paging', 'sbom', data)
-    print(Data)
+    #print(Data)
     Count = SDPI('sbom_paging_count', '', data)
     RD = {'item': Data}
     returnData = {'data': RD,
@@ -103,9 +113,12 @@ def sbom_cve_paging(request):
     start = int(request.POST.get('start'))
     length = int(request.POST.get('length'))
     search = request.POST.get('search[value]')
+    order_column = int(request.POST.get('order[0][column]'))
+    order_direction = request.POST.get('order[0][dir]')
+
     page = math.ceil(start / length) + 1
-    data = [str(length), str(page), str(search)]
-    Data = SDPI('sbom_cve', 'cpuMore', data)
+    data = [str(length), str(page), str(search), order_column, order_direction]
+    Data = SDPI('sbom_cve', 'sbom_cve', data)
     Count = SDPI('sbom_cve_count', '', data)
     RD = {'item': Data}
     returnData = {'data': RD,
@@ -172,9 +185,7 @@ def sbom_cve_paging(request):
     #         else:
     #             SDList.append({'cn': df['Computer Name'][i], 'pn': df['Name'][i], 'pv': df['Version'][i], 'type': df['Type'][i], 'parent': df['Parent'][i], 'count': df['Count'][i]})
     # print('GET 요청 실패: ', response.status_code)
-    chartData = {'detail_list': detail_list}
-    returnData = {'menuList': menuListDB, 'Customer': Customer, 'chartData': chartData}
-    return render(request, 'sbom/sbom_detail.html', returnData)
+
 
 # @csrf_exempt
 # def sbom_detail_paging(request):

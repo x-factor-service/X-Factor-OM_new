@@ -55,11 +55,8 @@ def deploy(request):
             SKRT = SKR.content.decode('utf-8')
             SKRJ = json.loads(SKRT)
             SK = SKRJ['data']['session']
-            print(SKURL)
-            print(SKR)
-            print(SKRT)
-            print(SK)
-            print("SessionKey 불러오기 성공")
+
+            #print("SessionKey 불러오기 성공")
 
             PSQ = {'session': SK, 'Content-Type': 'application/json'}
             PURL = apiUrl + '/api/v2/packages'
@@ -164,7 +161,7 @@ def package_paging(request):
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 
-        print("SessionKey 불러오기 성공")
+        #print("SessionKey 불러오기 성공")
 
         PSQ = {'session': SK, 'Content-Type': 'application/json'}
         PURL = apiUrl + '/api/v2/packages'
@@ -200,7 +197,7 @@ def computerGroup_paging(request):
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 
-        print("SessionKey 불러오기 성공")
+        #print("SessionKey 불러오기 성공")
 
         PSQ = {'session': SK, 'Content-Type': 'application/json'}
         PURL = apiUrl + '/api/v2/packages'
