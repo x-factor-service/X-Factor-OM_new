@@ -89,4 +89,6 @@ def setting(request):
     returnData = {'menuList': menuListDB, 'data': data}
     return render(request, 'common/setting.html', returnData)
 
+def running_setting(request):
 
+    return render(request, 'common/running_setting.html')
