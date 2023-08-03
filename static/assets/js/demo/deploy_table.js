@@ -6,7 +6,7 @@ var deploy_package = function () {
         lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
         responsive: true,
         searching: true,
-        ordering: true,
+        ordering: false,
         serverSide: true,
         displayLength: false,
         paging: false,
