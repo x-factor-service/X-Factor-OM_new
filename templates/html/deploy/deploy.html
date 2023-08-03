@@ -1,7 +1,6 @@
 {% extends 'common/base.html' %}
 {% block content %}
 {% load static %}
-
 <!-- BEGIN #header -->
 
 <!-- END #header -->
@@ -28,7 +27,7 @@
                     <table id="packageDataTable" class="table-sm-se w-100 text-white text-opacity-100">
                     <thead>
                     <tr>
-                        <th style="width: 10%">Display Name</th>
+                        <th style="width: 10%">Name</th>
                         <th style="width: 15%">Content Set</th>
                         <th style="width: 30%">Command</th>
                     </tr>
@@ -126,6 +125,43 @@
             </div>
             <!-- END card -->
         </div>
+
+        <div class="col-2" id="colVal3" style="display: none">
+            <!-- BEGIN card -->
+            <div class="card mb-5">
+                <!-- BEGIN card-body -->
+                <div class="card-body" style="height: 577px">
+                    <div style="display: flex; justify-content: space-between;">
+                    <div style="text-align: left; font-size: 30px; font-weight: bold">Enter parameters</div>
+                    </div>
+                    <br>
+                    <br>
+                    <form action="{% url 'change_registry' %}" method="post">
+                        {% csrf_token %}
+                        <div class="parameters-scroll" id="colval3">
+{#                        <div>parameter 1#}
+{#                        <input class="form-control inBox" type="text" name="param1">#}
+{#                        </div>#}
+{#                        <br>#}
+                            <input type="hidden" id="outputCGValue" name="outputCGValue">
+                        </div>
+                    </form>
+                    <br>
+
+                    <!-- BEGIN card-arrow -->
+                    <!-- END card-arrow -->
+                </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                <!-- END card-body -->
+            </div>
+            <!-- END card -->
+        </div>
+
         <div id="" class="col-2 card" style="max-height: 577px;">
             <label style="text-align: center; font-size: 25px; margin-top: 10px;">Deploy action</label>
             <br>
@@ -295,6 +331,7 @@
     function modifyClass() {
 
         colVal2OriginalPaddingRight = window.getComputedStyle(divElement2).getPropertyValue("padding-right");
+        document.getElementById("action_btn").disabled = true;
 
         if (divElement1.classList.contains('col-5')){
             resultP.innerHTML = '';
@@ -307,6 +344,8 @@
 
         } else {
             lift_click()
+            document.getElementById("action_btn").disabled = false;
+
             $('#packageDataTable').on('click', 'tbody tr', function () {
                 $clickedRow = $(this);
                 isClicked = $clickedRow.hasClass('clicked');
@@ -347,19 +386,6 @@
     });
 
     document.getElementById("create").addEventListener("click", function (event) {
-        {#var arch = document.getElementById('arch');#}
-        {#var path = document.querySelector('input[name="path"]').value;#}
-        {#var name = document.querySelector('input[name="name"]').value;#}
-        {#var value = document.querySelector('input[name="value"]').value;#}
-        {#var type = document.getElementById('type');#}
-        {##}
-        {#if ( arch === '' || path === '' || name === '' || value === '' || type === '') {#}
-        {#    event.preventDefault();#}
-        {#    alert('값을 모두 입력해주세요.');#}
-        {#} else {#}
-        {#    create();#}
-        {#}#}
-
 
         var inputs = document.querySelectorAll('.inBox, .selBox');
         var hasEmptyValue = false;

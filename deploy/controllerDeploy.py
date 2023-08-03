@@ -55,7 +55,10 @@ def deploy(request):
             SKRT = SKR.content.decode('utf-8')
             SKRJ = json.loads(SKRT)
             SK = SKRJ['data']['session']
-
+            print(SKURL)
+            print(SKR)
+            print(SKRT)
+            print(SK)
             print("SessionKey 불러오기 성공")
 
             PSQ = {'session': SK, 'Content-Type': 'application/json'}
@@ -64,17 +67,17 @@ def deploy(request):
             dataP = responsePack.json()
             packageList= []
             groupsList = []
-            for i in range(len(dataP['data'])-1):
-                if dataP['data'][i]['content_set']['name'] == 'Default':
-                    packageList.append({'id': dataP['data'][i]['id'], 'Display_name': dataP['data'][i]['display_name'], 'Content_set': dataP['data'][i]['content_set']['name'],
-                                        'Command': dataP['data'][i]['command'], 'Command_Timeout': dataP['data'][i]['command_timeout']})
-            # print(data['data'][0]['content_set']['name'])
-            GURL = apiUrl + '/api/v2/groups'
-            responseGroup = requests.get(GURL, headers=PSQ, verify=False)
-            dataG = responseGroup.json()
-            # print(dataG['data'][0])
-            for i in range(len(dataG['data'])-1):
-                groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
+            # for i in range(len(dataP['data'])-1):
+            #     if dataP['data'][i]['content_set']['name'] == 'Default':
+            #         packageList.append({'id': dataP['data'][i]['id'], 'Display_name': dataP['data'][i]['display_name'], 'Content_set': dataP['data'][i]['content_set']['name'],
+            #                             'Command': dataP['data'][i]['command'], 'Command_Timeout': dataP['data'][i]['command_timeout']})
+            # # print(data['data'][0]['content_set']['name'])
+            # GURL = apiUrl + '/api/v2/groups'
+            # responseGroup = requests.get(GURL, headers=PSQ, verify=False)
+            # dataG = responseGroup.json()
+            # # print(dataG['data'][0])
+            # for i in range(len(dataG['data'])-1):
+            #     groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
 
             actionLogList = []
             actionLog = DIPI('action_log', '', '')
@@ -171,11 +174,11 @@ def package_paging(request):
         groupsList = []
         for i in range(len(dataP['data']) - 1):
             if dataP['data'][i]['content_set']['name'] == 'Default' and len(search) < 1:
-                packageList.append({'id': dataP['data'][i]['id'], 'Display_name': dataP['data'][i]['display_name'], 'Content_set': dataP['data'][i]['content_set']['name'],
+                packageList.append({'id': dataP['data'][i]['id'], 'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
                                     'Command': dataP['data'][i]['command'], 'Command_Timeout': dataP['data'][i]['command_timeout']})
             elif dataP['data'][i]['content_set']['name'] == 'Default':
-                if dataP['data'][i]['display_name'].startswith(search) or dataP['data'][i]['content_set']['name'].startswith(search) or dataP['data'][i]['command'].startswith(search):
-                    packageList.append({'Display_name': dataP['data'][i]['display_name'], 'Content_set': dataP['data'][i]['content_set']['name'],
+                if dataP['data'][i]['name'].startswith(search) or dataP['data'][i]['content_set']['name'].startswith(search) or dataP['data'][i]['command'].startswith(search):
+                    packageList.append({'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
                                         'Command': dataP['data'][i]['command']})
 
         Count = len(packageList)
@@ -222,3 +225,27 @@ def computerGroup_paging(request):
               'recordsFiltered': Count,
               }
         return JsonResponse(RD)
+
+
+@csrf_exempt
+def packCheck(request):
+    packName = request.POST.get('id')
+    SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
+    SKURL = apiUrl + SesstionKeyPath
+    SKR = requests.post(SKURL, data=SKH, verify=False)
+    SKRT = SKR.content.decode('utf-8')
+    SKRJ = json.loads(SKRT)
+    SK = SKRJ['data']['session']
+
+    print("SessionKey 불러오기 성공")
+
+    PSQ = {'session': SK, 'Content-Type': 'application/json'}
+    PURL = apiUrl + '/api/v2/packages/by-name/' + packName
+    responsePack = requests.get(PURL, headers=PSQ, verify=False)
+    dataP = responsePack.json()
+    # print(dataP['data']['command'])
+    a = dataP['data']['command'].count('$')
+    print(a)
+    RD = {'a': a}
+
+    return JsonResponse(RD)

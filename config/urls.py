@@ -37,6 +37,7 @@ urlpatterns = [
     path('deploy/package/', controllerDeploy.package_paging, name='package_paging'),
     path('deploy/computerGroup/', controllerDeploy.computerGroup_paging, name='computerGroup_paging'),
     path('deploy_action_val/', controllerDeploy.deploy_action_val, name='deploy_action_val'),
+    path('deploy/packCheck/', controllerDeploy.packCheck, name='packCheck'),
     path('registry/', controllerRegistry.registry, name='registry'),
     path('change_registry/', controllerRegistry.change_registry, name='change_registry'),
 

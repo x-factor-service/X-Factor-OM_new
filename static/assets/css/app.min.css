@@ -30688,6 +30688,23 @@ body .note-modal-backdrop {
   background-color: transparent; /* 스크롤바 썸의 배경색을 설정합니다. */
 }
 
+.parameters-scroll{
+    height: 450px;
+    max-height: 450px;
+    overflow-y: auto;
+}
+.parameters-scroll::-webkit-scrollbar {
+  width: 0.5em; /* 스크롤바의 너비를 설정합니다. */
+}
+
+.parameters-scroll::-webkit-scrollbar-track {
+  background-color: transparent; /* 스크롤바 트랙의 배경색을 설정합니다. */
+}
+
+.parameters-scroll::-webkit-scrollbar-thumb {
+  background-color: transparent; /* 스크롤바 썸의 배경색을 설정합니다. */
+}
+
 /* BEGiN Database Connected */
 .database-connected-card{
     padding: 16px 0px 16px 12px;
@@ -31125,4 +31142,25 @@ tr {
         color: orange;
         text-align: center;
     }
+
+/* 애니메이션 효과를 정의합니다. */
+@keyframes hideText {
+  0% {
+    opacity: 1; /* 시작 시 텍스트의 투명도를 1로 설정 (보이는 상태) */
+  }
+  100% {
+    opacity: 0; /* 끝나는 시점에 텍스트의 투명도를 0으로 설정 (안보이는 상태) */
+  }
+}
+/* 애니메이션을 적용할 요소를 선택합니다. */
+.myDiv {
+    animation-name: hideText; /* 정의한 애니메이션 효과를 적용합니다. */
+    animation-duration: 5s; /* 애니메이션의 지속 시간을 5초로 설정합니다. */
+    animation-fill-mode: forwards; /* 애니메이션이 끝난 후 마지막 상태를 유지합니다. */
+}
+
+
+
+
+
 
