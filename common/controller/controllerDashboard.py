@@ -56,3 +56,41 @@ def dashboard(request):
         returnData = {'menuList': menuListDB, 'dataList': dataList, 'Login_Method': Login_Method, 'Customer' : Customer}
         #print(returnData)
         return render(request, 'common/dashboard.html', returnData)
+
+def dashboard_sk(request) :
+    DCDL = Dashboard()
+    res_data = {}
+    if not 'sessionid' in request.session:
+        res_data['error'] = '먼저 로그인을 해주세요.'
+        return render(request, 'common/login.html', res_data)
+    else:
+        disk_donutData = DCDL["disk_donutData"]
+        memory_donutData = DCDL["memory_donutData"]
+        cpu_donutData = DCDL["cpu_donutData"]
+        wire_pieData = DCDL["wire_pieData"]
+        os_pieData = DCDL["os_pieData"]
+        virtual_pieData = DCDL["virtual_pieData"]
+        allAsset_lineData = DCDL["allAsset_lineData"]
+        discover_lineData = DCDL["discover_lineData"]
+        cert_listData = DCDL["cert_listData"]
+        sbom_listData = DCDL["sbom_listData"]
+        idle_lineData = DCDL["idle_lineData"]
+        highCpuProc_listData = DCDL["highCpuProc_listData"]
+        report_date = DCDL["report_date"]
+
+        dataList = {'disk_donutData': disk_donutData,
+                    'memory_donutData': memory_donutData,
+                    'cpu_donutData': cpu_donutData,
+                    'wire_pieData': wire_pieData,
+                    "os_pieData": os_pieData,
+                    "virtual_pieData": virtual_pieData,
+                    "allAsset_lineData": allAsset_lineData,
+                    "discover_lineData": discover_lineData,
+                    "cert_listData": cert_listData,
+                    "sbom_listData": sbom_listData,
+                    "idle_lineData": idle_lineData,
+                    "highCpuProc_listData": highCpuProc_listData,
+                    "report_date": report_date
+                    }
+        returnData = {'menuList': menuListDB, 'dataList': dataList, 'Login_Method': Login_Method, 'Customer': Customer}
+    return render(request, 'common/dashboard_sk.html', returnData)
