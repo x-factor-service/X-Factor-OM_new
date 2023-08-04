@@ -226,57 +226,35 @@
         window.open("../highCpuProc_more?id=" + id, "highCpuProc_more", "width=1200, height=650");
       });
 
-      $(".report_date").on('click', function(e) {
-        e.preventDefault();
-        var date = $(this).closest('tr').find('td:nth-child(3)').text();
-        var width = 1200;
-        var height = 900;
-        var left = (screen.width - width) / 2;
-        var top = (screen.height - height) / 2;
-        var options = `width=${width}, height=${height}, left=${left}, top=${top}, scrollbars=yes`;
-        window.open("../report_date/?date=" + date, "_blank", options);
-        $.ajax({
-          url: '/report_date/',
-          data: {
-            'date': date
-          },
-          dataType: 'json',
-          success: function(data) {
-            if (data.success) {
-              console.log('success');
-            }
-          }
-        });
-      });
     });
 
 
 
 $(document).ready(function() {
-    const tableBody = $("#myTable tbody");
-    function updateTableData(reportType) {
-        tableBody.empty();
-        for(let i=1; i<=5; i++) {
-            tableBody.append(`
-                <tr>
-                    <td>${i}</td>
-                    <td>
-                        <a href="../reportPage${reportType}${i}">
-                            ${reportType} 자산 리포트
-                        </a>
-                    </td>
-                    <td>2023-04-${22-i}</td>
-                    <td>
-                        <a href="http://localhost:8000/reportPage${reportType}${i}/" download="23042${22-i} ${reportType} 리포트">
-                            <button type="button" class="btn btn-outline-warning" value="print">
-                                다운로드
-                            </button>
-                        </a>
-                    </td>
-                </tr>
-            `);
-        }
-    }
+<!--    const tableBody = $("#myTable tbody");-->
+<!--    function updateTableData(reportType) {-->
+<!--        tableBody.empty();-->
+<!--        for(let i=1; i<=5; i++) {-->
+<!--            tableBody.append(`-->
+<!--                <tr>-->
+<!--                    <td>${i}</td>-->
+<!--                    <td>-->
+<!--                        <a href="../reportPage${reportType}${i}">-->
+<!--                            ${reportType} 자산 리포트-->
+<!--                        </a>-->
+<!--                    </td>-->
+<!--                    <td>2023-04-${22-i}</td>-->
+<!--                    <td>-->
+<!--                        <a href="http://localhost:8000/reportPage${reportType}${i}/" download="23042${22-i} ${reportType} 리포트">-->
+<!--                            <button type="button" class="btn btn-outline-warning" value="print">-->
+<!--                                다운로드-->
+<!--                            </button>-->
+<!--                        </a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            `);-->
+<!--        }-->
+<!--    }-->
 
     // 버튼 이벤트 추가
 <!--    $("#btn-daily").click(function() {-->

@@ -31164,8 +31164,24 @@ tr {
     animation-fill-mode: forwards; /* 애니메이션이 끝난 후 마지막 상태를 유지합니다. */
 }
 
+/* 대시보드 하단 리포트 달력 */
+#report_calendar .datepicker {
+  width: 100%;
+}
 
+#report_calendar .datepicker table tr td.disabled,
+#report_calendar .datepicker table tr td.disabled:hover {
+  background: none !important;
+  color: #5E5E5E;
+  cursor: default;
+}
 
+#report_calendar .datepicker table tr td {
+  font-size: 14px;
+  height: auto;
+  line-height: auto;
+}
 
-
-
+.apexcharts-zoom-icon svg {
+  fill: orange !important;
+}

@@ -27,11 +27,6 @@ def plug_in(data):
         })
     return result
 
-#----------------------------------일일 리포트 리스트 날짜 반환 -----------------------------------
-def plug_in_date():
-    date_list = [(datetime.today() - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(5)]
-    return date_list
-
 #----------------------------------일일 리포트 배포 성공 패키지 -----------------------------------
 def plug_in_action(data):
     result = {}

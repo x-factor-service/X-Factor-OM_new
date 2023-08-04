@@ -763,65 +763,6 @@ var handleRenderChartNCOMG = function () {
     var idle_line_chart = new ApexCharts(
     document.querySelector('#idle_chart'),idle_chart);
     idle_line_chart.render();
-
-    var asset_counts = dataList.allAsset_lineData.map(function(item) {
-        return item.count;
-    });
-    var discover_counts = dataList.discover_lineData.map(function(item) {
-        return item.count;
-    });
-    var idle_counts = dataList.idle_lineData.map(function(item) {
-        return item.count;
-    });
-
-    var asset_overview_chart_options = {
-      series: [
-        {
-          name: '관리 자산',
-          data: asset_counts
-        },
-        {
-          name: '미관리 자산',
-          data: discover_counts
-        },
-        {
-          name: '예상 유휴 자산',
-          data: idle_counts
-        }
-      ],
-      chart: {
-        type: 'line',
-        background: 'transparent',
-        foreColor: '#fff',
-        height: 350,
-        toolbar: {
-            show: true,
-            tools: {
-                zoom: false,
-                pan: false
-            }
-        }
-      },
-      stroke: {
-        width: 3
-      },
-      grid: {
-        borderColor: 'rgba(144, 164, 174, 0.5)'
-      },
-      colors: ['#FF9F0C', '#B8A89A', '#009D83'],
-      xaxis: {
-        type: 'category'
-      },
-      yaxis: {
-        title: {
-          text: 'Count'
-        }
-      }
-    };
-
-    var asset_overview_chart = new ApexCharts(document.querySelector('#asset_overview_chart'), asset_overview_chart_options);
-    asset_overview_chart.render();
-
 };
 $(document).ready(function () {
 handleRenderChartNCOMG();

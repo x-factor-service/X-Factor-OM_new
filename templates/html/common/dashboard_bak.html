@@ -121,6 +121,7 @@
                     <div class="row align-items-center">
                         <div class="h-145px">
                             <div class="col-12">
+                                <div class="h-145px" id="om_m_chart"></div>
                             </div>
                         </div>
                     </div>
@@ -142,6 +143,7 @@
                     <div class="row align-items-center">
                         <div class="h-145px">
                             <div class="col-12">
+                                <div class="h-145px" id="om_um_chart"></div>
                             </div>
                         </div>
                     </div>
@@ -158,14 +160,13 @@
             <div class="card mb-3">
                 <div class="card-body h-205px">
                     <div class="d-flex fw-bold fs-12px mb-2">
-                        <div class="flex-grow-1">자산 관리 현황</div>
+                        <div class="flex-grow-1">예상 유휴 자산</div>
                         <div class="d-flex fw-bold fs-17px mb-2"></div>
                     </div>
                     <div class="row align-items-center">
                         <div class="h-145px">
                             <div class="col-12">
-
-
+                                <div class="h-145px" id="idle_chart"></div>
                             </div>
                         </div>
                     </div>
@@ -178,14 +179,41 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-5 col-l-5 pr-2">
+        <div class="col-xl-4 col-l-4 pr-2">
             <div class="card mb-3" style="height:440px">
                 <div class="card-body">
 
                     <div class="d-flex fw-bold fs-12px mb-2">
                         <div class="flex-grow-1">인증서 관리</div>
                     </div>
-                    <div id="asset_overview_chart" class="mt-4"></div>
+                    <table class="table table-report text-nowrap " width="100%" style="border-collapse: separate; border-spacing : 0 10px">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>발급 인증서</th>
+                            <th style="text-align:center">만료 일자</th>
+                            <th style="text-align:center">개수</th>
+                        </tr>
+                        </thead>
+                        <tbody class="fw-bold fs-12px mb-2">
+                        {% for data in dataList.cert_listData %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td class="ellipsis">
+                                <a href="#" class="certificate-link" data-id="{{data.name}}">
+                                    {{ data.name }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ data.date }}
+                            </td>
+                            <td>
+                                {{ data.count }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
                 <div class="card-arrow">
                     <div class="card-arrow-top-left"></div>
@@ -195,7 +223,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-l-3 pl-2">
+        <div class="col-xl-4 col-l-4 pl-2">
             <div class="card mb-3" style="height:440px">
 
                 <div class="card-body">
@@ -257,8 +285,34 @@
                             </button>
                         </div>
                     </div>
-                    <div id="report_calendar"></div>
-
+                    <table id="myTable" class="table table-report text-nowrap" width="100%">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>리포트 이름</th>
+                            <th>생성 일자</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for data in dataList.report_date %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                일간 자산 리포트
+                            </td>
+                            <td>{{data}}</td>
+                            <td>
+                                <a href="#" class="report_date" data-id="{{data}}">
+                                    <button type="button" class="btn btn-outline-warning report_download" value="print">
+                                        미리보기
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
                 <div class="card-arrow">
                     <div class="card-arrow-top-left"></div>
@@ -273,24 +327,7 @@
 </div>
 <!-- END #content -->
 <script>
-$(document).ready(function() {
-// 대시보드 하단 리포트 달력
-    $('#report_calendar').datepicker({
-      format: 'yyyy-mm-dd',
-      endDate: new Date(),
-    }).on('changeDate', function(e) {
-      var date = e.format();
-      var width = 1200;
-      var height = 900;
-      var left = (screen.width - width) / 2;
-      var top = (screen.height - height) / 2;
-      var options = `width=${width}, height=${height}, left=${left}, top=${top}, scrollbars=yes`;
-      window.open("/report_date/?date=" + date, "_blank", options);
-    });
-
-
-    window.setTimeout('window.location.reload()',600000);
-});
+	window.setTimeout('window.location.reload()',600000);
 </script>
 {% endblock %}
 
