@@ -46,6 +46,8 @@ urlpatterns = [
     path('highCpuProc_more/paging/', controllerMore.highCpuProc_more_paging, name='highCpuProc_more_paging'),
     path('setting/', controllerSetting.setting, name='setting'),
     path('setting/running_setting/', controllerSetting.running_setting, name='running_setting'),
+    path('setting/delete_running_service/', controllerSetting.delete_running_service, name='delete_running_service'),
+
 ########################## 리포트 ###########################################
     path('report_date/', controllerReport.report_date, name='report_date')
 ]
