@@ -31164,7 +31164,26 @@ tr {
     animation-fill-mode: forwards; /* 애니메이션이 끝난 후 마지막 상태를 유지합니다. */
 }
 
+.btn1 {
+    border-bottom: 2px solid #2ec799;
+    height: 35px;
+    margin-top: 10px;
+    margin-right: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #2ec799;
+    transition: border-bottom 0.3s;
+  }
 
+  .btn1:hover {
+    border-top: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-left: 2px solid transparent;
+  }
+
+  .btn1:hover:not(#registry) {
+    border-bottom: 2px solid #2ec799;
+  }
 
 
 
