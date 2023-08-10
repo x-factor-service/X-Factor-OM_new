@@ -5,7 +5,8 @@ import psycopg2
 import json
 import pandas as pd
 from common.controller.controllerCommon import MenuSetting
-
+from django.http import JsonResponse
+from openpyxl import load_workbook
 menuListDB = MenuSetting()
 def setting(request):
     with open('setting.json', 'r') as f:
@@ -90,5 +91,48 @@ def setting(request):
     return render(request, 'common/setting.html', returnData)
 
 def running_setting(request):
+    with open('setting.json', 'r') as f:
+        data = json.load(f)
+    excel_path = data['FILE']['RunningService_Except']['Location']
 
-    return render(request, 'common/running_setting.html')
+    if request.method == 'POST':
+        new_service = request.POST.get('new_service')
+        new_row = {'Running Service': new_service}
+
+        aaa = pd.read_excel(excel_path)
+        aaa = pd.concat([aaa, pd.DataFrame([new_row])], ignore_index=True)
+
+        aaa.to_excel(excel_path, index=False, sheet_name='RunningServiceExcept', engine='openpyxl')
+
+        updated_data = aaa.to_dict(orient='records')
+        return JsonResponse({'success': True, 'data': updated_data})
+
+    aaa = pd.read_excel(excel_path)
+    context = {
+        'data_json': aaa.to_json(orient='records')
+    }
+    return render(request, 'common/running_setting.html', context)
+
+
+def delete_running_service(request):
+    with open('setting.json', 'r') as f:
+        data = json.load(f)
+    excel_path = data['FILE']['RunningService_Except']['Location']
+
+    if request.method == 'POST':
+        running_service_index = request.POST.get('running_service_index')
+        if running_service_index is not None and running_service_index.isdigit():
+            running_service_index = int(running_service_index)
+
+            aaa = pd.read_excel(excel_path, engine='openpyxl')
+
+            aaa = aaa.drop(index=running_service_index-1)
+
+            with pd.ExcelWriter(excel_path, engine='openpyxl') as writer:
+                aaa.to_excel(writer, index=False, sheet_name='RunningServiceExcept')
+
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid running_service_index'})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})

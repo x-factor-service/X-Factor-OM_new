@@ -78,7 +78,7 @@
         },
         "RunningService_Except": {
             "USE": "true",
-            "Location": "/running services.xlsx"
+            "Location": "running services.xlsx"
         }
     },
     "EMAIL": {
