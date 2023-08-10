@@ -672,7 +672,7 @@ def plug_in(table, day, type):
                             from
                                 idle_asset
                             where
-                                collection_date < '""" + yesterday + """'
+                                collection_date >= '""" + yesterday + """'
                             and
                                 (computer_name Ilike '%""" + type[2] + """%' or
                                 chassis_type Ilike '%""" + type[2] + """%' or
@@ -713,7 +713,7 @@ def plug_in(table, day, type):
                             from
                                 idle_asset
                             where
-                                collection_date < '""" + yesterday + """'
+                                collection_date >= '""" + yesterday + """'
                             and
                                 (computer_name Ilike '%""" + type[2] + """%' or
                                 chassis_type Ilike '%""" + type[2] + """%' or
@@ -1025,7 +1025,7 @@ def plug_in(table, day, type):
                                     daily_statistics
                                 where 
                                     item = 'collection_date'
-                                    and statistics_collection_date > '""" + yesterday + """'
+                                    and statistics_collection_date >= '""" + yesterday + """'
                                 order by statistics_collection_date asc
                             """
                 # elif type == 'ip':

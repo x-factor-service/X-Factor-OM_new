@@ -11,25 +11,25 @@
             {% if menu.menuUse == '1' %}
             {% if menu.menuName == "Dashboard" or menu.menuName == "IT OM" or menu.menuName == "Setting" or menu.menuName == "Deploy" or menu.menuName == "SBOM" or menu.menuName == "Setting"%}
             {% if request.get_full_path|cut:'/' == menu.menuUrl %}
-            <div class="menu-item active">
+            <div class="menu-item active h-45px d-flex align-items-center fs-16px">
                 {% else %}
-                <div class="menu-item">
+                <div class="menu-item h-45px d-flex align-items-center fs-16px">
                     {% endif %}
 
                     <a href="../{{menu.menuUrl}}" class="menu-link">
                         {% if menu.menuName == "IT OM" %}
-                        <span class="menu-icon"><i class="bi bi-columns-gap"></i></span>
+                        <span class="menu-icon"><i class="bi bi-person-video3 fs-18px"></i></span>
                         {% endif %}
                         {% if menu.menuName == "Dashboard" %}
-                        <span class="menu-icon"><i class="bi bi-columns-gap"></i></span>
+                        <span class="menu-icon"><i class="bi bi-columns-gap fs-18px"></i></span>
                         {% elif menu.menuName == "Registry" %}
-                        <span class="menu-icon"><i class="bi bi-cpu"></i></span>
+                        <span class="menu-icon"><i class="bi bi-cpu fs-18px"></i></span>
                         {% elif menu.menuName == "Deploy" %}
-                        <span class="menu-icon"><i class="bi bi-gear"></i></span>
+                        <span class="menu-icon"><i class="bi bi-diagram-3 fs-18px"></i></span>
                         {% elif menu.menuName == "SBOM" %}
-                        <span class="menu-icon"><i class="bi bi-gear"></i></span>
+                        <span class="menu-icon"><i class="bi bi-shield-shaded fs-18px"></i></span>
                         {% elif menu.menuName == "Setting" %}
-                        <span class="menu-icon"><i class="bi bi-gear"></i></span>
+                        <span class="menu-icon"><i class="bi bi-gear fs-18px"></i></span>
                         {% else %}
                         {% endif %}
                         <span class="menu-text">{{ menu.menuName }}</span>

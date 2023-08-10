@@ -38,3 +38,7 @@ def plug_in_action(data):
     result = list(result.values())
     #print(result)
     return result
+
+def plug_in_number(data):
+    result = data[0][0]
+    return result

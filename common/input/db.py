@@ -237,7 +237,7 @@ def plug_in(type, threeData=None):
                         WHERE collection_date >= '""" + DBSelectTime + """'  
                         GROUP BY proc_name
                         ORDER BY COUNT DESC
-                        LIMIT 7
+                        LIMIT 14
                     """
         elif type == 'highCpuProc_listDataMore':
             query = """
@@ -333,16 +333,22 @@ def plug_in(type, threeData=None):
                         WHERE
                             log_collection_date::date = '""" + report_yesterday + """'
                     """
+        # -----------------온라인 상태 전체 자산 수 -----------------------------
+        elif type == 'allOnline_donutData':
+            query = """
+                        select 
+                            SUM(item_count::integer)
+                        from
+                            minutely_statistics
+                        where 
+                            classification = 'os_counts'
+                            and statistics_collection_date >= '""" + DBSelectTime + """'
+                    """
+
         Cur.execute(query)
         RS = Cur.fetchall()
         for R in RS:
-            if type == 'disk_donutData' or type == 'memory_donutData' or type == 'cpu_donutData':
-                SDL.append(
-                    (
-                        ('count', int(R[0]))
-                    )
-                )
-            elif type in ['os_pieData', 'wire_pieData', 'virtual_pieData', 'discover_lineData', 'idle_lineData', 'allAsset_lineData', 'highCpuProc_listData']:
+            if type in ['os_pieData', 'wire_pieData', 'virtual_pieData', 'discover_lineData', 'idle_lineData', 'allAsset_lineData', 'highCpuProc_listData']:
                 SDL.append(dict(
                     (
                         ('item', R[0]),

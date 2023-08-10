@@ -78,700 +78,129 @@ var handleRenderChartNCOMG = function () {
     };
 
     //--------------------------------------------------------------------------
-    // OM - diskChart
+    // 자산 관리 현황 미니도넛, 프로그레스 바 - DISK 사용률 초과 서버, MEMORY 사용률 초과 서버
     //--------------------------------------------------------------------------
 
+    var disk_widthPercentage = (dataList.disk_donutData / dataList.allOnline_donutData) * 100;
+    document.querySelector("#disk-bar").style.width = disk_widthPercentage + "%";
+    var mem_widthPercentage = (dataList.memory_donutData / dataList.allOnline_donutData) * 100;
+    document.querySelector("#mem-bar").style.width = mem_widthPercentage + "%";
     var om_disk_chartOptions = {
-        series: [100],
+        series: [20, 20, 20, 20, 20],
         chart: {
-          height: 280,
-          type: 'radialBar',
-          events: {
-            mounted: (chart) => {
-              chart.windowResizeHandler();
-            }
-          },
+          width: 100,
+          height: 100,
+          type: 'donut',
+          toolbar: {
+            show: false
+          }
         },
+        colors: ['rgba(223, 224, 223, .2)', 'rgba(223, 224, 223, .4)', 'rgba(223, 224, 223, .5)', 'rgba(223, 224, 223, .8)', 'rgba(223, 224, 223, 1)'],
         plotOptions: {
-          radialBar: {
-            hollow: {
-              margin: -50,
-              size: '50%',
-              background: 'transparent',
-              image: undefined,
-              imageOffsetX: 0,
-              imageOffsetY: 0,
-              position: 'front',
-              dropShadow: {
-                enabled: true,
-                top: 3,
-                left: 0,
-                blur: 4,
-                opacity: 0.24
-              }
-            },
-            track: {
-              background: ['rgba(' + app.color.whiteRgb + ', .30)'],
-              strokeWidth: '10%',
-              margin: 0, // margin is in pixels
-              dropShadow: {
-                enabled: true,
-                top: -3,
-                left: 0,
-                blur: 4,
-                opacity: 0.35
-              }
-            },
-            dataLabels: {
-              show: true,
-              name: {
-                offsetY: -10,
-                show: true,
-                color: '#fff',
-                fontSize: '20px'
-              },
-              value: {
-                formatter: function (val) {
-                  return  '95% 초과';
-                },
-                color: '#fff',
-                fontSize: '14px',
-                show: true,
+          pie: {
+            donut: {
+              labels: {
+                show: false
               }
             }
           }
         },
-        fill: {
-          type: 'gradient',
-          colors: '#40E0D0',
-          gradient: {
-                shade: 'dark',
-                type: 'horizontal',
-                shadeIntensity: 0.5,
-                colorStops: [
-                    {
-                        offset: 0,
-                        color: '#C00000',
-                        opacity: 1
-                    },
-                    {
-                        offset: 50,
-                        color: '#F9660B',
-                        opacity: 1
-                    },
-                    {
-                        offset: 100,
-                        color: '#F5C061',
-                        opacity: 1
-                    }
-                ],
-                inverseColors: true,
-                opacityFrom: 1,
-                opacityTo: 1,
-          }
+        dataLabels: {
+          enabled: false
+        },
+        legend: {
+          show: false
         },
         stroke: {
-          lineCap: 'round'
+          show: false
         },
-        labels: [ dataList.disk_donutData + ' 대']
+        tooltip: {
+          enabled: false
+        }
     };
-    var om_disk_chart = new ApexCharts(document.querySelector('#om_disk_chart'),om_disk_chartOptions);
-    om_disk_chart.render();
-
-
+    var chartContainers = document.querySelectorAll('.om_disk_chart');
+    chartContainers.forEach(function(container) {
+        var chart = new ApexCharts(container, om_disk_chartOptions);
+        chart.render();
+    });
     //--------------------------------------------------------------------------
-    // OM - om_mem_chart
-    //--------------------------------------------------------------------------
-    var om_mem_chartOptions = {
-        series: [100],
-        chart: {
-          height: 280,
-          type: 'radialBar',
-          events: {
-            mounted: (chart) => {
-              chart.windowResizeHandler();
-            }
-          },
-        },
-        plotOptions: {
-
-          radialBar: {
-            hollow: {
-              margin: -50,
-              size: '50%',
-              background: 'transparent',
-              image: undefined,
-              imageOffsetX: 0,
-              imageOffsetY: 0,
-              position: 'front',
-              dropShadow: {
-                enabled: true,
-                top: 3,
-                left: 0,
-                blur: 4,
-                opacity: 0.24
-              }
-            },
-            track: {
-              background: ['rgba(' + app.color.whiteRgb + ', .30)'],
-              strokeWidth: '10%',
-              margin: 0, // margin is in pixels
-              dropShadow: {
-                enabled: true,
-                top: -3,
-                left: 0,
-                blur: 4,
-                opacity: 0.35
-              }
-            },
-            dataLabels: {
-              show: true,
-              name: {
-                offsetY: -10,
-                show: true,
-                color: '#fff',
-                fontSize: '20px'
-              },
-              value: {
-                formatter: function (val) {
-                  return  '95% 초과';
-                },
-                color: '#fff',
-                fontSize: '14px',
-                show: true,
-              }
-            }
-          }
-        },
-        fill: {
-          type: 'gradient',
-          colors: '#40E0D0',
-          gradient: {
-                shade: 'dark',
-                type: 'horizontal',
-                shadeIntensity: 0.5,
-                colorStops: [
-                    {
-                        offset: 0,
-                        color: '#C00000',
-                        opacity: 1
-                    },
-                    {
-                        offset: 50,
-                        color: '#F9660B',
-                        opacity: 1
-                    },
-                    {
-                        offset: 100,
-                        color: '#F5C061',
-                        opacity: 1
-                    }
-                ],
-                inverseColors: true,
-                opacityFrom: 1,
-                opacityTo: 1,
-          }
-        },
-        stroke: {
-          lineCap: 'round'
-        },
-        labels: [dataList.memory_donutData+ ' 대'],
-    };
-    var om_mem_chart = new ApexCharts(document.querySelector('#om_mem_chart'),om_mem_chartOptions);
-    om_mem_chart.render();
-
-
-
-    //--------------------------------------------------------------------------
-    // OM- om_os_chart
+    // os 설치 현황, 유/무선 연결 현황, 물리/가상 자산 현황
     //--------------------------------------------------------------------------
     var os_pieDataItem = []
     var os_pieDataCount = []
-
     for (var i = 0; i < dataList.os_pieData.length; i++) {
         os_pieDataItem.push(dataList.os_pieData[i]['item']);
         os_pieDataCount.push(dataList.os_pieData[i]['count']);
     };
 
-    var om_os_chartOptions = {
-        chart: {
-          height: 220,
-          type: 'pie',
-          events: {
-            mounted: (chart) => {
-              chart.windowResizeHandler();
-            },
-          },
-        },
-        plotOptions: {
-          pie: {
-            dataLabels: {
-              offset: 8
-            },
-          },
-        },
-        dataLabels: {
-          enabled: true,
-          formatter(val, opts) {
-            const name = opts.w.globals.labels[opts.seriesIndex]
-            return [name+' ' + val.toFixed(1) + '%']
-          },
-          style: {
-            fontSize: '14px',
-            colors: [app.color.white],
-            fontWeight: 400
-          },
-        },
-        stroke: {
-          show: false
-        },
-        legend: {
-          show: false,
-          position: 'left',
-        },
-        colors: ["#b76306", "#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
-        labels: os_pieDataItem,
-        series: os_pieDataCount,
-        tooltip: {
-          theme: 'dark',
-          x: {
-            show: true
-          },
-          y: {
-            title: {
-              formatter: function (val) {
-                return '' + val + "<br>" + " Count:"
-              }
-            },
-            formatter: (value) => { return '' + value },
-          }
-        }
-    };
-    var om_os_chart = new ApexCharts(document.querySelector('#om_os_chart'),om_os_chartOptions);
-    om_os_chart.render();
-
-
-
-
-    //--------------------------------------------------------------------------
-    // OM- om_wire_chart
-    //--------------------------------------------------------------------------
     var wire_pieDataItem = []
     var wire_pieDataCount = []
-
     for (var i = 0; i < dataList.wire_pieData.length; i++) {
         wire_pieDataItem.push(dataList.wire_pieData[i]['item']);
         wire_pieDataCount.push(dataList.wire_pieData[i]['count']);
     };
 
-    var om_wire_chartOptions = {
-        chart: {
-          height: 220,
-          type: 'pie',
-          events: {
-            mounted: (chart) => {
-              chart.windowResizeHandler();
-            },
-          },
-        },
-        plotOptions: {
-          pie: {
-            dataLabels: {
-              offset: 8
-            },
-          },
-        },
-        dataLabels: {
-          enabled: true,
-          formatter(val, opts) {
-            const name = opts.w.globals.labels[opts.seriesIndex]
-            return [name+' ' + val.toFixed(1) + '%']
-          },
-          style: {
-            fontSize: '14px',
-            colors: [app.color.white],
-            fontWeight: 400
-          },
-        },
-        stroke: {
-          show: false
-        },
-        legend: {
-          show: false,
-          position: 'left',
-        },
-        colors: ["#b76306", "#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
-        labels: wire_pieDataItem,
-        series: wire_pieDataCount,
-        tooltip: {
-          theme: 'dark',
-          x: {
-            show: true
-          },
-          y: {
-            title: {
-              formatter: function (val) {
-                return '' + val + "<br>" + " Count:"
-              }
-            },
-            formatter: (value) => { return '' + value },
-          }
-        }
-    };
-    var om_wire_chart = new ApexCharts(document.querySelector('#om_wire_chart'),om_wire_chartOptions);
-    om_wire_chart.render();
-
-
-
-
-    //--------------------------------------------------------------------------
-    // OM- om_vp_chart
-    //--------------------------------------------------------------------------
     var virtual_pieDataItem = []
     var virtual_pieDataCount = []
-
     for (var i = 0; i < dataList.virtual_pieData.length; i++) {
         virtual_pieDataItem.push(dataList.virtual_pieData[i]['item']);
         virtual_pieDataCount.push(dataList.virtual_pieData[i]['count']);
     };
 
-    var om_vp_chartOptions = {
-        chart: {
-          height: 220,
-          type: 'pie',
-          events: {
-            mounted: (chart) => {
-              chart.windowResizeHandler();
+    function createDonutChart(divId, seriesData, labelsData) {
+        var donutOptions = {
+            series: seriesData,
+            chart: {
+                type: 'donut',
+                width: '100%',
+                height: 220
             },
-          },
-        },
-        plotOptions: {
-          pie: {
+            colors: ['#009D83', 'rgba(' + app.color.themeRgb + ', 1)', '#B8A89A', '#46537B', '#2F4858'],
+            labels: labelsData,
             dataLabels: {
-              offset: 8
+                enabled: true,
+                style: {
+                    colors: ["rgba(" + app.color.whiteRgb + ", 1)"],
+                    fontWeight: '300'
+                },
+                formatter(val, opts) {
+                    const name = opts.w.globals.labels[opts.seriesIndex];
+                    return [name + ' ' + val.toFixed(1) + '%'];
+                }
             },
-          },
-        },
-        dataLabels: {
-          enabled: true,
-          formatter(val, opts) {
-            const name = opts.w.globals.labels[opts.seriesIndex]
-            return [name+' ' + val.toFixed(1) + '%']
-          },
-          style: {
-            fontSize: '14px',
-            colors: [app.color.white],
-            fontWeight: 400
-          },
-        },
-        stroke: {
-          show: false
-        },
-        legend: {
-          show: false,
-          position: 'left',
-        },
-        colors: ["#b76306", "#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
-        labels: virtual_pieDataItem,
-        series: virtual_pieDataCount,
-        tooltip: {
-          theme: 'dark',
-          x: {
-            show: true
-          },
-          y: {
-            title: {
-              formatter: function (val) {
-                return '' + val + "<br>" + " Count:"
-              }
+            stroke: {
+                width: 0
             },
-            formatter: (value) => { return '' + value },
-          }
-        }
-    };
-    var om_vp_chart = new ApexCharts(document.querySelector('#om_vp_chart'),om_vp_chartOptions);
-    om_vp_chart.render();
+            fill: {
+                type: 'gradient'
+            },
+            legend: {
+                position: 'bottom',
+                formatter: function(val, opts) {
+                    const seriesValue = opts.w.globals.series[opts.seriesIndex];
+                    return val + ": " + seriesValue + "대";
+                }
+            }
+        };
+        var donut_chart = new ApexCharts(document.querySelector("#" + divId), donutOptions);
+        donut_chart.render();
+    }
+
+    createDonutChart("os_donut", os_pieDataCount, os_pieDataItem);
+    createDonutChart("wire_donut", wire_pieDataCount, wire_pieDataItem);
+    createDonutChart("vp_donut", virtual_pieDataCount, virtual_pieDataItem);
 
     //--------------------------------------------------------------------------
-    // OM_관리자산 om_m_chart
+    // 자산 관리 현황 관리 자산, 미관리 자산, 예상 유휴 자산 라인차트
     //--------------------------------------------------------------------------
-    var allAsset_lineDataItem = []
-    var allAsset_lineDataCount = []
-    //console.log(dataList)
-    for (var i = 0; i < dataList.allAsset_lineData.length; i++) {
-        allAsset_lineDataItem.push(dataList.allAsset_lineData[i]['item']);
-        allAsset_lineDataCount.push(dataList.allAsset_lineData[i]['count']);
-    };
-    var om_m_chartOptions = {
-        chart: {
-          height: 145,
-          type: 'line',
-          toolbar: {
-            show: false
-          },
-          events: {
-            mounted: (chart) => {
-              chart.windowResizeHandler();
-            }
-          },
-        },
-        colors: ['rgba(' + app.color.themeRgb + ', .95)', 'rgba(' + app.color.themeRgb + ', .30)'],
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: 'smooth',
-          width: 3
-        },
-        grid: {
-          row: {
-            colors: ['rgba(' + app.color.whiteRgb + ', .25)', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
-        },
-        markers: {
-          size: 1,
-        },
-        series: [{
-            data: allAsset_lineDataCount
-        }],
-        xaxis: {
-          categories: allAsset_lineDataItem,
-          labels: {
-            show: true,
-          },
-          tooltip: {
-            enabled: false,
-          },
-        },
-        yaxis: {
-          labels: {
-            show: true,
-            formatter: function (val) {
-              return Math.round(val);
-            }
-          }
-        },
-        tooltip: {
-          theme: 'dark',
-          x: {
-            show: true,
-          },
-          y: {
-            title: {
-              formatter: function () {
-                return 'Count'
-              }
-            },
-            formatter: (value) => { return '' + value },
-          }
-        },
-        legend: {
-          show: false,
-          position: 'top',
-          offsetY: 1,
-          horizontalAlign: 'right',
-          floating: true,
-        }
-    };
-    var om_m_chart = new ApexCharts(
-    document.querySelector('#om_m_chart'),om_m_chartOptions);
-    om_m_chart.render();
-
-   //--------------------------------------------------------------------------
-    // OM_미관리자산 om_um_chart
-    //--------------------------------------------------------------------------
-    var discover_lineDataItem = []
-    var discover_lineDataCount = []
-    //console.log(dataList)
-    for (var i = 0; i < dataList.discover_lineData.length; i++) {
-        discover_lineDataItem.push(dataList.discover_lineData[i]['item']);
-        discover_lineDataCount.push(dataList.discover_lineData[i]['count']);
-    };
-
-    var om_um_chartOptions = {
-        chart: {
-          height: 145,
-          type: 'line',
-          toolbar: {
-            show: false
-          },
-          events: {
-            mounted: (chart) => {
-              chart.windowResizeHandler();
-            }
-          },
-        },
-        colors: ['rgba(' + app.color.themeRgb + ', .95)', 'rgba(' + app.color.themeRgb + ', .30)'],
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: 'smooth',
-          width: 3
-        },
-        grid: {
-          row: {
-            colors: ['rgba(' + app.color.whiteRgb + ', .25)', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
-        },
-        markers: {
-          size: 1,
-        },
-        series: [{
-            data: discover_lineDataCount
-        }],
-        xaxis: {
-          categories: discover_lineDataItem,
-          labels: {
-            show: true,
-          },
-          tooltip: {
-            enabled: false,
-          },
-        },
-        yaxis: {
-          labels: {
-            show: true,
-            formatter: function (val) {
-              return Math.round(val);
-            }
-          }
-        },
-        tooltip: {
-          theme: 'dark',
-          x: {
-            show: true,
-          },
-          y: {
-            title: {
-              formatter: function () {
-                return 'Count'
-              }
-            },
-            formatter: (value) => { return '' + value },
-          }
-        },
-        legend: {
-          show: false,
-          position: 'top',
-          offsetY: 1,
-          horizontalAlign: 'right',
-          floating: true
-        }
-    };
-    var om_um_chart = new ApexCharts(
-    document.querySelector('#om_um_chart'),om_um_chartOptions);
-    om_um_chart.render();
-
-
-
-
-
-
-
-
-
-
-
-
-    //--------------------------------------------------------------------------
-    // Total quantity of servers - apexTotalServerChart Virtual
-    //--------------------------------------------------------------------------
-    var idle_lineDataItem = []
-    var idle_lineDataCount = []
-    for (var i = 0; i < dataList.idle_lineData.length; i++) {
-        idle_lineDataItem.push(dataList.idle_lineData[i]['item']);
-        idle_lineDataCount.push(dataList.idle_lineData[i]['count']);
-    };
-
-
-    //console.log(dataList.idle_lineData);
-    var idle_chart = {
-        chart: {
-          height: 145,
-          type: 'line',
-          toolbar: {
-            show: false
-          },
-          events: {
-            mounted: (chart) => {
-              chart.windowResizeHandler();
-            }
-          },
-        },
-        colors: ['rgba(' + app.color.themeRgb + ', .95)', 'rgba(' + app.color.themeRgb + ', .30)'],
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: 'smooth',
-          width: 3
-        },
-        grid: {
-          row: {
-            colors: ['rgba(' + app.color.whiteRgb + ', .25)', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
-        },
-        markers: {
-          size: 1,
-        },
-        series: [{
-            data: idle_lineDataCount
-        }],
-        xaxis: {
-          categories: idle_lineDataItem,
-          labels: {
-            show: true,
-          },
-          tooltip: {
-            enabled: false,
-          },
-        },
-        yaxis: {
-          labels: {
-            show: true,
-            formatter: function (val) {
-              return Math.round(val);
-            }
-          }
-        },
-        tooltip: {
-          theme: 'dark',
-          x: {
-            show: true,
-          },
-          y: {
-            title: {
-              formatter: function (val) {
-                return '' + val
-              }
-            },
-            formatter: (value) => { return '' + value },
-          }
-        },
-        legend: {
-          show: false,
-          position: 'top',
-          offsetY: 1,
-          horizontalAlign: 'right',
-          floating: true
-        }
-    };
-    var idle_line_chart = new ApexCharts(
-    document.querySelector('#idle_chart'),idle_chart);
-    idle_line_chart.render();
-
     var asset_counts = dataList.allAsset_lineData.map(function(item) {
-        return item.count;
+        return {x: item.item, y: item.count};
     });
     var discover_counts = dataList.discover_lineData.map(function(item) {
-        return item.count;
+        return {x: item.item, y: item.count};
     });
     var idle_counts = dataList.idle_lineData.map(function(item) {
-        return item.count;
+        return {x: item.item, y: item.count};
     });
 
     var asset_overview_chart_options = {
@@ -792,8 +221,9 @@ var handleRenderChartNCOMG = function () {
       chart: {
         type: 'line',
         background: 'transparent',
-        foreColor: '#fff',
-        height: 350,
+        foreColor: 'rgba(255, 255, 255, 0.75)',
+        height: 200,
+        width: '100%',
         toolbar: {
             show: true,
             tools: {
@@ -808,23 +238,51 @@ var handleRenderChartNCOMG = function () {
       grid: {
         borderColor: 'rgba(144, 164, 174, 0.5)'
       },
-      colors: ['#FF9F0C', '#B8A89A', '#009D83'],
+      colors: ['#009D83', 'rgba(' + app.color.themeRgb + ', 1)', '#B8A89A', ],
+      dataLabels: {
+        enabled: true,
+        background: {
+            enabled: true,
+            foreColor: 'rgba(29, 40, 53, 0.95)'
+        },
+        dropShadow: {
+            enabled: false,
+        },
+        style: {
+            fontSize: '9px',
+        }
+      },
       xaxis: {
-        type: 'category'
+        type: 'category',
+        categories: dataList.allAsset_lineData.map(function(item) {
+            return item.item;
+        })
       },
       yaxis: {
         title: {
           text: 'Count'
         }
+      },
+      legend: {
+        markers: {
+          fillColors: ['#009D83', 'rgba(' + app.color.themeRgb + ', 1)', '#B8A89A', ]
+        },
+        itemMargin: {
+          horizontal: 20
+        },
+        labels: {
+          colors: 'rgba(255, 255, 255, 0.75)',
+        },
+        position: 'top'
       }
     };
 
     var asset_overview_chart = new ApexCharts(document.querySelector('#asset_overview_chart'), asset_overview_chart_options);
     asset_overview_chart.render();
-
 };
+
 $(document).ready(function () {
-handleRenderChartNCOMG();
+    handleRenderChartNCOMG();
 });
 
 

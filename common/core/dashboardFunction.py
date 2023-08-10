@@ -1,6 +1,6 @@
 import logging
 from common.input.db import plug_in as inputDb
-from common.core.transform import plug_in as reportTf, plug_in_action as report_actionTf
+from common.core.transform import plug_in as reportTf, plug_in_action as report_actionTf, plug_in_number as numberTf
 import urllib3
 import json
 
@@ -31,11 +31,13 @@ def Dashboard(type=None):
         report_listData_alarm = []
         report_listData_subnet_isVm_tf = []
         report_listData_action_tf = []
+        allOnline_donutData = []
 
 
             #------------------------------상단 디스크 사용률 도넛 차트------------------------
         try:
-            disk_donutData = inputDb('disk_donutData')
+            disk_donutData_input = inputDb('disk_donutData')
+            disk_donutData = numberTf(disk_donutData_input)
             logger.info('dashboardFunction.py - disk_donutData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
@@ -43,7 +45,8 @@ def Dashboard(type=None):
 
             # -----------------------------상단 메모리 사용률 도넛 차트------------------------------
         try:
-            memory_donutData = inputDb('memory_donutData')
+            memory_donutData_input = inputDb('memory_donutData')
+            memory_donutData = numberTf(memory_donutData_input)
             logger.info('dashboardFunction.py - memory_donutData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
@@ -141,6 +144,15 @@ def Dashboard(type=None):
         except:
             logger.debug('dashboardFunction.py - Error Occurred')
             logger.debug('Error - report_listData_action')
+        # ---------------------------------온라인 상태 전체 자산 수
+        try:
+            allOnline_donutData_input = inputDb('allOnline_donutData')
+            allOnline_donutData = numberTf(allOnline_donutData_input)
+            logger.info('dashboardFunction.py - allOnline_donutData - Success')
+        except:
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - allOnline_donutData')
+
         RD = {
             'disk_donutData': disk_donutData,
             'memory_donutData': memory_donutData,
@@ -157,7 +169,8 @@ def Dashboard(type=None):
             "report_listData_unMgmt_idle": report_listData_unMgmt_idle,
             "report_listData_alarm": report_listData_alarm,
             "report_listData_subnet_isVm": report_listData_subnet_isVm_tf,
-            "report_listData_action_tf": report_listData_action_tf
+            "report_listData_action_tf": report_listData_action_tf,
+            "allOnline_donutData": allOnline_donutData
             }
     else:
         print()
