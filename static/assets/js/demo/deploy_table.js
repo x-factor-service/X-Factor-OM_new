@@ -1,6 +1,7 @@
 
 //deploy 페이지
 var deploy_package = function () {
+    var packSelectBox = document.querySelector('.content_selec');
     var dashboardpopupTable = $('#packageDataTable').DataTable({
         dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>t",
         lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
@@ -13,7 +14,13 @@ var deploy_package = function () {
         ajax: {
             url: 'package/',
             type: "POST",
-
+            data: function (data) {
+                    // 선택한 옵션의 값을 가져옵니다.
+                    var id = packSelectBox.value;
+                    // 가져온 값을 콘솔에 출력하거나 다른 작업을 수행합니다.
+                    return {'id': id,
+                            'search': data.search.value}
+            },
             dataSrc: function (res) {
                 var data = res.item;
                 return data;
@@ -50,12 +57,15 @@ var deploy_package = function () {
             "infoPostFix": "",
         },
         pagingType: 'numbers',
-
-
+    });
+    packSelectBox.addEventListener('change', function() {
+        // 셀렉트 박스의 값이 변경될 때마다 DataTables 테이블을 다시 그립니다.
+        dashboardpopupTable.ajax.reload();
     });
 };
 
 var deploy_computerGroup = function () {
+    var groupSelectBox = document.querySelector('.group_selec');
     var dashboardpopupTable = $('#computerGroupDataTable').DataTable({
         dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'fB>><'align-items-center d-flex justify-content-between'<'mr-auto col-md-6 mb-md-0 mt-n2'i><'mb-0 col-md-6'p>>t",
         lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
@@ -68,19 +78,27 @@ var deploy_computerGroup = function () {
         ajax: {
             url: 'computerGroup/',
             type: "POST",
-
+            data: function (data) {
+                    // 선택한 옵션의 값을 가져옵니다.
+                    var id = groupSelectBox.value;
+                    // 가져온 값을 콘솔에 출력하거나 다른 작업을 수행합니다.
+                    return {'id': id,
+                            'search': data.search.value}
+            },
             dataSrc: function (res) {
                 var data = res.item;
                 return data;
             }
         },
         columns: [
-            {data: 'Name', width: "1%"},
+            {data: 'Name', width: "5%"},
             {data: 'Content_set', width: "5%"},
             {data: 'Expression', width: "15%"},
         ],
         columnDefs: [
             {targets: 0, width: "1%", className: 'text-center'},
+            // , render: function (data, type, row) {
+                    // return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.Name + '" data-toggle="tooltip">'+data+'</div>'}
             {targets: 0, width: "10%", className: 'text-center'},
             {targets: 0, width: "15%", className: 'text-center'}
         ],
@@ -106,7 +124,10 @@ var deploy_computerGroup = function () {
         pagingType: 'numbers',
 
     });
-
+    groupSelectBox.addEventListener('change', function() {
+        // 셀렉트 박스의 값이 변경될 때마다 DataTables 테이블을 다시 그립니다.
+        dashboardpopupTable.ajax.reload();
+    });
 };
 
 
@@ -118,20 +139,30 @@ $(document).ready(function () {
     $("#packageDataTable").on('click', 'tbody tr', function () {
         $clickedRow = $(this);
         var isClicked = $clickedRow.hasClass('clicked');
+
+        // 원래 클릭했던 곳의 색을 없애기 위해 다른 행들의 클래스를 제거합니다.
+        $('#packageDataTable tbody tr').not($clickedRow).removeClass('clicked').css('background-color', '');
+
         $clickedRow.addClass('clicked');
         var tdValue = $clickedRow.find('td:eq(0)').text();
+        var parentElement = document.getElementById("colval3");
+        var parentElement1 = document.getElementById("pack");
          // 클릭한 행의 상태에 따라 동작을 처리합니다.
         if (isClicked) {
             document.getElementById("registry").disabled = false;
             var divElement1 = document.getElementById("colVal1");
             var divElement2 = document.getElementById("colVal3");
-            var parentElement = document.getElementById("colval3");
             divElement1.classList.remove("col-3"); // 기존 클래스 제거
             divElement1.classList.add("col-5"); // 새로운 클래스 추가
             divElement2.style.display = "none";
             divElement1.style.paddingRight = colVal2OriginalPaddingRight;// 새로운 클래스 추가
+            // colval3 안에 있는 div 태그 모두 삭제
             while (parentElement.firstChild) {
                 parentElement.removeChild(parentElement.firstChild);
+            }
+            // pack 안에 있는 div 태그 모두 삭제
+            while (parentElement1.firstChild) {
+                parentElement1.removeChild(parentElement1.firstChild);
             }
             // 클릭한 행이 이미 선택된 상태인 경우 선택 해제
             $clickedRow.removeClass('clicked');
@@ -140,9 +171,17 @@ $(document).ready(function () {
             // $('tbody tr').removeClass('disabled');
             $('#packageDataTable tbody tr').css('pointer-events', 'auto');
         } else {
+            // colval3 안에 있는 div 태그 모두 삭제
+            while (parentElement.firstChild) {
+                parentElement.removeChild(parentElement.firstChild);
+            }
+            // pack 안에 있는 div 태그 모두 삭제
+            while (parentElement1.firstChild) {
+                parentElement1.removeChild(parentElement1.firstChild);
+            }
             document.getElementById("registry").disabled = true;
             // 클릭한 행을 선택 상태로 하이라이트하고 다른 행의 클릭을 비활성화
-            $('#packageDataTable tbody tr').not($clickedRow).css('pointer-events', 'none');
+            // $('#packageDataTable tbody tr').not($clickedRow).css('pointer-events', 'none');
             // $('tbody tr').not($clickedRow).addClass('disabled');
             $clickedRow.addClass('clicked');
             resultP.innerHTML = tdValue + '<br>';
@@ -158,34 +197,22 @@ $(document).ready(function () {
                   // 성공적인 응답을 받았을 때 수행할 동작을 정의합니다.
                     console.log('성공:', response);
                     if (typeof response.a === 'number' && response.a > 0) {
+                        param(response.a)
+                    } else {
+                        // colval3 안에 있는 div 태그 모두 삭제
+                        while (parentElement.firstChild) {
+                            parentElement.removeChild(parentElement.firstChild);
+                        }
+                        // pack 안에 있는 div 태그 모두 삭제
+                        while (parentElement1.firstChild) {
+                            parentElement1.removeChild(parentElement1.firstChild);
+                        }
                         var divElement1 = document.getElementById("colVal1");
                         var divElement2 = document.getElementById("colVal3");
-                        divElement1.classList.remove("col-5"); // 기존 클래스 제거
-                        divElement1.classList.add("col-3"); // 새로운 클래스 추가
+                        divElement1.classList.remove("col-3"); // 기존 클래스 제거
+                        divElement1.classList.add("col-5"); // 새로운 클래스 추가
                         divElement2.style.display = "none";
-                        divElement1.style.paddingRight = "0";// 새로운 클래스 추가
-                        divElement2.removeAttribute("style");
-                        var parentElement = document.getElementById("colval3"); // input 박스를 추가할 부모 요소를 가져옴
-                        for (var i = 1; i <= 10; i++) {
-                          // div 태그 생성
-                            var divElement = document.createElement("div");
-                            divElement.textContent = "parameter " + i;
-                          // input 요소 생성
-                            var inputElement = document.createElement("input");
-                            var inputhidden = document.createElement("input");
-                            inputElement.type = "text";
-                            inputhidden.type = "hidden";
-                            inputElement.name = "param" + i;
-                            inputElement.classList.add("form-control", "inBox");
-                          // div 태그에 input 요소 추가
-                            divElement.appendChild(inputElement);
-                          // div 태그를 부모 요소에 추가
-                            parentElement.appendChild(divElement);
-                          // 줄 바꿈
-                            var brElement = document.createElement("br");
-                            parentElement.appendChild(brElement);
-                        }
-                    } else {
+                        divElement1.style.paddingRight = colVal2OriginalPaddingRight;// 새로운 클래스 추가
                         return
                     }
                 },
@@ -196,6 +223,40 @@ $(document).ready(function () {
             });
         }
     });
+
+    function param(count){
+        var divElement1 = document.getElementById("colVal1");
+        var divElement2 = document.getElementById("colVal3");
+        divElement1.classList.remove("col-5"); // 기존 클래스 제거
+        divElement1.classList.add("col-3"); // 새로운 클래스 추가
+        divElement2.style.display = "none";
+        divElement1.style.paddingRight = "0";// 새로운 클래스 추가
+        divElement2.removeAttribute("style");
+        var parentElement = document.getElementById("colval3"); // input 박스를 추가할 부모 요소를 가져옴
+        var parentElement1 = document.getElementById("pack"); // input 박스를 추가할 부모 요소를 가져옴
+        for (var i = 1; i <= count; i++) {
+            // div 태그 생성
+            var divElement = document.createElement("div");
+            divElement.textContent = "parameter " + i;
+            // input 요소 생성
+            var inputElement = document.createElement("input");
+            var inputHidden = document.createElement("input");
+            inputElement.type = "text";
+            inputHidden.type = "hidden";
+            inputElement.name = "param" + i;
+            inputHidden.name = "hiddenn" + i;
+            inputElement.classList.add("form-control");
+            // div 태그에 input 요소 추가
+            divElement.appendChild(inputElement);
+            // div 태그를 부모 요소에 추가
+            parentElement.appendChild(divElement);
+            parentElement1.appendChild(inputHidden);
+            // 줄 바꿈
+            var brElement = document.createElement("br");
+            parentElement.appendChild(brElement);
+        }
+    }
+
 
     $("#computerGroupDataTable").on('click', 'tbody tr', function () {
         var $clickedRow = $(this);
@@ -228,6 +289,7 @@ $(document).ready(function () {
     var outputP = document.getElementById('cb1');
     var outputC = document.getElementById('cb2');
     var inputs = document.querySelectorAll('.outputP, .outputC');
+    var parentElement1 = document.getElementById("pack");
 
     inputs.forEach(function (input) {
         input.addEventListener('input', function () {
@@ -238,7 +300,10 @@ $(document).ready(function () {
     document.getElementById('action_btn').addEventListener('click', function (event) {
         var outputPValue = document.getElementById('outputP').textContent;
         var outputCValue = document.getElementById('outputC').textContent;
-        alert('')
+        var inputElements = document.querySelectorAll("#colval3 input");
+        var parentElement = document.getElementById("colval3");
+
+
         inputs.forEach(function (input) {
             if (input.value === '') {
                 input.classList.add('error-border');
@@ -257,6 +322,20 @@ $(document).ready(function () {
             document.getElementById('outputPValue').value = outputPValue;
             document.getElementById('outputCValue').value = outputCValue;
         }
+
+        inputElements.forEach(function(inputElement, index) {
+            var hiddenInput = document.querySelector('input[name="hiddenn' +(index+1)+'"]');
+            var paramInput = document.querySelector('input[name="param' +(index+1)+'"]');
+            if (hiddenInput.length > 1) {
+                hiddenInput.value = inputElement.value;
+                paramInput.classList.remove("error")
+                alert(inputElement.value)
+            }else {
+                event.preventDefault();
+                paramInput.classList.add("error")
+                errorMsgDiv.textContent = '파라미터 값을 입력해 주세요.';
+            }
+          });
     });
         deploy_package();
         deploy_computerGroup();

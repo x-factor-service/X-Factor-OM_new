@@ -98,13 +98,25 @@ def deploy_action(request):
     return render(request, 'deploy/deploy.html', returnData)
 
 def deploy_action_val(request):
-    #print(request.user)
-    #print(request.POST.get('outputPValue'))
+    input_values = []
+    ivCnt = 0
+    for i in range(1, 100):  # 최대 100개의 인풋 태그를 처리할 수 있도록 범위 설정
+        key = 'hiddenn' + str(i)
+        value = request.POST.getlist(key)
+        if not value:  # 빈 리스트인 경우 루프를 중단
+            break
+        input_values.extend(value)
+
+    ivCnt = len(input_values)
+    print(ivCnt)
+    print("입력된 값들:", input_values[0])
+
     if request.POST.get('outputPValue') == None or request.POST.get('outputCValue') == None or request.POST.get('outputPValue') == '' or request.POST.get('outputCValue') == '':
         print("pass")
         pass
     else:
         packName = request.POST.get('outputPValue')
+        print(packName)
         comName = request.POST.get('outputCValue')
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
         SKURL = apiUrl + SesstionKeyPath
@@ -129,19 +141,41 @@ def deploy_action_val(request):
         CSRJ = json.loads(CSRT)
 
         AURL = apiUrl + '/api/v2/actions'
-        body = {
-            "action_group": {
-                "id": 4
-            },
-            "package_spec": {
-                "id": PSRJ['data']['id']
-            },
-            "name": "Sample Action",
-            "expire_seconds": 3600,
-            "target_group": {
-                "id": CSRJ['data']['id']
+        if not input_values:
+            body = {
+                "action_group": {
+                    "id": 4
+                },
+                "package_spec": {
+                    "id": PSRJ['data']['id']
+                },
+                "name": "Sample Action",
+                "expire_seconds": 3600,
+                "target_group": {
+                    "id": CSRJ['data']['id']
+                }
             }
-        }
+        else:
+            body = {
+                "action_group": {
+                    "id": 4
+                },
+                "package_spec": {
+                    "source_id": PSRJ['data']['id'],
+                    "parameters": []
+
+                },
+                "name": "Sample Action",
+                "target_group": {
+                    "id": CSRJ['data']['id']
+                }
+            }
+            # 포문으로 키와 값을 추가
+            for i in range(ivCnt):
+                key = f"${i+1}"
+                value = input_values[i]
+                body["package_spec"]["parameters"].append({"key": key, "value": value})
+        print(body)
         CAQ = requests.post(AURL, headers=PSQ, json=body, verify=False)
         if CAQ.status_code == 200:
             DPAD = DETR(CAQ.json(), request.session['sessionid'], 'deploy')
@@ -152,8 +186,10 @@ def deploy_action_val(request):
 @csrf_exempt
 def package_paging(request):
     if Customer == 'NC' or Customer == 'Xfactor':
-        search = request.POST.get('search[value]')
-
+        search = request.POST.get('search')
+        con_set = request.POST.get('id')
+        if con_set is None:
+            con_set = 'Default'
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
         SKURL = apiUrl + SesstionKeyPath
         SKR = requests.post(SKURL, data=SKH, verify=False)
@@ -168,28 +204,34 @@ def package_paging(request):
         responsePack = requests.get(PURL, headers=PSQ, verify=False)
         dataP = responsePack.json()
         packageList = []
-        groupsList = []
+        # print(con_set)
         for i in range(len(dataP['data']) - 1):
-            if dataP['data'][i]['content_set']['name'] == 'Default' and len(search) < 1:
-                packageList.append({'id': dataP['data'][i]['id'], 'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
-                                    'Command': dataP['data'][i]['command'], 'Command_Timeout': dataP['data'][i]['command_timeout']})
-            elif dataP['data'][i]['content_set']['name'] == 'Default':
+            if con_set == 'all':
                 if dataP['data'][i]['name'].startswith(search) or dataP['data'][i]['content_set']['name'].startswith(search) or dataP['data'][i]['command'].startswith(search):
                     packageList.append({'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
                                         'Command': dataP['data'][i]['command']})
-
+            elif dataP['data'][i]['content_set']['name'] == con_set and search is None:
+                packageList.append({'id': dataP['data'][i]['id'], 'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
+                                    'Command': dataP['data'][i]['command'], 'Command_Timeout': dataP['data'][i]['command_timeout']})
+            elif dataP['data'][i]['content_set']['name'] == con_set:
+                if dataP['data'][i]['name'].startswith(search) or dataP['data'][i]['content_set']['name'].startswith(search) or dataP['data'][i]['command'].startswith(search):
+                    packageList.append({'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
+                                        'Command': dataP['data'][i]['command']})
         Count = len(packageList)
         RD = {'item': packageList,
-              'recordsTotal': Count,
-              'recordsFiltered': Count,
-              }
+                'recordsTotal': Count,
+                'recordsFiltered': Count,
+                }
         return JsonResponse(RD)
 
 @csrf_exempt
 def computerGroup_paging(request):
     if Customer == 'NC' or Customer == 'Xfactor':
-        search = request.POST.get('search[value]')
-
+        search = request.POST.get('search')
+        print(search)
+        con_set = request.POST.get('id')
+        if con_set is None:
+            con_set = ''
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
         SKURL = apiUrl + SesstionKeyPath
         SKR = requests.post(SKURL, data=SKH, verify=False)
@@ -210,9 +252,12 @@ def computerGroup_paging(request):
 
 
         for i in range(len(dataG['data']) - 1):
-            if len(search) < 1:
+            if con_set == 'all':
+                if dataG['data'][i]['name'].startswith(search) or dataG['data'][i]['content_set']['name'].startswith(search) or dataG['data'][i]['text'].startswith(search):
+                    groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
+            elif dataG['data'][i]['content_set']['name'] == con_set and search is None:
                 groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
-            else:
+            elif dataG['data'][i]['content_set']['name'] == con_set:
                 if dataG['data'][i]['name'].startswith(search) or dataG['data'][i]['content_set']['name'].startswith(search) or dataG['data'][i]['text'].startswith(search):
                     groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
 

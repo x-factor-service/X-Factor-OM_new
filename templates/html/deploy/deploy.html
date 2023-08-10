@@ -20,8 +20,22 @@
                 <!-- BEGIN card-body -->
                 <div class="card-body">
                     <div style="display: flex; justify-content: space-between;">
+                    <div class="d-flex">
                     <div style="text-align: left; font-size: 30px; font-weight: bold">Packages</div>
-                        <button type="button" id="registry" class="btn btn-default" style="height: 35px; margin-right: 10px">registry</button>
+                        <ul class="nav nav-tabs2 nav-tabs-v2 px-3" role="tablist">
+                            <li class="btn1" role="presentation" id="registry" style="height: 35px; margin-top: 10px; margin-right: 10px; font-size: 15px; font-weight: bold; color: #2ec799">Regi mod</li>
+                        </ul>
+                    </div>
+                        <select style="width: 130px; height: 35px; margin-right: 10px;" class="form-select content_selec" aria-label=".form-select-lg example" name="type">
+                            <option value="Default" selected disabled hidden>Content Set</option>
+                            <option value="all">all</option>
+                            <option value="Default">Default</option>
+                            <option value="Asset">Asset</option>
+                            <option value="SBOM">SBOM</option>
+                            <option value="Client Management">Client Management</option>
+                            <option value="Incident Response">Incident Response</option>
+                            <option value="Endpoint Configuration">Endpoint Configuration</option>
+                        </select>
                     </div>
                     <div class="deploy-scroll">
                     <table id="packageDataTable" class="table-sm-se w-100 text-white text-opacity-100">
@@ -32,6 +46,7 @@
                         <th style="width: 30%">Command</th>
                     </tr>
                     </thead>
+
 {#                        <tbody class="fs-12px mb-2">#}
 {#                        {% for data in chartData.packageList %}#}
 {#                        <tr class="clickP">#}
@@ -143,8 +158,8 @@
 {#                        <input class="form-control inBox" type="text" name="param1">#}
 {#                        </div>#}
 {#                        <br>#}
-                            <input type="hidden" id="outputCGValue" name="outputCGValue">
                         </div>
+                            <input type="hidden" id="outputCGValue" name="outputCGValue">
                     </form>
                     <br>
 
@@ -205,6 +220,7 @@
             </div>
                 <input type="hidden" id="outputPValue" name="outputPValue">
                 <input type="hidden" id="outputCValue" name="outputCValue">
+                <div id="pack"></div>
                 <br>
                 <div id="errorMsg" style="color:orange; text-align: center;">&nbsp <br><br></div>
             <div style="display: flex; justify-content: center; margin-top: 20px;">
@@ -223,6 +239,13 @@
                 <div class="card-body">
                     <div style="display: flex; justify-content: space-between;">
                     <div style="text-align: left; font-size: 30px; font-weight: bold">Computer Groups</div>
+                    <select style="width: 130px; height: 35px; margin-right: 10px" class="form-select group_selec" aria-label=".form-select-lg example" name="type">
+                          <option value="all" selected disabled hidden>Content Set</option>
+                          <option value="all">all</option>
+                          <option value="Default Filter Groups">Default Filter Groups</option>
+                          <option value="Default">Default</option>
+                          <option value="Reserved">Reserved</option>
+                    </select>
                     </div>
                     <!-- BEGIN title -->
                     <!-- <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo osVersion-moreInfo"><i class="fas fa-ellipsis-h"></i></button> -->
@@ -328,12 +351,13 @@
     var resultP = document.getElementById('outputP');
     var divElement1 = document.getElementById("colVal1");
     var divElement2 = document.getElementById("colVal2");
+
     function modifyClass() {
 
         colVal2OriginalPaddingRight = window.getComputedStyle(divElement2).getPropertyValue("padding-right");
         document.getElementById("action_btn").disabled = true;
-
         if (divElement1.classList.contains('col-5')){
+            $('#packageDataTable').DataTable().destroy();
             resultP.innerHTML = '';
             divElement1.classList.remove("col-5"); // 기존 클래스 제거
             divElement1.classList.add("col-3");
@@ -436,6 +460,39 @@
     }
 });
     window.setTimeout('window.location.reload()', 600000);
+
+function param(count){
+    var divElement1 = document.getElementById("colVal1");
+    var divElement2 = document.getElementById("colVal3");
+    divElement1.classList.remove("col-5"); // 기존 클래스 제거
+    divElement1.classList.add("col-3"); // 새로운 클래스 추가
+    divElement2.style.display = "none";
+    divElement1.style.paddingRight = "0";// 새로운 클래스 추가
+    divElement2.removeAttribute("style");
+    var parentElement = document.getElementById("colval3"); // input 박스를 추가할 부모 요소를 가져옴
+    var parentElement1 = document.getElementById("pack"); // input 박스를 추가할 부모 요소를 가져옴
+    for (var i = 1; i <= count; i++) {
+        // div 태그 생성
+        var divElement = document.createElement("div");
+        divElement.textContent = "parameter " + i;
+        // input 요소 생성
+        var inputElement = document.createElement("input");
+        var inputHidden = document.createElement("input");
+        inputElement.type = "text";
+        inputHidden.type = "hidden";
+        inputElement.name = "param" + i;
+        inputHidden.name = "hiddenn" + i;
+        inputElement.classList.add("form-control");
+        // div 태그에 input 요소 추가
+        divElement.appendChild(inputElement);
+        // div 태그를 부모 요소에 추가
+        parentElement.appendChild(divElement);
+        parentElement1.appendChild(inputHidden);
+        // 줄 바꿈
+        var brElement = document.createElement("br");
+        parentElement.appendChild(brElement);
+    }
+}
 
 </script>
 {% endblock %}
