@@ -108,14 +108,14 @@ def deploy_action_val(request):
         input_values.extend(value)
 
     ivCnt = len(input_values)
-    print(ivCnt)
+    #print(ivCnt)
 
     if request.POST.get('outputPValue') == None or request.POST.get('outputCValue') == None or request.POST.get('outputPValue') == '' or request.POST.get('outputCValue') == '':
-        print("pass")
+        #print("pass")
         pass
     else:
         packName = request.POST.get('outputPValue')
-        print(packName)
+        #print(packName)
         comName = request.POST.get('outputCValue')
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
         SKURL = apiUrl + SesstionKeyPath
@@ -174,7 +174,7 @@ def deploy_action_val(request):
                 key = f"${i+1}"
                 value = input_values[i]
                 body["package_spec"]["parameters"].append({"key": key, "value": value})
-        print(body)
+        #print(body)
         CAQ = requests.post(AURL, headers=PSQ, json=body, verify=False)
         if CAQ.status_code == 200:
             DPAD = DETR(CAQ.json(), request.session['sessionid'], 'deploy')
@@ -227,7 +227,7 @@ def package_paging(request):
 def computerGroup_paging(request):
     if Customer == 'NC' or Customer == 'Xfactor':
         search = request.POST.get('search')
-        print(search)
+        #print(search)
         con_set = request.POST.get('id')
         if con_set is None:
             con_set = ''
@@ -278,7 +278,7 @@ def packCheck(request):
     SKRJ = json.loads(SKRT)
     SK = SKRJ['data']['session']
 
-    print("SessionKey 불러오기 성공")
+    #print("SessionKey 불러오기 성공")
 
     PSQ = {'session': SK, 'Content-Type': 'application/json'}
     PURL = apiUrl + '/api/v2/packages/by-name/' + packName
@@ -286,7 +286,7 @@ def packCheck(request):
     dataP = responsePack.json()
     # print(dataP['data']['command'])
     a = dataP['data']['command'].count('$')
-    print(a)
+    #print(a)
     RD = {'a': a}
 
     return JsonResponse(RD)

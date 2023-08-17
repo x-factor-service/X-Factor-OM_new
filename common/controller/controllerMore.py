@@ -82,7 +82,6 @@ def highDiskApp_more_paging(request):
     search = request.POST.get('search[value]')
     page = math.ceil(start / length) + 1
     data = [str(length), str(page), str(search), str(id)]
-    print(data)
     SMD = PDPI('highDiskApp_listDataMore', data)
     SMC = PDPI('highDiskApp_listDataMoreCount', data)
     RD = {"item": SMD}

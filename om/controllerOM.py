@@ -660,7 +660,7 @@ def send_reboot_view(request):
             SKRT = SKR.content.decode('utf-8', errors='ignore')
             SKRJ = json.loads(SKRT)
             SK = SKRJ['data']['session']
-            print("SessionKey 불러오기 성공")
+            #print("SessionKey 불러오기 성공")
 
             ################ Computer Group 만들기 ###################
             CCGH = {'session': SK, 'Content-Type': 'text/plain'}
@@ -711,7 +711,7 @@ def send_off_process_view(request):
             SKRT = SKR.content.decode('utf-8', errors='ignore')
             SKRJ = json.loads(SKRT)
             SK = SKRJ['data']['session']
-            print("SessionKey 불러오기 성공")
+            #print("SessionKey 불러오기 성공")
 
             # Computer Group 만들기
             CCGH = {'session': SK, 'Content-Type': 'text/plain'}

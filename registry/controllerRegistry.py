@@ -222,7 +222,7 @@ def package_paging(request):
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 
-        print("SessionKey 불러오기 성공")
+        #print("SessionKey 불러오기 성공")
 
         PSQ = {'session': SK, 'Content-Type': 'application/json'}
         PURL = apiUrl + '/api/v2/packages'
@@ -258,7 +258,7 @@ def computerGroup_paging(request):
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 
-        print("SessionKey 불러오기 성공")
+        #print("SessionKey 불러오기 성공")
 
         PSQ = {'session': SK, 'Content-Type': 'application/json'}
         PURL = apiUrl + '/api/v2/packages'
