@@ -317,11 +317,11 @@ def DashboardData():
                         if connectIpData[i][0].startswith('::'):
                             break
                         else:
-                            split = connectIpData[i][0].split(':')
+                            split = connectIpData[i][2].split('_')
                             ip = split[0]
-                            host = split[1]
-                            name = connectIpData[i][2]
-                            connectIpDataList.append({'ip': ip, 'name': name, 'host': host, 'count': connectIpData[i][1]})
+                            host = ip.split(':')[1]
+                            name = split[1]
+                            connectIpDataList.append({'ip': ip, 'name': name, 'host': host, 'count': connectIpData[i][3]})
                     if not connectIpData:
                         connectIpDataExcept = [{'ip': '-', 'host': '-', 'count': '-'}]
                         connectIpDataList = connectIpDataExcept * 3

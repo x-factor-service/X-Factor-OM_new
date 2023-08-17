@@ -312,14 +312,14 @@ def plug_in(table, day, type):
             elif day == 'connectDestinationIpMore':
                 query = """
                         select
-                            ms.item, ms.item_count,msl.computer_name
+                            mssi.item, mssi.item_count,coalesce (msl.computer_name, 'Virtual/Service IP')as computer_name
                         from 
-                            (select * from minutely_statistics ms where
-                            classification = 'session_ip' and statistics_collection_date >= '""" + DBSelectTime + """' and item != 'NO' order by item_count::INTEGER desc limit 50) as ms                             
+                            (select * from minutely_statistics_session_ip mssi where
+                            classification = 'session_ip' and statistics_collection_date >= '""" + DBSelectTime + """' and item != 'NO' order by item_count::INTEGER desc limit 50) as mssi                       
                         left join 
-                            minutely_statistics_list as msl                        
+                            (select ipv_address, computer_name from minutely_statistics_list where asset_list_statistics_collection_date >= '""" + DBSelectTime + """') as msl                        
                         on 
-                            split_part(ms.item,':',1) = msl.ipv_address  
+                            split_part(mssi.item,':',1) = msl.ipv_address  
                         where     
                             classification = 'session_ip' and item != 'NO'
                         and
@@ -328,7 +328,7 @@ def plug_in(table, day, type):
                              (item Ilike '%""" + type[2] + """%' or             
                              item_count Ilike '%""" + type[2] + """%')
                         order by 
-                            item_count::INTEGER desc
+                            item_count::INTEGER desc, item asc
                         LIMIT """ + type[0] + """
                         OFFSET (""" + type[1] + """-1) * """ + type[0] + """
 
@@ -362,13 +362,13 @@ def plug_in(table, day, type):
                         select
                             Count(*)
                         from 
-                            (select * from minutely_statistics ms where
-                            classification = 'session_ip' and statistics_collection_date >= '""" + DBSelectTime + """' and item != 'NO' order by item_count::INTEGER desc limit 50) as ms 
+                            (select * from minutely_statistics_session_ip mssi where
+                            classification = 'session_ip' and statistics_collection_date >= '""" + DBSelectTime + """' and item != 'NO' order by item_count::INTEGER desc limit 50) as mssi
 
                         left join 
-                            minutely_statistics_list as msl
+                            (select ipv_address, computer_name from minutely_statistics_list where asset_list_statistics_collection_date >= '""" + DBSelectTime + """') as msl 
                         on 
-                            split_part(ms.item,':',1) = msl.ipv_address
+                            split_part(mssi.item,':',1) = msl.ipv_address
                         where
                             (item Ilike '%""" + type[2] + """%' or
                             item_count Ilike '%""" + type[2] + """%')
@@ -1046,17 +1046,16 @@ def plug_in(table, day, type):
                 elif type == 'ip':
                     query = """
                             select
-                                item, item_count, minutely_statistics_list.computer_name
+                                minutely_statistics_unique, classification, item, item_count
                             from
                                 minutely_statistics
-                            join minutely_statistics_list
-                            on split_part(minutely_statistics.item,':',1) = minutely_statistics_list.ipv_address
                             where
-                                classification = 'session_ip' and item != 'NO'
+                                classification = 'session_ip_computer_name'
                             and
                                 statistics_collection_date >= '""" + DBSelectTime + """'
                             order by
-                                item_count::INTEGER desc limit 3
+                                item_count::INTEGER desc 
+                            limit 3
                     """
                 # --------------------------------------------NewDashboard Pie Chart (OM)---------------------------------------
                 elif type == 'wire':
