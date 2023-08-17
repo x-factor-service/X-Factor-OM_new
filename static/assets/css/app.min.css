@@ -31189,26 +31189,37 @@ tr {
 }
 
 .btn1 {
-    border-bottom: 2px solid #2ec799;
     height: 35px;
     margin-top: 10px;
     margin-right: 10px;
     font-size: 15px;
     font-weight: bold;
-    color: #2ec799;
-    transition: border-bottom 0.3s;
-  }
-
-  .btn1:hover {
+    color: #3dd5f3;
+    background-color: transparent;
     border-top: 2px solid transparent;
+    border-bottom 2px solid transparent;
     border-right: 2px solid transparent;
     border-left: 2px solid transparent;
   }
 
-  .btn1:hover:not(#registry) {
-    border-bottom: 2px solid #2ec799;
+  .btn1:hover {
+    /*border-top: 2px solid transparent;*/
+    /*border-right: 2px solid transparent;*/
+    /*border-left: 2px solid transparent;*/
+       transform: translateY(-2px);
+        opacity: 0.8;
+        cursor: pointer;
   }
 
-.mt-4half {
-    margin-top: 2rem !important
+  .btn1:hover:not(#registry) {
+  }
+
+li.disabled {
+    color: gray;      /* 비활성화된 아이템의 글자색 변경 */
+    pointer-events: none;  /* 클릭 이벤트 비활성화 */
 }
+
+.disabled-span {
+        pointer-events: none; /* 클릭 및 이벤트 차단 */
+        opacity: 0.6; /* 비활성화된 모양으로 표시 */
+    }
