@@ -85,6 +85,8 @@ var handleRenderChartNCOMG = function () {
     document.querySelector("#disk-bar").style.width = disk_widthPercentage + "%";
     var mem_widthPercentage = (dataList.memory_donutData / dataList.allOnline_donutData) * 100;
     document.querySelector("#mem-bar").style.width = mem_widthPercentage + "%";
+    var cpu_widthPercentage = (dataList.cpu_donutData / dataList.allOnline_donutData) * 100;
+    document.querySelector("#cpu-bar").style.width = cpu_widthPercentage + "%";
     var om_disk_chartOptions = {
         series: [20, 20, 20, 20, 20],
         chart: {

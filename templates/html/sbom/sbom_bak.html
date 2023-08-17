@@ -1,0 +1,58 @@
+{% extends 'common/base.html' %}
+{% block content %}
+{% load static %}
+<div id="content" class="p-2rem">
+    <div class="row justify-content-between">
+        <div class="col-1800-7 col-xxxl-6 col-lg-12">
+            <div id="sbom_dataTable_wrapper" class="card mb-5">
+                <div class="card-body text-white text-opacity-100"><div style="text-align: center; font-size: 40px; font-weight: bold">SBOM</div>
+                <table id="sbom_dataTable" class="table-sm-se w-100 text-white text-opacity-100 sbom-table-fix">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Packages Name</th>
+                        <th>Version</th>
+                        <th>CPE</th>
+                        <th>Type</th>
+                        <th>Count</th>
+                    </tr>
+                    </thead>
+                </table>
+                </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1800-5 col-xxxl-6 col-lg-12">
+            <div class="card mb-5">
+                <div class="card-body text-white text-opacity-100"><div style="text-align: center; font-size: 40px; font-weight: bold">공개 소프트웨어 보안 취약점</div>
+                <table id="sbom_cveTable" class="table-sm-se w-100 text-white text-opacity-100 sbom-table-fix">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>컴포넌트명</th>
+                        <th>컴포넌트 버전</th>
+                        <th>CVE ID</th>
+                        <th>심각도</th>
+                        <th>최종 보고일</th>
+                        <th>number</th>
+                    </tr>
+                    </thead>
+                </table>
+                </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

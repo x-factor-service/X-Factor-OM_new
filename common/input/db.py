@@ -21,7 +21,7 @@ day = datetime.today().strftime("%Y-%m-%d")
 RSU = SETTING['FILE']['RunningService_Except']['USE']
 
 
-def plug_in(type, threeData=None):
+def plug_in(type, data=None):
     try:
         FiveMinuteAgo = (datetime.today() - timedelta(minutes=5)).strftime("%Y-%m-%d %H:%M:%S")
         DBSelectTime = (datetime.today() - timedelta(minutes=DBSettingTime)).strftime("%Y-%m-%d %H:%M:%S")
@@ -68,7 +68,7 @@ def plug_in(type, threeData=None):
                         from
                             minutely_statistics
                         where 
-                            item = 'CPU Consumption#2'
+                            item = 'cpu95'
                             and statistics_collection_date >= '""" + DBSelectTime + """'
             """
         # -----------------------------상단 오에스 파이차트 ------------------------------------
@@ -193,21 +193,21 @@ def plug_in(type, threeData=None):
                         where 
                             crt_name != 'Root'
                         and
-                            crt_name = '""" + threeData[3] + """'
+                            crt_name = '""" + data[3] + """'
                         AND
                             collection_date >= '""" + yesterday + """'    
                         and
-                            (computer_name ILIKE '%""" + threeData[2] + """%' or
-                            os ILIKE '%""" + threeData[2] + """%' or
-                            ip ILIKE '%""" + threeData[2] + """%' or
-                            crt_name ILIKE '%""" + threeData[2] + """%' or
-                            crt_expire_date ILIKE '%""" + threeData[2] + """%')
+                            (computer_name ILIKE '%""" + data[2] + """%' or
+                            os ILIKE '%""" + data[2] + """%' or
+                            ip ILIKE '%""" + data[2] + """%' or
+                            crt_name ILIKE '%""" + data[2] + """%' or
+                            crt_expire_date ILIKE '%""" + data[2] + """%')
                         GROUP BY 
                             crt_name, crt_expire_date, computer_name, os, ip
                         order by 
                             crt_expire_date asc
-                        LIMIT """ + threeData[0] + """
-                        OFFSET (""" + threeData[1] + """-1) * """ + threeData[0] + """
+                        LIMIT """ + data[0] + """
+                        OFFSET (""" + data[1] + """-1) * """ + data[0] + """
                     """
 
         elif type == 'cert_listDataMoreCount':
@@ -219,66 +219,183 @@ def plug_in(type, threeData=None):
                         where 
                             crt_name != 'Root' 
                         and
-                            crt_name = '""" + threeData[3] + """'
+                            crt_name = '""" + data[3] + """'
                         and
-                            (crt_name ILIKE '%""" + threeData[2] + """%' or
-                            crt_expire_date ILIKE '%""" + threeData[2] + """%' or
-                            computer_name ILIKE '%""" + threeData[2] + """%' or
-                            os ILIKE '%""" + threeData[2] + """%' or
-                            ip ILIKE '%""" + threeData[2] + """%') 
+                            (crt_name ILIKE '%""" + data[2] + """%' or
+                            crt_expire_date ILIKE '%""" + data[2] + """%' or
+                            computer_name ILIKE '%""" + data[2] + """%' or
+                            os ILIKE '%""" + data[2] + """%' or
+                            ip ILIKE '%""" + data[2] + """%') 
                         and    
                             collection_date >= '""" + yesterday + """'  
                     """
         # -----------------------------최대 CPU 점유 프로세스 더보기 및 카운트-------------
         elif type == 'highCpuProc_listData' :
             query = """
-                        SELECT proc_name, COUNT(*)
-                        FROM high_cpu_proc
-                        WHERE collection_date >= '""" + DBSelectTime + """'  
-                        GROUP BY proc_name
+                        SELECT task_name, COUNT(*)
+                        FROM high_resource
+                        WHERE 
+                            resource = 'cpu'
+                        and
+                            collection_date >= '""" + DBSelectTime + """'  
+                        GROUP BY task_name
                         ORDER BY COUNT DESC
                         LIMIT 14
                     """
         elif type == 'highCpuProc_listDataMore':
             query = """
-                        select computer_name, os, ip, proc_name
-                        from high_cpu_proc 
-                        where proc_name = '""" + threeData[3] + """'  
+                        select computer_name, os, ip, task_name
+                        from high_resource
+                        where
+                            resource = 'cpu'
                         and
-                            (computer_name ILIKE '%""" + threeData[2] + """%' or
-                            os ILIKE '%""" + threeData[2] + """%' or
-                            ip ILIKE '%""" + threeData[2] + """%' or
-                            proc_name ILIKE '%""" + threeData[2] + """%')
+                            task_name = '""" + data[3] + """'  
+                        and
+                            (computer_name ILIKE '%""" + data[2] + """%' or
+                            os ILIKE '%""" + data[2] + """%' or
+                            ip ILIKE '%""" + data[2] + """%' or
+                            task_name ILIKE '%""" + data[2] + """%')
                         and
                             collection_date >= '""" + DBSelectTime + """'  
                         GROUP BY
-                            computer_name, os, ip, proc_name
+                            computer_name, os, ip, task_name
                         ORDER BY
                             computer_name
-                        LIMIT """ + threeData[0] + """
-                        OFFSET (""" + threeData[1] + """-1) * """ + threeData[0] + """
+                        LIMIT """ + data[0] + """
+                        OFFSET (""" + data[1] + """-1) * """ + data[0] + """
                     """
         elif type == 'highCpuProc_listDataMoreCount':
             query = """
                         select
                             COUNT(*)
                         from 
-                            high_cpu_proc 
-                        where 
-                            proc_name = '""" + threeData[3] + """'
+                            high_resource
+                        where
+                            resource = 'cpu'
+                        and 
+                            task_name = '""" + data[3] + """'
                         and
-                            (proc_name ILIKE '%""" + threeData[2] + """%' or
-                            computer_name ILIKE '%""" + threeData[2] + """%' or
-                            os ILIKE '%""" + threeData[2] + """%' or
-                            ip ILIKE '%""" + threeData[2] + """%')
+                            (task_name ILIKE '%""" + data[2] + """%' or
+                            computer_name ILIKE '%""" + data[2] + """%' or
+                            os ILIKE '%""" + data[2] + """%' or
+                            ip ILIKE '%""" + data[2] + """%')
                         and
                             collection_date >= '""" + DBSelectTime + """'  
 
                     """
-        # -----------------하단 OM 일일 리포트 - 자산 통계 정보-----------------
+
+        # -----------------------------최대 MEMORY 점유 프로세스 더보기 및 카운트-------------
+        elif type == 'highMemProc_listData' :
+            query = """
+                        SELECT task_name, COUNT(*)
+                        FROM high_resource
+                        WHERE 
+                            resource = 'mem'
+                        and
+                            collection_date >= '""" + DBSelectTime + """'  
+                        GROUP BY task_name
+                        ORDER BY COUNT DESC
+                        LIMIT 14
+                    """
+        elif type == 'highMemProc_listDataMore':
+            query = """
+                        select computer_name, os, ip, task_name
+                        from high_resource
+                        where
+                            resource = 'mem'
+                        and
+                            task_name = '""" + data[3] + """'  
+                        and
+                            (computer_name ILIKE '%""" + data[2] + """%' or
+                            os ILIKE '%""" + data[2] + """%' or
+                            ip ILIKE '%""" + data[2] + """%' or
+                            task_name ILIKE '%""" + data[2] + """%')
+                        and
+                            collection_date >= '""" + DBSelectTime + """'  
+                        GROUP BY
+                            computer_name, os, ip, task_name
+                        ORDER BY
+                            computer_name
+                        LIMIT """ + data[0] + """
+                        OFFSET (""" + data[1] + """-1) * """ + data[0] + """
+                    """
+        elif type == 'highMemProc_listDataMoreCount':
+            query = """
+                        select
+                            COUNT(*)
+                        from 
+                            high_resource
+                        where
+                            resource = 'mem'
+                        and 
+                            task_name = '""" + data[3] + """'
+                        and
+                            (task_name ILIKE '%""" + data[2] + """%' or
+                            computer_name ILIKE '%""" + data[2] + """%' or
+                            os ILIKE '%""" + data[2] + """%' or
+                            ip ILIKE '%""" + data[2] + """%')
+                        and
+                            collection_date >= '""" + DBSelectTime + """'  
+
+                    """
+        # -----------------------------최대 DISK 점유 어플리케이션 더보기 및 카운트-------------
+        elif type == 'highDiskApp_listData' :
+            query = """
+                        SELECT task_name, COUNT(*)
+                        FROM high_resource
+                        WHERE 
+                            resource = 'disk'
+                        and
+                            collection_date >= '""" + DBSelectTime + """'  
+                        GROUP BY task_name
+                        ORDER BY COUNT DESC
+                        LIMIT 14
+                    """
+        elif type == 'highDiskApp_listDataMore':
+            query = """
+                        select computer_name, os, ip, task_name
+                        from high_resource
+                        where
+                            resource = 'disk'
+                        and
+                            task_name = '""" + data[3] + """'  
+                        and
+                            (computer_name ILIKE '%""" + data[2] + """%' or
+                            os ILIKE '%""" + data[2] + """%' or
+                            ip ILIKE '%""" + data[2] + """%' or
+                            task_name ILIKE '%""" + data[2] + """%')
+                        and
+                            collection_date >= '""" + DBSelectTime + """'  
+                        GROUP BY
+                            computer_name, os, ip, task_name
+                        ORDER BY
+                            computer_name
+                        LIMIT """ + data[0] + """
+                        OFFSET (""" + data[1] + """-1) * """ + data[0] + """
+                    """
+        elif type == 'highDiskApp_listDataMoreCount':
+            query = """
+                        select
+                            COUNT(*)
+                        from 
+                            high_resource
+                        where
+                            resource = 'disk'
+                        and 
+                            task_name = '""" + data[3] + """'
+                        and
+                            (task_name ILIKE '%""" + data[2] + """%' or
+                            computer_name ILIKE '%""" + data[2] + """%' or
+                            os ILIKE '%""" + data[2] + """%' or
+                            ip ILIKE '%""" + data[2] + """%')
+                        and
+                            collection_date >= '""" + DBSelectTime + """'  
+
+                    """
+        # -----------------OM 일일 리포트 - 자산 통계 정보-----------------
         elif type == 'report_listData_unMgmt_idle':
-            report_yesterday = (threeData - timedelta(days=1)).strftime('%Y-%m-%d')
-            report_twodays = (threeData - timedelta(days=2)).strftime('%Y-%m-%d')
+            report_yesterday = (data - timedelta(days=1)).strftime('%Y-%m-%d')
+            report_twodays = (data - timedelta(days=2)).strftime('%Y-%m-%d')
             query = """
                         SELECT 
                             item, TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count
@@ -293,9 +410,9 @@ def plug_in(type, threeData=None):
                         ORDER BY
                             statistics_collection_date ASC;            
                     """
-        # -----------------하단 OM 일일 리포트 - 전일 발송된 알람 정보-----------
+        # -----------------OM 일일 리포트 - 전일 발송된 알람 정보-----------
         elif type == 'report_listData_alarm':
-            report_yesterday = (threeData - timedelta(days=1)).strftime('%Y-%m-%d')
+            report_yesterday = (data - timedelta(days=1)).strftime('%Y-%m-%d')
             query = """
                         SELECT
                             item, TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count
@@ -306,10 +423,10 @@ def plug_in(type, threeData=None):
                             AND
                                 TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') = '""" + report_yesterday + """'
                     """
-        # ---------------------------------하단 OM 일일 리포트 - IP대역별 관리 자산 현황
+        # ---------------------------------OM 일일 리포트 - IP대역별 관리 자산 현황
         elif type == 'report_listData_subnet_isVm':
-            report_yesterday = (threeData - timedelta(days=1)).strftime('%Y-%m-%d')
-            report_twodays = (threeData - timedelta(days=2)).strftime('%Y-%m-%d')
+            report_yesterday = (data - timedelta(days=1)).strftime('%Y-%m-%d')
+            report_twodays = (data - timedelta(days=2)).strftime('%Y-%m-%d')
             query = """
                         SELECT 
                             classification, TO_CHAR(statistics_collection_date, 'YYYY-MM-DD'), item_count, item
@@ -322,9 +439,9 @@ def plug_in(type, threeData=None):
                         ORDER BY
                             statistics_collection_date ASC, classification DESC; 
                     """
-        # -----------------하단 OM 일일 리포트 - 배포 성공한 Package-----------
+        # -----------------OM 일일 리포트 - 배포 성공한 Package-----------
         elif type == 'report_listData_action':
-            report_yesterday = (threeData - timedelta(days=1)).strftime('%Y-%m-%d')
+            report_yesterday = (data - timedelta(days=1)).strftime('%Y-%m-%d')
             query = """
                         SELECT
                             admin, package, computer_group
@@ -348,7 +465,7 @@ def plug_in(type, threeData=None):
         Cur.execute(query)
         RS = Cur.fetchall()
         for R in RS:
-            if type in ['os_pieData', 'wire_pieData', 'virtual_pieData', 'discover_lineData', 'idle_lineData', 'allAsset_lineData', 'highCpuProc_listData']:
+            if type in ['os_pieData', 'wire_pieData', 'virtual_pieData', 'discover_lineData', 'idle_lineData', 'allAsset_lineData', 'highCpuProc_listData', 'highMemProc_listData', 'highDiskApp_listData']:
                 SDL.append(dict(
                     (
                         ('item', R[0]),

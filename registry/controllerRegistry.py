@@ -44,7 +44,7 @@ def registry(request):
             SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
             SKURL = apiUrl + SesstionKeyPath
             SKR = requests.post(SKURL, data=SKH, verify=False)
-            SKRT = SKR.content.decode('utf-8')
+            SKRT = SKR.content.decode('utf-8', errors='ignore')
             SKRJ = json.loads(SKRT)
             SK = SKRJ['data']['session']
 
@@ -93,7 +93,7 @@ def change_registry(request):
     SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
     SKURL = apiUrl + SesstionKeyPath
     SKR = requests.post(SKURL, data=SKH, verify=False)
-    SKRT = SKR.content.decode('utf-8')
+    SKRT = SKR.content.decode('utf-8', errors='ignore')
     SKRJ = json.loads(SKRT)
     SK = SKRJ['data']['session']
     PSQ = {'session': SK, 'Content-Type': 'application/json'}
@@ -101,7 +101,7 @@ def change_registry(request):
 
     CURL = apiUrl + '/api/v2/groups/by-name/' + comName
     CSR = requests.get(CURL, headers=PSQ, verify=False)
-    CSRT = CSR.content.decode('utf-8')
+    CSRT = CSR.content.decode('utf-8', errors='ignore')
     CSRJ = json.loads(CSRT)
 
     body = {
@@ -170,7 +170,7 @@ def deploy_action_val(request):
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
         SKURL = apiUrl + SesstionKeyPath
         SKR = requests.post(SKURL, data=SKH, verify=False)
-        SKRT = SKR.content.decode('utf-8')
+        SKRT = SKR.content.decode('utf-8', errors='ignore')
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 
@@ -184,8 +184,8 @@ def deploy_action_val(request):
         CSR = requests.get(CURL, headers=PSQ, verify=False)
 
         PSRC = PSR.status_code
-        PSRT = PSR.content.decode('utf-8')
-        CSRT = CSR.content.decode('utf-8')
+        PSRT = PSR.content.decode('utf-8', errors='ignore')
+        CSRT = CSR.content.decode('utf-8', errors='ignore')
         PSRJ = json.loads(PSRT)
         CSRJ = json.loads(CSRT)
 
@@ -218,7 +218,7 @@ def package_paging(request):
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
         SKURL = apiUrl + SesstionKeyPath
         SKR = requests.post(SKURL, data=SKH, verify=False)
-        SKRT = SKR.content.decode('utf-8')
+        SKRT = SKR.content.decode('utf-8', errors='ignore')
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 
@@ -254,7 +254,7 @@ def computerGroup_paging(request):
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
         SKURL = apiUrl + SesstionKeyPath
         SKR = requests.post(SKURL, data=SKH, verify=False)
-        SKRT = SKR.content.decode('utf-8')
+        SKRT = SKR.content.decode('utf-8', errors='ignore')
         SKRJ = json.loads(SKRT)
         SK = SKRJ['data']['session']
 

@@ -31177,8 +31177,10 @@ tr {
 }
 
 #report_calendar .datepicker table tr td {
-  font-size: 14px;
+  font-size: 12px;
   height: auto;
+  padding-bottom: 5px;
+  padding-top: 5px;
   line-height: auto;
 }
 
@@ -31207,3 +31209,6 @@ tr {
     border-bottom: 2px solid #2ec799;
   }
 
+.mt-4half {
+    margin-top: 2rem !important
+}

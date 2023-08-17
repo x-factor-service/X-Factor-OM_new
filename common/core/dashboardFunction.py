@@ -27,6 +27,9 @@ def Dashboard(type=None):
         cert_listData = []
         sbom_listData = []
         idle_lineData = []
+        highCpuProc_listData = []
+        highMemProc_listData = []
+        highDiskApp_listData = []
         report_listData_unMgmt_idle = []
         report_listData_alarm = []
         report_listData_subnet_isVm_tf = []
@@ -53,7 +56,8 @@ def Dashboard(type=None):
             logger.warning('Error - memory_donutData')
             # -----------------------------상단 씨피유 사용률 도넛 차트------------------------------
         try:
-            cpu_donutData = inputDb('cpu_donutData')
+            cpu_donutData_input = inputDb('cpu_donutData')
+            cpu_donutData = numberTf(cpu_donutData_input)
             logger.info('dashboardFunction.py - cpu_donutData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
@@ -101,35 +105,49 @@ def Dashboard(type=None):
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - idle_lineData')
-            # -----------------------------하단 인증서리스트  ------------------------------------
+        # -----------------------------인증서리스트  ------------------------------------
         try:
             cert_listData = inputDb('cert_listData')
             logger.info('dashboardFunction.py - cert_listData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - cert_listData')
-            # -----------------------------하단 최대 CPU 점유 프로세스더보기 -----------------------
+        # -----------------------------최대 CPU 점유 프로세스 더보기 -----------------------
         try:
             highCpuProc_listData = inputDb('highCpuProc_listData')
             logger.info('dashboardFunction.py - highCpuProc_listData - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - highCpuProc_listData')
-        # ---------------------------------하단 OM 일일 리포트 - 자산 통계 정보 ---------------------
+        # -----------------------------최대 MEMORY 점유 프로세스 더보기 -----------------------
+        try:
+            highMemProc_listData = inputDb('highMemProc_listData')
+            logger.info('dashboardFunction.py - highMemProc_listData - Success')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - highMemProc_listData')
+        # -----------------------------최대 DISK 점유 어플리케이션 더보기 -----------------------
+        try:
+            highDiskApp_listData = inputDb('highDiskApp_listData')
+            logger.info('dashboardFunction.py - highDiskApp_listData - Success')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - highDiskApp_listData')
+        # ---------------------------------OM 일일 리포트 - 자산 통계 정보 ---------------------
         try:
             report_listData_unMgmt_idle = inputDb('report_listData_unMgmt_idle', type)
             logger.info('dashboardFunction.py - report_listData_unMgmt_idle - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - report_listData_unMgmt_idle')
-        # ---------------------------------하단 OM 일일 리포트 - 전일 발송된 알람 정보 ---------------
+        # ---------------------------------OM 일일 리포트 - 전일 발송된 알람 정보 ---------------
         try:
             report_listData_alarm = inputDb('report_listData_alarm', type)
             logger.info('dashboardFunction.py - report_listData_alarm - Success')
         except:
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - report_listData_alarm')
-        # ---------------------------------하단 OM 일일 리포트 - IP대역별 관리 자산 현황
+        # ---------------------------------OM 일일 리포트 - IP대역별 관리 자산 현황
         try:
             report_listData_subnet_isVm = inputDb('report_listData_subnet_isVm', type)
             report_listData_subnet_isVm_tf = reportTf(report_listData_subnet_isVm)
@@ -137,7 +155,7 @@ def Dashboard(type=None):
         except:
             logger.debug('dashboardFunction.py - Error Occurred')
             logger.debug('Error - report_listData_subnet_isVm_tf')
-        # ---------------------------------하단 OM 일일 리포트 - 배포 성공한 Package
+        # ---------------------------------OM 일일 리포트 - 배포 성공한 Package
         try:
             report_listData_action = inputDb('report_listData_action', type)
             report_listData_action_tf = report_actionTf(report_listData_action)
@@ -166,6 +184,8 @@ def Dashboard(type=None):
             "sbom_listData": sbom_listData,
             "idle_lineData": idle_lineData,
             "highCpuProc_listData": highCpuProc_listData,
+            "highMemProc_listData": highMemProc_listData,
+            "highDiskApp_listData": highDiskApp_listData,
             "report_listData_unMgmt_idle": report_listData_unMgmt_idle,
             "report_listData_alarm": report_listData_alarm,
             "report_listData_subnet_isVm": report_listData_subnet_isVm_tf,

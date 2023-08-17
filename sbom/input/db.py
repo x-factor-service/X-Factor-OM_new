@@ -149,6 +149,120 @@ def plug_in(table, day, type):
                     score Ilike '%""" + type[2] + """%' or
                     vuln_last_reported Ilike '%""" + type[2] + """%'         
             """
+        if table == 'cve_in_sbom':
+            column_names = ["comp_name", "comp_ver", "cve_id", "score", "vuln_last_reported", "number"]
+            order_column_index = int(type[3]) - 1
+            order_column_name = column_names[order_column_index]
+            order_direction = type[4]
+            if order_column_name == "score":
+                order_by_clause = "CAST(substring(score FROM '\\d+\\.\\d+') AS FLOAT) " + order_direction
+            else:
+                order_by_clause = order_column_name + " " + order_direction
+            query = """
+                SELECT 
+                    comp_name, comp_ver, cve_id, score, vuln_last_reported, number
+                FROM sbom_cve
+                WHERE EXISTS (
+                    SELECT 1
+                    FROM sbom_list
+                    WHERE
+                    (
+                        (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_name, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_name, '%'))
+                        AND
+                        (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_ver, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_ver, '%'))
+                    )
+                )
+                AND
+                    (
+                    comp_name Ilike '%""" + type[2] + """%' or
+                    comp_ver Ilike '%""" + type[2] + """%' or
+                    cve_id Ilike '%""" + type[2] + """%' or
+                    score Ilike '%""" + type[2] + """%' or
+                    vuln_last_reported Ilike '%""" + type[2] + """%'
+                    )
+                order by """ + order_by_clause + """
+                LIMIT """ + type[0] + """
+                OFFSET (""" + type[1] + """ -1) * """ + type[0] + """
+            """
+        if table == 'cve_in_sbom_count':
+            query="""
+                SELECT 
+                    COUNT(*)
+                FROM sbom_cve
+                                WHERE EXISTS (
+                    SELECT 1
+                    FROM sbom_list
+                    WHERE
+                    (
+                        (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_name, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_name, '%'))
+                        AND
+                        (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_ver, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_ver, '%'))
+                    )
+                )
+                AND
+                (
+                    comp_name Ilike '%""" + type[2] + """%' or
+                    comp_ver Ilike '%""" + type[2] + """%' or
+                    cve_id Ilike '%""" + type[2] + """%' or
+                    score Ilike '%""" + type[2] + """%' or
+                    vuln_last_reported Ilike '%""" + type[2] + """%'
+                )
+            """
+        if table == 'sbom_in_cve':
+            column_names = ["name", "version", "cpe", "type", "count"]
+            order_column_name = column_names[int(type[3]) - 1]
+            order_direction = type[4]
+            query = """
+                        SELECT name, version, cpe, type, count
+                        FROM sbom_list
+                        WHERE EXISTS (
+                            SELECT 1
+                            FROM sbom_cve
+                            WHERE
+                            (
+                                (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_name, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_name, '%'))
+                                AND
+                                (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_ver, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_ver, '%'))
+                            )
+                        )
+                        AND
+                            (
+                            name Ilike '%""" + type[2] + """%' or
+                            version Ilike '%""" + type[2] + """%' or
+                            cpe Ilike '%""" + type[2] + """%' or
+                            type Ilike '%""" + type[2] + """%' or
+                            count Ilike '%""" + type[2] + """%'
+                            )
+                        order by 
+                            """ + order_column_name + """ """ + order_direction + """
+                        LIMIT """ + type[0] + """
+                        OFFSET (""" + type[1] + """ -1) * """ + type[0] + """
+                    """
+        if table == 'sbom_in_cve_count':
+            query = """
+                        SELECT 
+                            COUNT(*)
+                        FROM sbom_list
+                        WHERE EXISTS (
+                            SELECT 1
+                            FROM sbom_cve
+                            WHERE
+                            (
+                                (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_name, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_name, '%'))
+                                AND
+                                (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_ver, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_ver, '%'))
+                            )
+                        )
+                        AND
+                        (
+                            name Ilike '%""" + type[2] + """%' or
+                            version Ilike '%""" + type[2] + """%' or
+                            cpe Ilike '%""" + type[2] + """%' or
+                            type Ilike '%""" + type[2] + """%' or
+                            count Ilike '%""" + type[2] + """%'
+                        )
+                    """
+        #print(query)
         Cur.execute(query)
         RS = Cur.fetchall()
         for i, R in enumerate(RS, start=1):
@@ -164,7 +278,7 @@ def plug_in(table, day, type):
                         ('usage', str(R[4]))
                     )
                 ))
-            elif day == 'sbom':
+            elif day == 'sbom' or day == 'sbom_in_cve':
                 index = (int(type[1]) - 1) * int(type[0]) + i
                 SDL.append(dict(
                     (
@@ -251,7 +365,7 @@ def plug_in(table, day, type):
 
                     )
                 ))
-            elif day == 'sbom_cve':
+            elif day == 'sbom_cve' or day =='cve_in_sbom':
                 index = (int(type[1]) - 1) * int(type[0]) + i
                 SDL.append(dict(
                     (

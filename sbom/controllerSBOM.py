@@ -39,7 +39,7 @@ menuListDB = MenuSetting()
 # SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
 # SKURL = apiUrl + SesstionKeyPath
 # SKR = requests.post(SKURL, data=SKH, verify=False)
-# SKRT = SKR.content.decode('utf-8')
+# SKRT = SKR.content.decode('utf-8', errors='ignore')
 # SKRJ = json.loads(SKRT)
 # SK = SKRJ['data']['session']
 #
@@ -128,9 +128,47 @@ def sbom_cve_paging(request):
                   }
     return JsonResponse(returnData)
 
+@csrf_exempt
+def cve_in_sbom(request):
+    draw = int(request.POST.get('draw'))
+    start = int(request.POST.get('start'))
+    length = int(request.POST.get('length'))
+    search = request.POST.get('search[value]')
+    order_column = int(request.POST.get('order[0][column]'))
+    order_direction = request.POST.get('order[0][dir]')
 
+    page = math.ceil(start / length) + 1
+    data = [str(length), str(page), str(search), order_column, order_direction]
+    Data = SDPI('cve_in_sbom', 'cve_in_sbom', data)
+    Count = SDPI('cve_in_sbom_count', '', data)
+    RD = {'item': Data}
+    returnData = {'data': RD,
+                  'draw': draw,
+                  'recordsTotal': Count,
+                  'recordsFiltered': Count,
+                  }
+    return JsonResponse(returnData)
 
+@csrf_exempt
+def sbom_in_cve(request):
+    draw = int(request.POST.get('draw'))
+    start = int(request.POST.get('start'))
+    length = int(request.POST.get('length'))
+    search = request.POST.get('search[value]')
+    order_column = int(request.POST.get('order[0][column]'))
+    order_direction = request.POST.get('order[0][dir]')
 
+    page = math.ceil(start / length) + 1
+    data = [str(length), str(page), str(search), order_column, order_direction]
+    Data = SDPI('sbom_in_cve', 'sbom_in_cve', data)
+    Count = SDPI('sbom_in_cve_count', '', data)
+    RD = {'item': Data}
+    returnData = {'data': RD,
+                  'draw': draw,
+                  'recordsTotal': Count,
+                  'recordsFiltered': Count,
+                  }
+    return JsonResponse(returnData)
 
 
 
@@ -138,7 +176,7 @@ def sbom_cve_paging(request):
     # SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
     # SKURL = apiUrl + SesstionKeyPath
     # SKR = requests.post(SKURL, data=SKH, verify=False)
-    # SKRT = SKR.content.decode('utf-8')
+    # SKRT = SKR.content.decode('utf-8', errors='ignore')
     # SKRJ = json.loads(SKRT)
     # SK = SKRJ['data']['session']
     #
@@ -195,7 +233,7 @@ def sbom_cve_paging(request):
 #     SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
 #     SKURL = apiUrl + SesstionKeyPath
 #     SKR = requests.post(SKURL, data=SKH, verify=False)
-#     SKRT = SKR.content.decode('utf-8')
+#     SKRT = SKR.content.decode('utf-8', errors='ignore')
 #     SKRJ = json.loads(SKRT)
 #     SK = SKRJ['data']['session']
 #     print("SessionKey 불러오기 성공")

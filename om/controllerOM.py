@@ -657,7 +657,7 @@ def send_reboot_view(request):
             SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
             SKURL = apiUrl + SesstionKeyPath
             SKR = requests.post(SKURL, data=SKH, verify=False)
-            SKRT = SKR.content.decode('utf-8')
+            SKRT = SKR.content.decode('utf-8', errors='ignore')
             SKRJ = json.loads(SKRT)
             SK = SKRJ['data']['session']
             print("SessionKey 불러오기 성공")
@@ -708,7 +708,7 @@ def send_off_process_view(request):
             SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
             SKURL = apiUrl + SesstionKeyPath
             SKR = requests.post(SKURL, data=SKH, verify=False)
-            SKRT = SKR.content.decode('utf-8')
+            SKRT = SKR.content.decode('utf-8', errors='ignore')
             SKRJ = json.loads(SKRT)
             SK = SKRJ['data']['session']
             print("SessionKey 불러오기 성공")
