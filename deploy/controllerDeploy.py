@@ -109,7 +109,6 @@ def deploy_action_val(request):
 
     ivCnt = len(input_values)
     print(ivCnt)
-    print("입력된 값들:", input_values[0])
 
     if request.POST.get('outputPValue') == None or request.POST.get('outputCValue') == None or request.POST.get('outputPValue') == '' or request.POST.get('outputCValue') == '':
         print("pass")
@@ -181,7 +180,7 @@ def deploy_action_val(request):
             DPAD = DETR(CAQ.json(), request.session['sessionid'], 'deploy')
             DEOP(DPAD, 'action_log')
 
-        return redirect('deploy')
+    return redirect('deploy')
 
 @csrf_exempt
 def package_paging(request):

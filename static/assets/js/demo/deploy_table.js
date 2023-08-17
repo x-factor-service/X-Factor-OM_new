@@ -11,6 +11,11 @@ var deploy_package = function () {
         serverSide: true,
         displayLength: false,
         paging: false,
+        destroy: true,
+        order: [
+            [ 2, "desc"],
+            [ 0, "asc"]
+        ],
         ajax: {
             url: 'package/',
             type: "POST",
@@ -27,14 +32,20 @@ var deploy_package = function () {
             }
         },
         columns: [
-            {data: 'Name', width: "5%"},
-            {data: 'Content_set', width: "5%"},
-            {data: 'Command', width: "15%"},
+            {data: 'Name', width: "15%"},
+            {data: 'Content_set', width: "10%"},
+            {data: 'Command', width: "35%"},
         ],
         columnDefs: [
-            {targets: 0, width: "1%", className: 'text-center'},
-            {targets: 1, width: "10%", className: 'text-center'},
-            {targets: 2, width: "15%", className: 'text-center'}
+            {targets: 0, className: 'text-center', render: function (data, type, row) {
+                    return '<span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; max-width: 200px;" title="' + row.Name + '" data-toggle="tooltip">' + data + '</span>'
+                }},
+            {targets: 1, className: 'text-center', render: function (data, type, row) {
+                    return '<span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; max-width: 100px;" title="' + row.Content_set + '" data-toggle="tooltip">' + data + '</span>'
+                }},
+            {targets: 2, className: 'text-center', render: function (data, type, row) {
+                    return '<span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; max-width: 300px;" title="' + row.Command + '" data-toggle="tooltip">' + data + '</span>'
+                }}
         ],
         language: {
             "decimal": "",
@@ -91,16 +102,21 @@ var deploy_computerGroup = function () {
             }
         },
         columns: [
-            {data: 'Name', width: "5%"},
-            {data: 'Content_set', width: "5%"},
-            {data: 'Expression', width: "15%"},
+            {data: 'Name', width: "15%"},
+            {data: 'Content_set', width: "10%"},
+            {data: 'Expression', width: "35%"},
         ],
         columnDefs: [
-            {targets: 0, width: "1%", className: 'text-center'},
-            // , render: function (data, type, row) {
-                    // return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.Name + '" data-toggle="tooltip">'+data+'</div>'}
-            {targets: 0, width: "10%", className: 'text-center'},
-            {targets: 0, width: "15%", className: 'text-center'}
+            {targets: 0, className: 'text-center', render: function (data, type, row) {
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; max-width: 200px;" title="' + row.Name + '" data-toggle="tooltip">' + data + '</div>'
+                }},
+            // , render: funct'<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.Name + '" data-toggle="tooltip">'+data+'</div>'}
+            {targets: 1, className: 'text-center', render: function (data, type, row) {
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; max-width: 100px;" title="' + row.Content_set + '" data-toggle="tooltip">' + data + '</div>'
+                }},
+            {targets: 2, className: 'text-center', render: function (data, type, row) {
+                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; max-width: 300px;" title="' + row.Expression + '" data-toggle="tooltip">' + data + '</div>'
+                }}
         ],
         language: {
             "decimal": "",
@@ -136,6 +152,8 @@ $(document).ready(function () {
     var $clickedRow = ''
     var resultP = document.getElementById('outputP');
     var resultC = document.getElementById('outputC');
+    var isRegistryEnabled = true;
+    var spanElement = document.getElementById('registry');
     $("#packageDataTable").on('click', 'tbody tr', function () {
         $clickedRow = $(this);
         var isClicked = $clickedRow.hasClass('clicked');
@@ -148,13 +166,16 @@ $(document).ready(function () {
         var parentElement = document.getElementById("colval3");
         var parentElement1 = document.getElementById("pack");
          // 클릭한 행의 상태에 따라 동작을 처리합니다.
+        spanElement.classList.remove('disabled-span');
         if (isClicked) {
-            document.getElementById("registry").disabled = false;
             var divElement1 = document.getElementById("colVal1");
-            var divElement2 = document.getElementById("colVal3");
+            //버튼 클릭 시 span 태그의 활성화/비활성화 상태 변경
+            document.getElementById("registry").disabled = false;
+            divElement1 = document.getElementById("colVal1");
+            var divElement3 = document.getElementById("colVal3");
             divElement1.classList.remove("col-3"); // 기존 클래스 제거
             divElement1.classList.add("col-5"); // 새로운 클래스 추가
-            divElement2.style.display = "none";
+            divElement3.style.display = "none";
             divElement1.style.paddingRight = colVal2OriginalPaddingRight;// 새로운 클래스 추가
             // colval3 안에 있는 div 태그 모두 삭제
             while (parentElement.firstChild) {
@@ -171,6 +192,8 @@ $(document).ready(function () {
             // $('tbody tr').removeClass('disabled');
             $('#packageDataTable tbody tr').css('pointer-events', 'auto');
         } else {
+            divElement1 = document.getElementById("colVal1");
+
             // colval3 안에 있는 div 태그 모두 삭제
             while (parentElement.firstChild) {
                 parentElement.removeChild(parentElement.firstChild);
@@ -198,7 +221,14 @@ $(document).ready(function () {
                     console.log('성공:', response);
                     if (typeof response.a === 'number' && response.a > 0) {
                         param(response.a)
+                        //버튼 클릭 시 span 태그의 활성화/비활성화 상태 변경
+                        if (divElement1.classList.contains('col-3')) {
+                            spanElement.classList.add('disabled-span');
+                        }
                     } else {
+                        if (divElement1.classList.contains('col-5')) {
+                            spanElement.classList.remove('disabled-span');
+                        }
                         // colval3 안에 있는 div 태그 모두 삭제
                         while (parentElement.firstChild) {
                             parentElement.removeChild(parentElement.firstChild);
@@ -207,11 +237,11 @@ $(document).ready(function () {
                         while (parentElement1.firstChild) {
                             parentElement1.removeChild(parentElement1.firstChild);
                         }
-                        var divElement1 = document.getElementById("colVal1");
-                        var divElement2 = document.getElementById("colVal3");
+                        divElement1 = document.getElementById("colVal1");
+                        divElement3 = document.getElementById("colVal3");
                         divElement1.classList.remove("col-3"); // 기존 클래스 제거
                         divElement1.classList.add("col-5"); // 새로운 클래스 추가
-                        divElement2.style.display = "none";
+                        divElement3.style.display = "none";
                         divElement1.style.paddingRight = colVal2OriginalPaddingRight;// 새로운 클래스 추가
                         return
                     }
@@ -226,12 +256,12 @@ $(document).ready(function () {
 
     function param(count){
         var divElement1 = document.getElementById("colVal1");
-        var divElement2 = document.getElementById("colVal3");
+        var divElement3 = document.getElementById("colVal3");
         divElement1.classList.remove("col-5"); // 기존 클래스 제거
         divElement1.classList.add("col-3"); // 새로운 클래스 추가
-        divElement2.style.display = "none";
+        divElement3.style.display = "none";
         divElement1.style.paddingRight = "0";// 새로운 클래스 추가
-        divElement2.removeAttribute("style");
+        divElement3.removeAttribute("style");
         var parentElement = document.getElementById("colval3"); // input 박스를 추가할 부모 요소를 가져옴
         var parentElement1 = document.getElementById("pack"); // input 박스를 추가할 부모 요소를 가져옴
         for (var i = 1; i <= count; i++) {
@@ -303,7 +333,6 @@ $(document).ready(function () {
         var inputElements = document.querySelectorAll("#colval3 input");
         var parentElement = document.getElementById("colval3");
 
-
         inputs.forEach(function (input) {
             if (input.value === '') {
                 input.classList.add('error-border');
@@ -318,7 +347,7 @@ $(document).ready(function () {
 
         }else {
             // 두 개의 값이 모두 있는 경우 에러 메시지 제거
-            errorMsgDiv.textContent = ' ';
+            errorMsgDiv.innerHTML = '<br/><br/>';
             document.getElementById('outputPValue').value = outputPValue;
             document.getElementById('outputCValue').value = outputCValue;
         }
@@ -335,7 +364,14 @@ $(document).ready(function () {
                 paramInput.classList.add("error")
                 errorMsgDiv.textContent = '파라미터 값을 입력해 주세요.';
             }
-          });
+
+        });
+            if (confirm("배포하시겠습니까?") == true){
+           //true는 확인버튼을 눌렀을 때 코드 작성
+            }else{
+                event.preventDefault();
+                return;
+            }
     });
         deploy_package();
         deploy_computerGroup();
