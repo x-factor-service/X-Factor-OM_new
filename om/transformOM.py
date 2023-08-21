@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
+
 
 with open("setting.json", encoding="UTF-8") as f:
     SETTING = json.loads(f.read())
@@ -62,19 +62,14 @@ def banner(data, type):
                     name = data[i][1]
             elif data[i][0] == 'virtual' and data[i][0] == 'No':
                 name = 'Virtual'
-            # elif data[i][0] == 'drive_size':
-            #     name = 'Drive Size No Change'
-            # elif data[i][0] == 'login_history':
-            #     name = 'No Login History'
+
             elif data[i][0] == 'listen_port_count_change' and data[i][1] == 'No':
                 name = 'Listen Port No Change'
             elif data[i][0] == 'established_port_count_change' and data[i][1] == 'no':
                 name = 'Established Port No Change'
             else:
                 continue
-            # else:inue
-            # elif data[i][0] == 'ram_use_size':
-            #     name = 'RAM Usage Exceeded'
+
             DFDL.append([name, data[i][2]])
         elif type =='yetodayNC':
             if data[i][0] == 'online_asset':
@@ -130,7 +125,7 @@ def line_chart(data):
     for i in df['date'].drop_duplicates():
         time_array.append(i)
     ext_time = list(set(time_array).intersection(timelist))
-    # asset = df.replace('Rack Mount Chassis', 'Server')
+
     timelist = []
 
     for i in ext_time:
@@ -195,9 +190,7 @@ def alarm(data, type, case):
             else:
                 FDL = [{'id': '-', 'ip': '-', 'alarmText': AT}]
                 ALDL = [{'id': '-', 'ip': '-', 'alarmText': AT}]
-            # else :
-            #     FDL =[{'id' :'-', 'ip':'-', 'alarmText':AT}]
-            #     ALDL =[{'id' :'-', 'ip':'-', 'alarmText':AT}]
+
         RD = {'firstData': FDL, 'dataList': ALDL}
     elif type == 'network':
         DL = []
@@ -301,8 +294,6 @@ def chart_data(data, type):
                 elif type == 'Banner':
                     ChartDataList.append({"name": data['name'][i], "value": int(data['value_y'][i]), "roc": data['ROC'][i]})
 
-    # NC 서버 총수량 추이그래프 (30일)
-    # -----------------------------------------수정 종윤 -----------------------------
     if type == 'Monthly_Line':
         V_date_list = []
         V_count = []
@@ -318,10 +309,7 @@ def chart_data(data, type):
                     date_list.append(str(data[i][2])[5:7]+'월')
                 else:
                     date_list.append(str(data[i][2])[5:7]+'월')
-                # if str(data[i][2]).split("-")[2][0:2].startswith('0'):
-                #     date_list.append(str(data[i][2]).split("-")[2][0:2].replace('0', ""))
-                # else:
-                #     date_list.append(str(data[i][2]).split("-")[2][0:2])
+
 
         ChartDataList = [{"data": [{"name": "virtual", "data": V_count}, {"name": "physical", "data": count}], "date": date_list}]
 
@@ -455,77 +443,3 @@ def network(data, type, case) :
     return RD
 
 
-
-# def chart_data(data, type, statistics) :
-#     if statistics == 'group' :
-#         if type == 'assetItem' :
-#             GBI = 'assetItem'
-#         elif type == 'osItem' :
-#             GBI = 'os'
-#         elif type == 'virtual' :
-#             GBI = 'virtual'
-#         IG = data.groupby([GBI])
-#         IGR = IG.size().reset_index(name='counts')
-#         if type == 'assetItem':
-#             INML = IGR.assetItem
-#         elif type == 'osItem':
-#             INML = IGR.os
-#         elif type == 'virtual':
-#             INML = IGR.virtual
-#         INM = INML.tolist()
-#         ICL = IGR.counts
-#         IC = ICL.tolist()
-#
-#     elif statistics == 'count' :
-#         if type == "CCDL" or type == 'RP' :
-#             DLMerge = data
-#         else :
-#             todayDL = data[0]
-#             yesterdayDL = data[1]
-#             DLMerge = pd.merge(left=todayDL, right=yesterdayDL, how="outer", on="id").sort_values(by="id", ascending=True).reset_index(drop=True)
-#         DTC = len(DLMerge)
-#         if type == 'DUS' :
-#             DUSCY = len(DLMerge['driveSize_x'].compare(DLMerge['driveSize_y']))
-#             INM = [alarmCaseFirst]
-#         elif type == 'LH':
-#             now = datetime.now()
-#             six_month_str = (now - relativedelta(months=6)).strftime("%Y-%m-%d")
-#             DUSCY = len(DLMerge[(DLMerge['lastLogin_x'] < six_month_str)])
-#             INM = [alarmCaseSecond]
-#         elif type == 'RUE':
-#             DUSCY = 0
-#             for i in range(len(DLMerge['id'])):
-#                 if DLMerge['ramSize_x'][i] != 0 and DLMerge['ramSize_y'][i] != 0 :
-#                     usage = DLMerge['ramSize_y'][i]/DLMerge['ramSize_x'][i]*100
-#                     if usage > AlarmRamUsage :
-#                         DUSCY = DUSCY+1
-#             INM = [alarmCaseThird]
-#         elif type == 'LPC':
-#             DUSCY = len(DLMerge['listenPortCount_x'].compare(DLMerge['listenPortCount_y']))
-#             INM = [alarmCaseFourth]
-#         elif type == 'EPC':
-#             DUSCY = len(DLMerge['establishedPortCount_x'].compare(DLMerge['establishedPortCount_y']))
-#             INM = [alarmCaseFifth]
-#         elif type == 'CCDL' :
-#             i = 0;
-#             for x in DLMerge['cpuconsumption'] :
-#                 if x == "[current result unavailable]" or x == "[TSE-Error]" or "Other":
-#                     continue
-#                 if float(x) > 60.0 :
-#                     i = i + 1
-#             DUSCY = i
-#             INM = [alarmCaseSix]
-#         elif type == 'RP' :
-#             i = 0;
-#             for x in DLMerge['runningprocess'] :
-#                 if len(x) > 100 :
-#                     i = i + 1
-#             DUSCY = i
-#             INM = [alarmCaseSeven]
-#         if type == 'LH' or type == 'RUE' or type == 'CCDL':
-#             IC = [DUSCY]
-#         else :
-#             IC = [DTC-DUSCY]
-#     RD = {"name": INM, "value": IC}
-#     return RD
-#
