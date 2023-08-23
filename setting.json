@@ -61,6 +61,7 @@
         "DBSelectTime": 11,
         "AssetTNM": "daily_asset",
         "StatisticsTNM": "daily_statistics",
+        "StatisticsMin": "minutely_statistics",
         "MenuTNM": "web_menusetting",
         "UserTNM": "web_user",
         "LOG": "action_log"

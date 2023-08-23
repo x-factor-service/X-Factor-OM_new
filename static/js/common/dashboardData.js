@@ -278,10 +278,91 @@ var handleRenderChartNCOMG = function () {
         position: 'top'
       }
     };
-
     var asset_overview_chart = new ApexCharts(document.querySelector('#asset_overview_chart'), asset_overview_chart_options);
     asset_overview_chart.render();
+
+    if (Array.isArray(dataList.sbom_pieData) && dataList.sbom_pieData.length === 0) {
+    dataList.sbom_pieData = [{ count: 0, comp_name: '-', comp_ver: '-' }];}
+    var sbom_pieDataCount = dataList.sbom_pieData.map(item => parseInt(item.count));
+    var sbom_pieDataItem = dataList.sbom_pieData.map(item => `${item.comp_name} ${item.comp_ver}`);
+    var createPieChart = {
+      series: sbom_pieDataCount,
+      chart: {
+        type: 'pie',
+        height: 180
+      },
+      stroke: {
+        width: 0
+      },
+      labels: sbom_pieDataItem,
+      dataLabels: {
+                enabled: true,
+                style: {
+                    colors: ["rgba(" + app.color.whiteRgb + ", 1)"],
+                    fontWeight: '300'
+                },
+                formatter(val, opts) {
+                    const name = opts.w.globals.labels[opts.seriesIndex];
+                    return [val.toFixed(1) + '%'];
+                }
+            },
+      colors: ['#0079BF', '#0088A8', '#00867A', '#5BC160', '#DAD056'],
+      fill: {
+        type: 'gradient'
+      },
+      legend: {
+        formatter: function(val, opts) {
+            if (val.length > 20) {
+                val = val.substring(0, 17) + "...";
+            }
+            return val + " : " + opts.w.globals.series[opts.seriesIndex] + "개";
+        }
+      }
+    };
+
+    var sbom_pie_chart = new ApexCharts(document.querySelector("#sbom_pie"), createPieChart);
+    sbom_pie_chart.render();
+    setTimeout(function() {
+      var legends = document.querySelectorAll('#sbom_pie .apexcharts-legend-text');
+      legends.forEach((legend, index) => {
+        var originalLabel = sbom_pie_chart.w.globals.labels[index];
+        legend.setAttribute('title', originalLabel);
+      });
+    }, 100);
+
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $(document).ready(function () {
     handleRenderChartNCOMG();

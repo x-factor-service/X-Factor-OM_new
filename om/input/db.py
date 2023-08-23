@@ -30,8 +30,7 @@ def plug_in(table, day, type):
         halfHourAgo = (datetime.today() - timedelta(minutes=35)).strftime("%Y-%m-%d %H:%M:%S")
         yesterday = (datetime.today() - timedelta(1)).strftime("%Y-%m-%d")
         fiveDay = (datetime.today() - timedelta(5)).strftime("%Y-%m-%d")
-        # monthDay = (datetime.today() - timedelta(30)).strftime("%Y-%m-%d")
-        monthDay = (datetime.today() - relativedelta(days=31)).strftime("%Y-%m-%d")
+        monthDay = (datetime.today() - timedelta(30)).strftime("%Y-%m-%d")
         weekDay = (datetime.today() - timedelta(7)).strftime("%Y-%m-%d")
         # ----------------------서버수량그래프 데이터 변경 추가 종윤 ----------------------
         lastYear = (datetime.today() - relativedelta(months=12)).strftime("%Y-%m-%d")
@@ -672,7 +671,7 @@ def plug_in(table, day, type):
                             from
                                 idle_asset
                             where
-                                collection_date >= '""" + yesterday + """'
+                                collection_date < '""" + monthDay + """'
                             and
                                 (computer_name Ilike '%""" + type[2] + """%' or
                                 chassis_type Ilike '%""" + type[2] + """%' or
@@ -713,7 +712,7 @@ def plug_in(table, day, type):
                             from
                                 idle_asset
                             where
-                                collection_date >= '""" + yesterday + """'
+                                collection_date < '""" + monthDay + """'
                             and
                                 (computer_name Ilike '%""" + type[2] + """%' or
                                 chassis_type Ilike '%""" + type[2] + """%' or

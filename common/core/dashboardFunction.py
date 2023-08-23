@@ -1,6 +1,6 @@
 import logging
 from common.input.db import plug_in as inputDb
-from common.core.transform import plug_in as reportTf, plug_in_action as report_actionTf, plug_in_number as numberTf
+from common.core.transform import plug_in as reportTf, plug_in_action as report_actionTf, plug_in_number as numberTf, sbom_pie_tf
 import urllib3
 import json
 
@@ -35,6 +35,7 @@ def Dashboard(type=None):
         report_listData_subnet_isVm_tf = []
         report_listData_action_tf = []
         allOnline_donutData = []
+        sbom_pieData = []
 
 
             #------------------------------상단 디스크 사용률 도넛 차트------------------------
@@ -170,6 +171,14 @@ def Dashboard(type=None):
         except:
             logger.debug('dashboardFunction.py - Error Occurred')
             logger.debug('Error - allOnline_donutData')
+        # ----------------------------------SBOM 파이 차트
+        try:
+            sbom_pieData_input = inputDb('sbom_pieData')
+            sbom_pieData = sbom_pie_tf(sbom_pieData_input)
+            logger.info('dashboardFunction.py - sbom_pieData - Success')
+        except:
+            logger.warning('dashboardFunction.py - Error Occurred')
+            logger.warning('Error - sbom_pieData')
 
         RD = {
             'disk_donutData': disk_donutData,
@@ -190,7 +199,8 @@ def Dashboard(type=None):
             "report_listData_alarm": report_listData_alarm,
             "report_listData_subnet_isVm": report_listData_subnet_isVm_tf,
             "report_listData_action_tf": report_listData_action_tf,
-            "allOnline_donutData": allOnline_donutData
+            "allOnline_donutData": allOnline_donutData,
+            "sbom_pieData": sbom_pieData
             }
     else:
         print()

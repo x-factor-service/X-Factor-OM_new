@@ -31130,8 +31130,6 @@ input:checked+labl::before{
     padding: 2rem !important;
 }
 
-
-
 tr {
   user-drag: none; /* 드래그 막기 */
   -webkit-user-drag: none; /* Chrome, Safari 등 Webkit 기반 브라우저에서도 드래그 막기 */
@@ -31215,11 +31213,28 @@ tr {
   }
 
 li.disabled {
-    color: gray;      /* 비활성화된 아이템의 글자색 변경 */
-    pointer-events: none;  /* 클릭 이벤트 비활성화 */
+    color: gray;
+    pointer-events: none;
 }
 
 .disabled-span {
-        pointer-events: none; /* 클릭 및 이벤트 차단 */
-        opacity: 0.6; /* 비활성화된 모양으로 표시 */
+        pointer-events: none;
+        opacity: 0.6;
     }
+
+.nav.nav-tabs2.nav-tabs-v2>.nav-item>.nav-link {
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size : 20px;
+    color : #fff;
+}
+
+.nav.nav-tabs2.nav-tabs-v2>.nav-item>.nav-link.active,
+.nav.nav-tabs2.nav-tabs-v2>.nav-item>.nav-link:hover {
+    color: #f39c12;
+    border-bottom-color: var(--bs-theme)
+}
+.nav.nav-tabs2.nav-tabs-v2>.nav-item>.nav-link.disabled {
+    color: #fff !important;
+}
+

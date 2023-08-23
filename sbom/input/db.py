@@ -123,7 +123,7 @@ def plug_in(table, day, type):
                 order_by_clause = order_column_name + " " + order_direction
             query = """
                 select
-                    comp_name, comp_ver, cve_id, score, vuln_last_reported, number
+                    comp_name, comp_ver, cve_id, score, vuln_last_reported, number, note, solution
                 from
                     sbom_cve
                 where
@@ -160,7 +160,7 @@ def plug_in(table, day, type):
                 order_by_clause = order_column_name + " " + order_direction
             query = """
                 SELECT 
-                    comp_name, comp_ver, cve_id, score, vuln_last_reported, number
+                    comp_name, comp_ver, cve_id, score, vuln_last_reported, number, note, solution
                 FROM sbom_cve
                 WHERE EXISTS (
                     SELECT 1
@@ -262,7 +262,6 @@ def plug_in(table, day, type):
                             count Ilike '%""" + type[2] + """%'
                         )
                     """
-        #print(query)
         Cur.execute(query)
         RS = Cur.fetchall()
         for i, R in enumerate(RS, start=1):
@@ -365,7 +364,7 @@ def plug_in(table, day, type):
 
                     )
                 ))
-            elif day == 'sbom_cve' or day =='cve_in_sbom':
+            elif day == 'cve_in_sbom' or day == 'sbom_cve':
                 index = (int(type[1]) - 1) * int(type[0]) + i
                 SDL.append(dict(
                     (
@@ -375,8 +374,9 @@ def plug_in(table, day, type):
                         ('cve_id', R[2]),
                         ('score', R[3]),
                         ('vuln_last_reported', R[4]),
-                        ('number', R[5])
-
+                        ('number', R[5]),
+                        ('note', R[6]),
+                        ('solution', R[7])
                     )
                 ))
             else:

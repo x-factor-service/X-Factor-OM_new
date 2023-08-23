@@ -243,7 +243,7 @@ var sbom_cveTable = function () {
             {data: 'number', visible: false}
         ],
         columnDefs: [
-            {targets: 0, width: "5%", className: 'text-center', orderable: false},
+            {targets: 0, width: "6%", className: 'text-center', orderable: false},
             {
                 targets: 1,
                 width: "29%",
@@ -322,7 +322,33 @@ var sbom_cveTable = function () {
                     .insertAfter('#sbom_dataTable_paginate .paginate_button:last');
                 $('<button type="button" class="btn" id="cve_after">≪</button>')
                     .insertBefore('#sbom_dataTable_paginate .paginate_button:first');
-            }
+            };
+
+            $('#sbom_cveTable tbody').off('click', 'tr').on('click', 'tr', function () {
+                var data = dashboardpopupTable.row(this).data();
+                var cveId = data.solution;
+                var accordionExists = $(this).next('.accordion-row').length > 0;
+                if (accordionExists) {
+                    $(this).next('.accordion-row').remove();
+                    return;
+                }
+                var accordionHTML = `
+                <tr class="accordion-row">
+                    <td colspan="${dashboardpopupTable.columns().nodes().length}">
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-body">
+                                    <strong>취약점 설명 :</strong> ${data.note}
+                                    <hr>
+                                    <strong>대응 방안 :</strong> ${data.solution}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                `;
+                $(this).after(accordionHTML);
+            });
         }
     });
 
@@ -346,14 +372,9 @@ var sbom_cveTable = function () {
 
 };
 
-
-
-
-
-
 var cveInSbomTable = function () {
     var dashboardpopupTable = $('#cveInSbom_dataTable').DataTable({
-        dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
+        dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center mb-6 d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
         lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
         responsive: true,
         searching: true,
@@ -460,57 +481,31 @@ var cveInSbomTable = function () {
                     .insertBefore('#cveInSbom_dataTable_paginate .paginate_button:first');
             };
 
-
-
-            // 테이블의 행을 클릭했을 때의 이벤트 리스너 추가
-    $('#cveInSbom_dataTable tbody').off('click', 'tr').on('click', 'tr', function () {
-        var data = dashboardpopupTable.row(this).data();
-        var cveId = data.cve_id; // 4번째 컬럼의 데이터
-
-        // 현재 행의 아래에 아코디언이 이미 열려있는지 확인
-        var accordionExists = $(this).next('.accordion').length > 0;
-
-        // 아코디언이 이미 있으면 제거
-        if (accordionExists) {
-            $(this).next('.accordion').remove();
-            return;
-        }
-
-        // 아코디언 형식으로 cveId 값을 표시
-        var accordionHTML = `
-        <div class="accordion" id="accordionExample">
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            CVE ID: ${cveId}
-                        </button>
-                    </h2>
-                </div>
-
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div class="card-body">
-                        ${cveId}에 대한 상세 정보나 내용을 여기에 추가합니다.
-                    </div>
-                </div>
-            </div>
-        </div>
-        `;
-
-        // 테이블의 해당 행 뒤에 아코디언 HTML 삽입
-        $(this).after(accordionHTML);
-        });
-
-
-
-
-
-
-
-
-
-
-
+            $('#cveInSbom_dataTable tbody').off('click', 'tr').on('click', 'tr', function () {
+                var data = dashboardpopupTable.row(this).data();
+                var cveId = data.solution; // 4번째 컬럼의 데이터
+                var accordionExists = $(this).next('.accordion-row').length > 0;
+                if (accordionExists) {
+                    $(this).next('.accordion-row').remove();
+                    return;
+                }
+                var accordionHTML = `
+                <tr class="accordion-row">
+                    <td colspan="${dashboardpopupTable.columns().nodes().length}">
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-body">
+                                    <strong>취약점 설명 :</strong> ${data.note}
+                                    <hr>
+                                    <strong>대응 방안 :</strong> ${data.solution}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                `;
+                $(this).after(accordionHTML);
+            });
         }
     });
 
@@ -533,9 +528,6 @@ var cveInSbomTable = function () {
     });
 
 };
-
-
-
 
 
 var sbomInCveTable = function () {
@@ -644,15 +636,8 @@ var sbomInCveTable = function () {
 
 };
 
-
-
-
-
-
-
-
 $(document).ready(function () {
-    $('#sbom_cveTable').on('click', 'tr', function() {
+    /*$('#sbom_cveTable').on('click', 'tr', function() {
 
         if ($(this).closest('thead').length === 0) {
             $('#sbom_cveTable tbody tr').css('background-color', '');
@@ -673,7 +658,27 @@ $(document).ready(function () {
         sbom_dataTable.search(searchTerm.trim()).draw();
 
         $('#sbom_dataTable_wrapper div.dataTables_filter input').val(displayTerm.trim());
+    });*/
+
+
+    $('a[data-target="#detect"]').click(function(event) {
+        event.preventDefault();
+        $('a[data-target="#all"]').removeClass('active');
+        $('a[data-target="#detect"]').addClass('active');
+        $('#all').hide();
+        $('#detect').show();
     });
+    $('a[data-target="#all"]').click(function(event) {
+        event.preventDefault();
+        $('a[data-target="#detect"]').removeClass('active');
+        $('a[data-target="#all"]').addClass('active');
+        $('#detect').hide();
+        $('#all').show();
+    });
+
+
+
+
 
     sbom_dataTable();
     sbom_cveTable();

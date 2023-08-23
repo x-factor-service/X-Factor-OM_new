@@ -15,6 +15,7 @@ DBUser = SETTING['DB']['DBUser']
 DBPwd = SETTING['DB']['DBPwd']
 AssetTNM = SETTING['DB']['AssetTNM']
 StatisticsTNM = SETTING['DB']['StatisticsTNM']
+StatisticsMin = SETTING['DB']['StatisticsMin']
 BS = SETTING['FILE']
 DBSettingTime = SETTING['DB']['DBSelectTime']
 day = datetime.today().strftime("%Y-%m-%d")
@@ -392,6 +393,15 @@ def plug_in(type, data=None):
                             collection_date >= '""" + DBSelectTime + """'  
 
                     """
+        # -----------------SBOM에서 탐지된 취약 패키지--------------------
+        elif type == 'sbom_pieData':
+            query = """
+                    SELECT item, item_count 
+                    from """ + StatisticsMin + """
+                    where classification = 'sbom_cve'
+                    ORDER BY item_count DESC
+            """
+
         # -----------------OM 일일 리포트 - 자산 통계 정보-----------------
         elif type == 'report_listData_unMgmt_idle':
             report_yesterday = (data - timedelta(days=1)).strftime('%Y-%m-%d')
