@@ -38,8 +38,23 @@ DBPwd = SETTING['DB']['DBPwd']
 
 menuListDB = MenuSetting()
 
+def omsql():
+    Conn = psycopg2.connect(
+        'host={0} port={1} dbname={2} user={3} password={4}'.format(DBHost, DBPort, DBName, DBUser, DBPwd))
+    Cur = Conn.cursor()
+    query = """
+                SELECT os_chartPartOne, os_chartPartTwo, os_donutChartData, idleDataList, server_BChartDataList, service_donutChartData, DiskChartDataList, CpuChartDataList, MemoryChartDataList, diskNormalDataList, cpuNormalDataList, memoryNormalDataList, server_LChartDataList, WorldMapDataList, alamCaseDataList, alarm_donutChartData, vendorChartList, connectIpDataList, connectServerDataList, bannerData, om_collection_date
+FROM om 
+ORDER BY om_collection_date DESC
+LIMIT 1;
+                    """
+    Cur.execute(query)
+    RS = Cur.fetchall()
+    return RS
+
 def om(request):
-    DCDL = DashboardData()
+    o = omsql()
+    # DCDL = DashboardData()
     res_data = {}
     if not 'sessionid' in request.session:
         res_data['error'] = '먼저 로그인을 해주세요.'
@@ -49,34 +64,35 @@ def om(request):
             dashboardType = 'om.html'
             MapUse = {"WorldUse": WorldUse, "KoreaUse": KoreaUse, "AreaUse": AreaUse, "AreaType": AreaType}
 
-            # NC버전
-            server_barChartData = DCDL["server_BChartDataList"]
-            server_LChartDataList = DCDL["server_LChartDataList"]
-            DiskChartDataList = DCDL["usageChartDataList"]["DiskChartDataList"]
-            service_donutChartData = DCDL["service_donutChartData"]
-            CpuChartDataList = DCDL["usageChartDataList"]["CpuChartDataList"]
-            MemoryChartDataList = DCDL["usageChartDataList"]["MemoryChartDataList"]
-            alamCaseDataList = DCDL["alamCaseDataList"]
-            os_donutChartData = DCDL["os_donutChartData"]
-            os_chartPartOne = DCDL["os_chartPartOne"]
-            os_chartPartTwo = DCDL["os_chartPartTwo"]
-            vendorChartList = DCDL["vendorChartList"]
-            alarm_donutChartData = DCDL["alarm_donutChartData"]
-            bannerData = DCDL["bannerDataList"]
-            WorldMapData = DCDL["WorldMapDataList"]
-            GpuServerDataList = DCDL["GpuServerDataList"]
-            connectIpDataList = DCDL["connectIpDataList"]
-            connectServerDataList = DCDL["connectServerDataList"]
-            cpuNormalDataList = DCDL["cpuNormalDataList"]
-            memoryNormalDataList = DCDL["memoryNormalDataList"]
-            diskNormalDataList = DCDL["diskNormalDataList"]
-            idleDataList =DCDL["idleDataList"]
+
+            os_chartPartOne = eval(o[0][0])
+            os_chartPartTwo = eval(o[0][1])
+            os_donutChartData = eval(o[0][2])
+            idleDataList = eval(o[0][3])
+            server_barChartData = eval(o[0][4])
+            service_donutChartData = eval(o[0][5])
+            DiskChartDataList = eval(o[0][6])
+            CpuChartDataList = eval(o[0][7])
+            MemoryChartDataList = eval(o[0][8])
+            diskNormalDataList = o[0][9]
+            cpuNormalDataList = o[0][10]
+            memoryNormalDataList = o[0][11]
+            server_LChartDataList = eval(o[0][12])
+            WorldMapData = eval(o[0][13])
+            alamCaseDataList = eval(o[0][14])
+            alarm_donutChartData = eval(o[0][15])
+            vendorChartList = eval(o[0][16])
+            connectIpDataList = eval(o[0][17])
+            connectServerDataList = eval(o[0][18])
+            bannerData = eval(o[0][19])
+            om_collection_date = o[0][20]
+
             #pprint(idleDataList)
             chartData = {'DiskChartDataList': DiskChartDataList, 'donutChartDataList': service_donutChartData, 'MemoryChartDataList': MemoryChartDataList, 'CpuChartDataList': CpuChartDataList,
                         'os_donutChartData': os_donutChartData, 'server_barChartDataList': server_barChartData, "server_LChartDataList": server_LChartDataList, "alamCaseDataList": alamCaseDataList,
                         "os_chartPartOne": os_chartPartOne, "os_chartPartTwo": os_chartPartTwo, "vendorChartList": vendorChartList, "alarm_donutChartData": alarm_donutChartData,
                         "bannerDataList": bannerData, "WorldMapDataList": WorldMapData,
-                        "GpuServerDataList": GpuServerDataList, "connectIpDataList": connectIpDataList, "connectServerDataList": connectServerDataList,
+                        "connectIpDataList": connectIpDataList, "connectServerDataList": connectServerDataList,
                         "diskNormalDataList": diskNormalDataList,
                         "memoryNormalDataList": memoryNormalDataList,
                         "cpuNormalDataList": cpuNormalDataList,
@@ -84,7 +100,7 @@ def om(request):
                          }
 
 
-            returnData = {'menuList': menuListDB, 'chartData': chartData, 'Customer': Customer, 'MapUse': MapUse, 'Login_Method': Login_Method}
+            returnData = {'menuList': menuListDB, 'chartData': chartData, 'Customer': Customer, 'MapUse': MapUse, 'Login_Method': Login_Method, 'om_collection_date':om_collection_date}
         else:
             dashboardType = 'web/dashboard.html'
             barChartData = DCDL["barChartData"]
