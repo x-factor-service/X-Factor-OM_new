@@ -673,6 +673,136 @@ var handleRenderChartSBOM = function () {
       });
     }, 100);
 
+
+
+
+
+    var sbomLineChart = {
+      chart: {
+        type: 'line',
+        height: 200,
+        zoom: {
+          enabled: false
+        },
+        toolbar: {
+          show: false
+        },
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800,
+          animateGradually: {
+            enabled: true,
+            delay: 150
+          },
+          dynamicAnimation: {
+            enabled: true,
+            speed: 350
+          }
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 2.5
+      },
+      series: [{
+        name: '자산 수',
+        data: [5000, 5200, 5500, 5300, 5600, 5700, 5900]  // 여기에 실제 데이터를 넣으세요!
+      }],
+      xaxis: {
+        categories: ['07-20', '07-21', '07-22', '07-23', '07-24', '07-25', '07-26'],  // 여기에 실제 날짜를 넣으세요!
+        labels: {
+          style: {
+            colors: "rgba(" + app.color.whiteRgb + ", 1)",
+            fontWeight: '300'
+          }
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        }
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: '#8e8da4'
+          }
+        }
+      },
+      colors: ['#546E7A'],
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.9,
+          stops: [0, 100]
+        }
+      },
+      markers: {
+        size: 4,
+        colors: ['#FFA41B'],
+        strokeColors: '#fff',
+        strokeWidth: 2,
+        hover: {
+          size: 7,
+        }
+      },
+      tooltip: {
+        theme: 'dark',
+        marker: {
+          show: true,
+        },
+        x: {
+          show: true
+        },
+        y: {
+          title: {
+            formatter: function(val) {
+              return val
+            }
+          }
+        }
+      },
+      grid: {
+        borderColor: 'rgba(144, 164, 174, 0.5)'
+      }
+    }
+
+    var sbom_line_chart = new ApexCharts(
+      document.querySelector("#sbom_line"),
+      sbomLineChart
+    );
+
+    sbom_line_chart.render();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 };
 
 
