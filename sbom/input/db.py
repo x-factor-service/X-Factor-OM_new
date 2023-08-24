@@ -60,7 +60,7 @@ def plug_in(table, day, type):
                 where
                     cpe = '""" + type + """'
             """
-
+        # --------------------- 전체 sbom 목록 ---------------------------------
         if table == 'sbom_paging':
             column_names = ["name", "version", "cpe", "type", "count"]
             order_column_name = column_names[int(type[4]) - 1]
@@ -90,6 +90,7 @@ def plug_in(table, day, type):
                 LIMIT """ + type[0] + """
                 OFFSET (""" + type[1] + """ -1) * """ + type[0] + """
                 """
+        # ------------------------------ 전체 sbom 목록 개수 -------------------------
         if table == 'sbom_paging_count':
             query = """
                 select
@@ -111,6 +112,7 @@ def plug_in(table, day, type):
                     type ILIKE '%""" + type[3] + """%' OR
                     count ILIKE '%""" + type[3] + """%')
                 """
+        #----------------------- 전체 CVE 목록 --------------------------------
         if table == 'sbom_cve':
             column_names = ["comp_name", "comp_ver", "cve_id", "score", "vuln_last_reported", "number"]
             order_column_index = int(type[3]) - 1
@@ -136,6 +138,8 @@ def plug_in(table, day, type):
                 LIMIT """ + type[0] + """
                 OFFSET (""" + type[1] + """ -1) * """ + type[0] + """           
             """
+
+        # --------------------------------- 전체 CVE 목록 개수 --------------------------------
         if table == 'sbom_cve_count':
             query = """
                 select
@@ -149,6 +153,7 @@ def plug_in(table, day, type):
                     score Ilike '%""" + type[2] + """%' or
                     vuln_last_reported Ilike '%""" + type[2] + """%'         
             """
+        # ---------------------------탐지목록 CVE 데이터 -----------------
         if table == 'cve_in_sbom':
             column_names = ["comp_name", "comp_ver", "cve_id", "score", "vuln_last_reported", "number"]
             order_column_index = int(type[3]) - 1
@@ -184,6 +189,7 @@ def plug_in(table, day, type):
                 LIMIT """ + type[0] + """
                 OFFSET (""" + type[1] + """ -1) * """ + type[0] + """
             """
+            # ----------------------- 탐지목록 CVE 개수 -------------------------
         if table == 'cve_in_sbom_count':
             query="""
                 SELECT 
@@ -208,6 +214,8 @@ def plug_in(table, day, type):
                     vuln_last_reported Ilike '%""" + type[2] + """%'
                 )
             """
+
+        # ----------------------------- 탐지 목록 sbom 데이터 -------------------------------
         if table == 'sbom_in_cve':
             column_names = ["name", "version", "cpe", "type", "count"]
             order_column_name = column_names[int(type[3]) - 1]
@@ -238,6 +246,7 @@ def plug_in(table, day, type):
                         LIMIT """ + type[0] + """
                         OFFSET (""" + type[1] + """ -1) * """ + type[0] + """
                     """
+        # --------------------- 탐지 목록 Sbom 개수 ------------------------------
         if table == 'sbom_in_cve_count':
             query = """
                         SELECT 
