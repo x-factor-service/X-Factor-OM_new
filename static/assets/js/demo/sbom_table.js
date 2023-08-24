@@ -1,4 +1,3 @@
-
 //SBOM 페이지
 var aa = '../sbom_detail/?cpe='
 var sbom_dataTable = function () {
@@ -114,106 +113,6 @@ function openPopupWindow(url, width, height){
     window.open(url, '_blank',windowFeatures)
     return false;
 }
-
-// var sbom_detail_dataTable = function () {
-//     var dashboardpopupTable = $('#sbom_detail_dataTable').DataTable({
-//         dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
-//         lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
-//         responsive: true,
-//         searching: true,
-//         ordering: false,
-//         serverSide: true,
-//         displayLength: false,
-//         ajax: {
-//             url: 'paging/',
-//             type: "GET",
-//             dataSrc: function (res) {
-//                 var data = res.data.item;
-//                 return data;
-//             }
-//         },
-//         columns: [
-//             {data: 'index', width: "5%"},
-//             {data: 'name', width: "15%"},
-//             {data: 'version', width: "10%"},
-//             {data: 'cpe', width: "50%"},
-//             {data: 'type', width: "10%"},
-//             {data: 'count', width: "10%"}
-//         ],
-//         columnDefs: [
-//             {targets: 0, width: "5%", className: 'text-center'},
-//             {
-//                 targets: 1, width: "15%", className: '', render: function (data, type, row) {
-//                     return '<span title="' + row.name + '" data-toggle="tooltip">' + data + '</span>'
-//                 }
-//             },
-//             {
-//                 targets: 2, width: "10%", className: '', render: function (data, type, row) {
-//                     return '<span title="' + row.version + '" data-toggle="tooltip">' + data + '</span>'
-//                 }
-//             },
-//             {targets: 3, width: "50%", style: 'text-center text-truncate', render: function (data, type, row) {
-//                     return '<span title="' + row.cpe + '" data-toggle="tooltip">' + data + '</span>'
-//                 }},
-//             {targets: 4, width: "10%", className: 'text-center'},
-//             {targets: 5, width: "10%", className: 'text-center'},
-//         ],
-//         language: {
-//             "decimal": "",
-//             "info": "전체 _TOTAL_건",
-//             "infoEmpty": "데이터가 없습니다.",
-//             "emptyTable": "데이터가 없습니다.",
-//             "thousands": ",",
-//             "lengthMenu": "페이지당 _MENU_ 개씩 보기",
-//             "loadingRecords": "로딩 중입니다.",
-//             "processing": "",
-//             "zeroRecords": "검색 결과 없음",
-//             "paginate": {
-//                 "first": "처음",
-//                 "last": "끝",
-//                 "next": "다음",
-//                 "previous": "이전"
-//             },
-//             "search": "검색:",
-//             "infoFiltered": "(전체 _MAX_ 건 중 검색결과)",
-//             "infoPostFix": "",
-//         },
-//         pagingType: 'numbers',
-//
-//         drawCallback: function () {
-//             var current_page = dashboardpopupTable.page;
-//             var total_pages = dashboardpopupTable.page.info().pages;
-//             $('#nexts').remove();
-//             $('#after').remove();
-//
-//             if (total_pages > 10) {
-//                 $('<button type="button" class="btn" id="nexts">≫</button>')
-//                     .insertAfter('#sbom_dataTable_paginate .paginate_button:last');
-//                 $('<button type="button" class="btn" id="after">≪</button>')
-//                     .insertBefore('#sbom_dataTable_paginate .paginate_button:first');
-//             }
-//         }
-//     });
-//
-//     $(document).on('click', '#nexts, #after', function() {
-//         var current_page = dashboardpopupTable.page();
-//         var total_pages = dashboardpopupTable.page.info().pages;
-//         if ($(this).attr('id') == 'nexts') {
-//                 if (current_page + 10 < total_pages) {
-//                     dashboardpopupTable.page(current_page + 10).draw('page');
-//                 } else {
-//                     dashboardpopupTable.page(total_pages - 1).draw('page');
-//                 }
-//                 } else {
-//                     dashboardpopupTable.page(Math.max(current_page - 10, 0)).draw('page');
-//                 }
-//     });
-//     $(document).ready(function() {
-//     var customStyle = '<style>#nexts, #after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
-//     $('head').append(customStyle);
-//     });
-//
-// };
 
 var sbom_cveTable = function () {
     var dashboardpopupTable = $('#sbom_cveTable').DataTable({
@@ -386,8 +285,22 @@ var cveInSbomTable = function () {
             url: 'paging_cis/',
             type: "POST",
             dataSrc: function (res) {
+                $('#loadingSpinner').hide();
                 var data = res.data.item;
                 return data;
+            },
+            beforeSend: function() {
+                $('#loadingSpinner').show();
+                var loadingTextBase = "Loading";
+                var count = 1;
+                loadingInterval = setInterval(function() {
+                    var dots = new Array(count % 4+1).join(".");
+                    $('#loadingText').text(loadingTextBase + dots);
+                    count++;
+                }, 250);
+            },
+            error: function() {
+                $('#loadingSpinner').hide();
             }
         },
         columns: [
@@ -633,34 +546,140 @@ var sbomInCveTable = function () {
     var customStyle = '<style>#sbom_nexts, #sbom_after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
     $('head').append(customStyle);
     });
+};
+
+// SBOM 페이지 차트
+var handleRenderChartSBOM = function () {
+    // global apexchart settings
+    Apex = {
+        title: {
+          style: {
+            fontSize: "12px",
+            fontWeight: "bold",
+            fontFamily: app.font.family,
+            color: app.color.white,
+          },
+        },
+        legend: {
+          fontFamily: app.font.family,
+          labels: {
+            colors: "#fff",
+            show: true,
+          },
+        },
+        tooltip: {
+          style: {
+            fontSize: "10px",
+            fontFamily: app.font.family,
+          },
+        },
+        grid: {
+          borderColor: "rgba(" + app.color.whiteRgb + ", .25)",
+        },
+        dataLabels: {
+          style: {
+            fontSize: "12px",
+            fontFamily: app.font.family,
+            fontWeight: "bold",
+            colors: undefined,
+          },
+        },
+        xaxis: {
+          axisBorder: {
+            show: false,
+            color: "rgba(" + app.color.whiteRgb + ", .25)",
+            height: 1,
+            width: "100%",
+            offsetX: 0,
+            offsetY: -1,
+          },
+          axisTicks: {
+            show: false,
+            borderType: "solid",
+            color: "rgba(" + app.color.whiteRgb + ", .25)",
+            height: 6,
+            offsetX: 0,
+            offsetY: 0,
+          },
+          labels: {
+            style: {
+              colors: "#fff",
+              fontSize: "9px",
+              fontFamily: app.font.family,
+              fontWeight: 400,
+              cssClass: "apexcharts-xaxis-label",
+            },
+          },
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: "#fff",
+              fontSize: "9px",
+              fontFamily: app.font.family,
+              fontWeight: 400,
+              cssClass: "apexcharts-xaxis-label",
+            },
+          },
+        },
+    };
+
+    // 탐지된 취약 오픈소스 Top 5
+    if (Array.isArray(sbomDataList.sbom_pieData) && sbomDataList.sbom_pieData.length === 0) {
+    sbomDataList.sbom_pieData = [{ count: 0, comp_name: '-', comp_ver: '-' }];}
+    var sbom_pieDataCount = sbomDataList.sbom_pieData.map(item => parseInt(item.count));
+    var sbom_pieDataItem = sbomDataList.sbom_pieData.map(item => `${item.comp_name} ${item.comp_ver}`);
+    var createPieChart = {
+      series: sbom_pieDataCount,
+      chart: {
+        type: 'pie',
+        height: 180
+      },
+      stroke: {
+        width: 0
+      },
+      labels: sbom_pieDataItem,
+      dataLabels: {
+                enabled: true,
+                style: {
+                    colors: ["rgba(" + app.color.whiteRgb + ", 1)"],
+                    fontWeight: '300'
+                },
+                formatter(val, opts) {
+                    const name = opts.w.globals.labels[opts.seriesIndex];
+                    return [val.toFixed(1) + '%'];
+                }
+            },
+      colors: ['#0079BF', '#0088A8', '#00867A', '#5BC160', '#DAD056'],
+      fill: {
+        type: 'gradient'
+      },
+      legend: {
+        formatter: function(val, opts) {
+            if (val.length > 20) {
+                val = val.substring(0, 17) + "...";
+            }
+            return val + " : " + opts.w.globals.series[opts.seriesIndex] + "개";
+        }
+      }
+    };
+    var sbom_pie_chart = new ApexCharts(document.querySelector("#sbom_pie"), createPieChart);
+    sbom_pie_chart.render();
+    setTimeout(function() {
+      var legends = document.querySelectorAll('#sbom_pie .apexcharts-legend-text');
+      legends.forEach((legend, index) => {
+        var originalLabel = sbom_pie_chart.w.globals.labels[index];
+        legend.setAttribute('title', originalLabel);
+      });
+    }, 100);
 
 };
 
+
+
+
+
 $(document).ready(function () {
-    /*$('#sbom_cveTable').on('click', 'tr', function() {
-
-        if ($(this).closest('thead').length === 0) {
-            $('#sbom_cveTable tbody tr').css('background-color', '');
-            $(this).css('background-color', '#FF9F0C');
-        }
-
-        var searchTerm = '';
-        var displayTerm = '';
-
-        $(this).find('.click_search').each(function() {
-            var value = $(this).text();
-            searchTerm += value + '||';
-            displayTerm += value + ' ';
-        });
-
-        var sbom_dataTable = $('#sbom_dataTable').DataTable();
-
-        sbom_dataTable.search(searchTerm.trim()).draw();
-
-        $('#sbom_dataTable_wrapper div.dataTables_filter input').val(displayTerm.trim());
-    });*/
-
-
     $('a[data-target="#detect"]').click(function(event) {
         event.preventDefault();
         $('a[data-target="#all"]').removeClass('active');
@@ -678,8 +697,7 @@ $(document).ready(function () {
 
 
 
-
-
+    handleRenderChartSBOM();
     sbom_dataTable();
     sbom_cveTable();
     cveInSbomTable();

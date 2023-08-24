@@ -42,18 +42,3 @@ def plug_in_action(data):
 def plug_in_number(data):
     result = data[0][0]
     return result
-
-def sbom_pie_tf(data):
-    results = []
-    for i in data:
-        item_dict = json.loads(i[0])
-        comp_name = item_dict['comp_name']
-        comp_ver = item_dict['comp_ver']
-        count = i[1]
-
-        results.append({
-            'comp_name': comp_name,
-            'comp_ver': comp_ver,
-            'count': count
-        })
-    return results

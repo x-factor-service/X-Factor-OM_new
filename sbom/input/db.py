@@ -21,7 +21,7 @@ BS = SETTING['FILE']
 DBSettingTime = SETTING['DB']['DBSelectTime']
 day = datetime.today().strftime("%Y-%m-%d")
 RSU = SETTING['FILE']['RunningService_Except']['USE']
-
+StatisticsSBOM = SETTING['DB']['StatisticsSBOM']
 
 def plug_in(table, day, type):
     try:
@@ -262,6 +262,14 @@ def plug_in(table, day, type):
                             count Ilike '%""" + type[2] + """%'
                         )
                     """
+        # -----------------SBOM 탐지 파이 차트--------------------
+        if table == 'sbom_pieData':
+            query = """
+                    SELECT item, item_count 
+                    from """ + StatisticsSBOM + """
+                    where classification = 'sbom_cve'
+                    ORDER BY item_count DESC
+            """
         Cur.execute(query)
         RS = Cur.fetchall()
         for i, R in enumerate(RS, start=1):

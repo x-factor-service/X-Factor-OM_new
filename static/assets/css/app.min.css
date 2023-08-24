@@ -31130,6 +31130,10 @@ input:checked+labl::before{
     padding: 2rem !important;
 }
 
+.p-1rem{
+    padding: 1rem !important;
+}
+
 tr {
   user-drag: none; /* 드래그 막기 */
   -webkit-user-drag: none; /* Chrome, Safari 등 Webkit 기반 브라우저에서도 드래그 막기 */
@@ -31238,3 +31242,15 @@ li.disabled {
     color: #fff !important;
 }
 
+/* SBOM 데이터테이블 로딩 스피너 */
+#loadingSpinner {
+    background-color: rgba(0, 0, 0, 1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* SBOM 데이터테이블 스크롤바 */
+.scroll-none::-webkit-scrollbar {
+    display: none;
+}
