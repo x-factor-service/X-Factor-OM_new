@@ -43,6 +43,12 @@ def DashboardData():
         except:
             logger.warning('dashboardFunctionSBOM.py - Error Occurred')
             logger.warning('Error - sbom_pieData')
+        #-------------- SBOM bar chart ------------------------
+        try:
+            sbom_barData_input = SDPI('sbom_barData', '', '')
+        except:
+            logger.warning('dashboardFunctionSBOM.py - Error Occurred')
+            logger.warning('Error - sbom_barData')
 
         RD = {
             "sbom_package_list": SBDL,

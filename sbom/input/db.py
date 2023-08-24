@@ -279,6 +279,13 @@ def plug_in(table, day, type):
                     where classification = 'sbom_cve'
                     ORDER BY item_count DESC
             """
+        if table == 'sbom_barData':
+            query = """
+                    SELECT item, item_count 
+                    from """ + StatisticsSBOM + """
+                    where classification = 'sbom_bar_data'
+                    ORDER BY item_count DESC
+            """
         Cur.execute(query)
         RS = Cur.fetchall()
         for i, R in enumerate(RS, start=1):
