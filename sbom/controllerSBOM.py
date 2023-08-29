@@ -38,7 +38,9 @@ def sbom(request):
         return render(request, 'common/login.html', res_data)
     else:
         sbom_pieData = DCDL["sbom_pieData"]
-        sbomDataList = {"sbom_pieData": sbom_pieData}
+        sbom_lineData = DCDL["sbom_lineData"]
+        sbom_barData = DCDL["sbom_barData"]
+        sbomDataList = {"sbom_pieData": sbom_pieData, "sbom_lineData": sbom_lineData ,"sbom_barData": sbom_barData}
         returnData = {'menuList': menuListDB, 'sbomDataList': sbomDataList, 'Customer': Customer, 'Login_Method': Login_Method}
         return render(request, 'sbom/sbom.html', returnData)
 

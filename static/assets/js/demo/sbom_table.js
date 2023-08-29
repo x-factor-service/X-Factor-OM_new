@@ -675,8 +675,9 @@ var handleRenderChartSBOM = function () {
 
 
 
-
-
+// sbom line chart
+    var categories_date = sbomDataList.sbom_lineData.map(item => item.date);
+    var linecount = sbomDataList.sbom_lineData.map(item => parseInt(item.count, 10));
     var sbomLineChart = {
       chart: {
         type: 'line',
@@ -710,10 +711,10 @@ var handleRenderChartSBOM = function () {
       },
       series: [{
         name: '자산 수',
-        data: [5000, 5200, 5500, 5300, 5600, 5700, 5900]  // 여기에 실제 데이터를 넣으세요!
+        data: linecount
       }],
       xaxis: {
-        categories: ['07-20', '07-21', '07-22', '07-23', '07-24', '07-25', '07-26'],  // 여기에 실제 날짜를 넣으세요!
+        categories: categories_date,
         labels: {
           style: {
             colors: "rgba(" + app.color.whiteRgb + ", 1)",
@@ -734,14 +735,11 @@ var handleRenderChartSBOM = function () {
           }
         }
       },
-      colors: ['#546E7A'],
+      colors: ['#ADFF2F'],
       fill: {
         type: 'gradient',
         gradient: {
-          shadeIntensity: 1,
-          opacityFrom: 0.7,
-          opacityTo: 0.9,
-          stops: [0, 100]
+
         }
       },
       markers: {
@@ -782,30 +780,36 @@ var handleRenderChartSBOM = function () {
     sbom_line_chart.render();
 
 
+    var categories_ip = sbomDataList.sbom_barData.map(item => item.ip);
+    var countData = sbomDataList.sbom_barData.map(item => parseInt(item.count, 10));
+    var sbomBarChart = {
+              series: [{
+              name: '오픈소스 개수',
+              data: countData
+            }],
+              chart: {
+              type: 'bar',
+              height: 200
+            },
+            plotOptions: {
+              bar: {
+                borderRadius: 4,
+                horizontal: true,
+              }
+            },
+            dataLabels: {
+              enabled: false
+            },
+            xaxis: {
+              categories: categories_ip
 
+            },
+            colors: ['#00FFFF','#00BFFF'],
+            };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-};
-
-
+            var sbomBarChart = new ApexCharts(document.querySelector("#sbomBarChart"), sbomBarChart);
+            sbomBarChart.render();
+    };
 
 
 

@@ -9,6 +9,8 @@ from om.dataFrameOM import radar as RDDF
 from om.dataFrameOM import chart as CTDF
 from om.input.db import plug_in as PDPI
 from sbom.transformSBOM import sbom_pie_tf
+from sbom.transformSBOM import sbom_bar_tf
+from sbom.transformSBOM import sbom_line_tf
 from sbom.input.db import plug_in as SDPI
 from collections import Counter
 import urllib3
@@ -28,6 +30,7 @@ def DashboardData():
     if Customer == 'NC' or Customer == 'Xfactor':
         sbom_package_list = []
         sbom_pieData = []
+        sbom_barData = []
         try:
             SBDL = sbom_package_list
             logger.info('dashboardFunctionSBOM.py - sbom_package_list - Success')
@@ -43,16 +46,26 @@ def DashboardData():
         except:
             logger.warning('dashboardFunctionSBOM.py - Error Occurred')
             logger.warning('Error - sbom_pieData')
+        # -------------- SBOM line chart ------------------------
+        try:
+            sbom_lineData_input = SDPI('sbom_lineData', '', '')
+            sbom_lineData = sbom_line_tf(sbom_lineData_input)
+        except:
+            logger.warning('dashboardFunctionSBOM.py - Error Occurred')
+            logger.warning('Error - sbom_lineData')
         #-------------- SBOM bar chart ------------------------
         try:
             sbom_barData_input = SDPI('sbom_barData', '', '')
+            sbom_barData = sbom_bar_tf(sbom_barData_input)
         except:
             logger.warning('dashboardFunctionSBOM.py - Error Occurred')
             logger.warning('Error - sbom_barData')
 
         RD = {
             "sbom_package_list": SBDL,
-            "sbom_pieData": sbom_pieData
+            "sbom_pieData": sbom_pieData,
+            "sbom_lineData": sbom_lineData,
+            "sbom_barData": sbom_barData
         }
     return RD
 

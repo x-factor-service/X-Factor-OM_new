@@ -29,7 +29,7 @@ def plug_in(table, day, type):
         DBSelectTime = (datetime.today() - timedelta(minutes=DBSettingTime)).strftime("%Y-%m-%d %H:%M:%S")
         halfHourAgo = (datetime.today() - timedelta(minutes=35)).strftime("%Y-%m-%d %H:%M:%S")
         yesterday = (datetime.today() - timedelta(1)).strftime("%Y-%m-%d")
-        fiveDay = (datetime.today() - timedelta(5)).strftime("%Y-%m-%d")
+        weekDay = (datetime.today() - timedelta(7)).strftime("%Y-%m-%d")
         # monthDay = (datetime.today() - timedelta(30)).strftime("%Y-%m-%d")
         monthDay = (datetime.today() - relativedelta(days=31)).strftime("%Y-%m-%d")
         # ----------------------서버수량그래프 데이터 변경 추가 종윤 ----------------------
@@ -279,6 +279,18 @@ def plug_in(table, day, type):
                     where classification = 'sbom_cve'
                     ORDER BY item_count DESC
             """
+        # ---------------------Sbom line 차트------------------------
+        if table == 'sbom_lineData':
+            query = """
+                select TO_CHAR(statistics_collection_date, 'YYYY-MM-DD') AS statistics_collection_date,item_count
+                from """ + StatisticsSBOM + """
+                where classification = 'sbom_line_data'
+                and statistics_collection_date >= '""" + weekDay + """'
+                order by statistics_collection_date asc
+                limit 7
+            """
+
+        # ---------------------sbom bar 차트 ----------------------------
         if table == 'sbom_barData':
             query = """
                     SELECT item, item_count 
