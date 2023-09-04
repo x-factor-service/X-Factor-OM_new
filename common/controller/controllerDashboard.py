@@ -33,7 +33,7 @@ def dashboard(request):
         virtual_pieData = DCDL["virtual_pieData"]
         allAsset_lineData = DCDL["allAsset_lineData"]
         discover_lineData = DCDL["discover_lineData"]
-        cert_listData = DCDL["cert_listData"]
+        # cert_listData = DCDL["cert_listData"]
         sbom_listData = DCDL["sbom_listData"]
         idle_lineData = DCDL["idle_lineData"]
         highCpuProc_listData = DCDL["highCpuProc_listData"]
@@ -50,7 +50,7 @@ def dashboard(request):
                     "virtual_pieData": virtual_pieData,
                     "allAsset_lineData": allAsset_lineData,
                     "discover_lineData": discover_lineData,
-                    "cert_listData": cert_listData,
+                    # "cert_listData": cert_listData,
                     "sbom_listData": sbom_listData,
                     "idle_lineData": idle_lineData,
                     "highCpuProc_listData": highCpuProc_listData,

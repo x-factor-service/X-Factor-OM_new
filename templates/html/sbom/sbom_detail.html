@@ -13,10 +13,10 @@
                         <th>No</th>
                         <th>Computer Name</th>
                         <th>Ipv4 Address</th>
-                        <th>Packages Name</th>
-                        <th>Packages Version</th>
-                        <th>Packages Type</th>
-                        <th>Packages Path</th>
+                        <th style="text-align: center;">Packages Name</th>
+                        <th style="text-align: center;">Packages Version</th>
+                        <th style="text-align: center;">Packages Type</th>
+<!--                        <th>Packages Path</th>-->
                         <th>Count</th>
                     </tr>
                     </thead>
@@ -36,12 +36,12 @@
                             <td style="text-align: center; word-break: break-all;">
                                 {{ data.pv }}
                             </td>
-                            <td>
+                            <td style="text-align: center; word-break: break-all;">
                                 {{ data.type }}
                             </td>
-                            <td style="word-break: break-all;">
-                                {{ data.parent }}
-                            </td>
+<!--                            <td style="word-break: break-all;">-->
+<!--                                {{ data.parent }}-->
+<!--                            </td>-->
                             <td style="text-align: center">
                                 {{ data.count }}
                             </td>

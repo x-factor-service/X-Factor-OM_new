@@ -54,7 +54,7 @@ def plug_in(table, day, type):
         if table == 'sbom_detail':
             query = """
                 select
-                    computer_name, ipv4_address, name, version, type, path, count
+                    computer_name, ipv4_address, name, version, type, count
                 from
                     sbom_detail
                 where
@@ -172,9 +172,9 @@ def plug_in(table, day, type):
                     FROM sbom_list
                     WHERE
                     (
-                        (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_name, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_name, '%'))
-                        AND
-                        (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_ver, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_ver, '%'))
+                          LOWER(sbom_list.name) = LOWER(sbom_cve.comp_name)
+                          AND
+                          LOWER(sbom_list.version) = LOWER(sbom_cve.comp_ver)
                     )
                 )
                 AND
@@ -200,9 +200,9 @@ def plug_in(table, day, type):
                     FROM sbom_list
                     WHERE
                     (
-                        (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_name, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_name, '%'))
+                        LOWER(sbom_list.name) = LOWER(sbom_cve.comp_name)
                         AND
-                        (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_ver, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_ver, '%'))
+                        LOWER(sbom_list.version) = LOWER(sbom_cve.comp_ver)
                     )
                 )
                 AND
@@ -228,9 +228,9 @@ def plug_in(table, day, type):
                             FROM sbom_cve
                             WHERE
                             (
-                                (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_name, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_name, '%'))
+                                LOWER(sbom_list.name) = LOWER(sbom_cve.comp_name)
                                 AND
-                                (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_ver, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_ver, '%'))
+                                LOWER(sbom_list.version) = LOWER(sbom_cve.comp_ver)
                             )
                         )
                         AND
@@ -257,9 +257,9 @@ def plug_in(table, day, type):
                             FROM sbom_cve
                             WHERE
                             (
-                                (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_name, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_name, '%'))
+                                LOWER(sbom_list.name) = LOWER(sbom_cve.comp_name)
                                 AND
-                                (sbom_list.name ILIKE CONCAT('%', sbom_cve.comp_ver, '%') OR sbom_list.version ILIKE CONCAT('%', sbom_cve.comp_ver, '%'))
+                                LOWER(sbom_list.version) = LOWER(sbom_cve.comp_ver)
                             )
                         )
                         AND
