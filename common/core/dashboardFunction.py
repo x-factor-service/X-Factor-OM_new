@@ -35,6 +35,7 @@ def Dashboard(type=None):
         report_listData_subnet_isVm_tf = []
         report_listData_action_tf = []
         allOnline_donutData = []
+        deployToday_barData = []
 
 
             #------------------------------상단 디스크 사용률 도넛 차트------------------------
@@ -170,7 +171,13 @@ def Dashboard(type=None):
         except:
             logger.debug('dashboardFunction.py - Error Occurred')
             logger.debug('Error - allOnline_donutData')
-
+        # ------------------금일 가장 많이 배포한 패키지 Top 5 -------------------
+        try:
+            deployToday_barData = inputDb('deployToday_barData')
+            logger.info('dashboardFunction.py - deployToday_barData - Success')
+        except:
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - deployToday_barData')
 
         RD = {
             'disk_donutData': disk_donutData,
@@ -191,7 +198,8 @@ def Dashboard(type=None):
             "report_listData_alarm": report_listData_alarm,
             "report_listData_subnet_isVm": report_listData_subnet_isVm_tf,
             "report_listData_action_tf": report_listData_action_tf,
-            "allOnline_donutData": allOnline_donutData
+            "allOnline_donutData": allOnline_donutData,
+            "deployToday_barData": deployToday_barData
             }
     else:
         print()

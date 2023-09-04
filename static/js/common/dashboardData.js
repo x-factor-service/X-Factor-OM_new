@@ -281,54 +281,93 @@ var handleRenderChartNCOMG = function () {
     var asset_overview_chart = new ApexCharts(document.querySelector('#asset_overview_chart'), asset_overview_chart_options);
     asset_overview_chart.render();
 
-    if (Array.isArray(dataList.sbom_pieData) && dataList.sbom_pieData.length === 0) {
-    dataList.sbom_pieData = [{ count: 0, comp_name: '-', comp_ver: '-' }];}
-    var sbom_pieDataCount = dataList.sbom_pieData.map(item => parseInt(item.count));
-    var sbom_pieDataItem = dataList.sbom_pieData.map(item => `${item.comp_name} ${item.comp_ver}`);
-    var createPieChart = {
-      series: sbom_pieDataCount,
+    //--------------------------------------------------------------------------
+    // 금일 가장 많이 배포한 패키지 Top 5
+    //--------------------------------------------------------------------------
+    var deployToday_barDataItem = []
+    var deployToday_barDataCount = []
+    for (var i = 0; i < dataList.deployToday_barData.length; i++) {
+        deployToday_barDataItem.push(dataList.deployToday_barData[i]['item']);
+        deployToday_barDataCount.push(dataList.deployToday_barData[i]['count']);
+    };
+    var today_deploy_chart_options = {
+      series: [{
+        name: "",
+        data: deployToday_barDataCount
+      }],
       chart: {
-        type: 'pie',
-        height: 180
+        height: 200,
+        type: 'bar',
+        events: {
+          click: function(chart, w, e) {
+          },
+        }
       },
-      stroke: {
-        width: 0
+      colors: ['#009D83', '#ff9f0c', '#B8A89A', '#46537B', '#2F4858'],
+      plotOptions: {
+        bar: {
+          columnWidth: '45%',
+          distributed: true,
+        }
       },
-      labels: sbom_pieDataItem,
       dataLabels: {
-                enabled: true,
-                style: {
-                    colors: ["rgba(" + app.color.whiteRgb + ", 1)"],
-                    fontWeight: '300'
-                },
-                formatter(val, opts) {
-                    const name = opts.w.globals.labels[opts.seriesIndex];
-                    return [val.toFixed(1) + '%'];
-                }
-            },
-      colors: ['#0079BF', '#0088A8', '#00867A', '#5BC160', '#DAD056'],
-      fill: {
-        type: 'gradient'
+        enabled: false
       },
       legend: {
-        formatter: function(val, opts) {
-            if (val.length > 20) {
-                val = val.substring(0, 17) + "...";
+        show: false
+      },
+      tooltip: {
+        custom: function({ series, seriesIndex, dataPointIndex, w }) {
+           var color = w.globals.colors[dataPointIndex];
+           return '<div class="arrow_box" style="padding: 7px 10px; background-color: ' + color + ';">' +
+               '<span style="font-weight: bold;">' + w.globals.labels[dataPointIndex] + ' : ' + series[seriesIndex][dataPointIndex] + '회' + '</span>' +
+               '</div>';
+        }
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+            type: 'horizontal',
+            shadeIntensity: 0.8,
+            gradientToColors: ['#009D83', '#ff9f0c', '#B8A89A', '#46537B', '#2F4858'],
+            inverseColors: false,
+            opacityFrom: 1,
+            opacityTo: 0.8,
+            stops: [0, 77]
+        }
+      },
+      yaxis: {
+        labels: {
+          formatter: function (value) {
+            return Math.round(value);
+          }
+        }
+      },
+      xaxis: {
+        categories: deployToday_barDataItem,
+        labels: {
+          style: {
+            colors: "rgba(" + app.color.whiteRgb + ", 1)",
+            fontSize: '12px',
+            fontWeight: '300'
+          },
+          formatter: function(val) {
+            if (val.length > 10) {
+                return val.substr(0, 10) + '...';
+            } else {
+                return val;
             }
-            return val + " : " + opts.w.globals.series[opts.seriesIndex] + "개";
+          }
         }
       }
     };
 
-    var sbom_pie_chart = new ApexCharts(document.querySelector("#sbom_pie"), createPieChart);
-    sbom_pie_chart.render();
-    setTimeout(function() {
-      var legends = document.querySelectorAll('#sbom_pie .apexcharts-legend-text');
-      legends.forEach((legend, index) => {
-        var originalLabel = sbom_pie_chart.w.globals.labels[index];
-        legend.setAttribute('title', originalLabel);
-      });
-    }, 100);
+    var today_deploy_chart = new ApexCharts(document.querySelector("#today_deploy_chart"), today_deploy_chart_options);
+    today_deploy_chart.render();
+    document.querySelectorAll('#today_deploy_chart .apexcharts-text title').forEach(title => {
+        title.remove();
+    });
+
 
 };
 

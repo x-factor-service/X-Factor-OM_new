@@ -32,6 +32,7 @@ def plug_in(type, data=None):
         weekDay = (datetime.today() - timedelta(7)).strftime("%Y-%m-%d")
         # monthDay = (datetime.today() - timedelta(30)).strftime("%Y-%m-%d")
         monthDay = (datetime.today() - relativedelta(days=31)).strftime("%Y-%m-%d")
+        today = datetime.today().strftime("%Y-%m-%d")
 
         SDL = []
         Conn = psycopg2.connect(
@@ -462,11 +463,21 @@ def plug_in(type, data=None):
                             classification = 'os_counts'
                             and statistics_collection_date >= '""" + DBSelectTime + """'
                     """
-
+        # ------------------금일 가장 많이 배포한 패키지 Top 5 -------------------
+        elif type == 'deployToday_barData':
+            query = """
+                        select
+                            item, item_count
+                        from
+                            minutely_statistics
+                        where
+                            classification = 'deploy_today'
+                            and date(statistics_collection_date) = '""" + today + """'
+                    """
         Cur.execute(query)
         RS = Cur.fetchall()
         for R in RS:
-            if type in ['os_pieData', 'wire_pieData', 'virtual_pieData', 'discover_lineData', 'idle_lineData', 'allAsset_lineData', 'highCpuProc_listData', 'highMemProc_listData', 'highDiskApp_listData']:
+            if type in ['os_pieData', 'wire_pieData', 'virtual_pieData', 'discover_lineData', 'idle_lineData', 'allAsset_lineData', 'highCpuProc_listData', 'highMemProc_listData', 'highDiskApp_listData', 'deployToday_barData']:
                 SDL.append(dict(
                     (
                         ('item', R[0]),

@@ -185,7 +185,7 @@ def deploy_action_val(request):
 @csrf_exempt
 def package_paging(request):
     if Customer == 'NC' or Customer == 'Xfactor':
-        search = request.POST.get('search')
+        search = request.POST.get('search').lower()
         con_set = request.POST.get('id')
         if con_set is None:
             con_set = 'Default'
@@ -206,14 +206,14 @@ def package_paging(request):
         # print(con_set)
         for i in range(len(dataP['data']) - 1):
             if con_set == 'all':
-                if dataP['data'][i]['name'].startswith(search) or dataP['data'][i]['content_set']['name'].startswith(search) or dataP['data'][i]['command'].startswith(search):
+                if dataP['data'][i]['name'].lower().startswith(search) or dataP['data'][i]['content_set']['name'].lower().startswith(search) or dataP['data'][i]['command'].lower().startswith(search):
                     packageList.append({'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
                                         'Command': dataP['data'][i]['command']})
             elif dataP['data'][i]['content_set']['name'] == con_set and search is None:
                 packageList.append({'id': dataP['data'][i]['id'], 'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
                                     'Command': dataP['data'][i]['command'], 'Command_Timeout': dataP['data'][i]['command_timeout']})
             elif dataP['data'][i]['content_set']['name'] == con_set:
-                if dataP['data'][i]['name'].startswith(search) or dataP['data'][i]['content_set']['name'].startswith(search) or dataP['data'][i]['command'].startswith(search):
+                if dataP['data'][i]['name'].lower().startswith(search) or dataP['data'][i]['content_set']['name'].lower().startswith(search) or dataP['data'][i]['command'].lower().startswith(search):
                     packageList.append({'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
                                         'Command': dataP['data'][i]['command']})
         Count = len(packageList)
@@ -226,7 +226,7 @@ def package_paging(request):
 @csrf_exempt
 def computerGroup_paging(request):
     if Customer == 'NC' or Customer == 'Xfactor':
-        search = request.POST.get('search')
+        search = request.POST.get('search').lower()
         #print(search)
         con_set = request.POST.get('id')
         if con_set is None:
@@ -252,12 +252,12 @@ def computerGroup_paging(request):
 
         for i in range(len(dataG['data']) - 1):
             if con_set == 'all':
-                if dataG['data'][i]['name'].startswith(search) or dataG['data'][i]['content_set']['name'].startswith(search) or dataG['data'][i]['text'].startswith(search):
+                if dataG['data'][i]['name'].lower().startswith(search) or dataG['data'][i]['content_set']['name'].lower().startswith(search) or dataG['data'][i]['text'].lower().startswith(search):
                     groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
             elif dataG['data'][i]['content_set']['name'] == con_set and search is None:
                 groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
             elif dataG['data'][i]['content_set']['name'] == con_set:
-                if dataG['data'][i]['name'].startswith(search) or dataG['data'][i]['content_set']['name'].startswith(search) or dataG['data'][i]['text'].startswith(search):
+                if dataG['data'][i]['name'].lower().startswith(search) or dataG['data'][i]['content_set']['name'].lower().startswith(search) or dataG['data'][i]['text'].lower().startswith(search):
                     groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
 
         Count = len(groupsList)

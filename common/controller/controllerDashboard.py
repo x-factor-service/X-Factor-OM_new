@@ -40,6 +40,7 @@ def dashboard(request):
         highMemProc_listData = DCDL["highMemProc_listData"]
         highDiskApp_listData = DCDL["highDiskApp_listData"]
         allOnline_donutData = DCDL["allOnline_donutData"]
+        deployToday_barData = DCDL["deployToday_barData"]
 
         dataList = {'disk_donutData': disk_donutData,
                     'memory_donutData': memory_donutData,
@@ -56,6 +57,7 @@ def dashboard(request):
                     "highMemProc_listData": highMemProc_listData,
                     "highDiskApp_listData": highDiskApp_listData,
                     "allOnline_donutData": allOnline_donutData,
+                    "deployToday_barData": deployToday_barData
                      }
         returnData = {'menuList': menuListDB, 'dataList': dataList, 'Login_Method': Login_Method, 'Customer' : Customer}
         return render(request, 'common/dashboard.html', returnData)
