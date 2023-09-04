@@ -82,8 +82,8 @@ def sbom_detail(request):
     detail_list = []
     for i in range(len(sbomD)):
         detail_list.append({'cn': sbomD[i][0], 'ip': sbomD[i][1], 'pn': sbomD[i][2],
-                            'pv': sbomD[i][3], 'type': sbomD[i][4], 'parent': sbomD[i][5],
-                            'count': sbomD[i][6]})
+                            'pv': sbomD[i][3], 'type': sbomD[i][4],
+                            'count': sbomD[i][5]})
     chartData = {'detail_list': detail_list}
     returnData = {'menuList': menuListDB, 'Customer': Customer, 'chartData': chartData}
     return render(request, 'sbom/sbom_detail.html', returnData)

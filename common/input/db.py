@@ -168,67 +168,67 @@ def plug_in(type, data=None):
         #                 LIMIT 7
         #             """
         #--------------인증서 리스트 날짜 지난거 안보이게
-        elif type == 'cert_listData':
-            query = """
-                        SELECT
-                            crt_name, crt_expire_date, COUNT(computer_name) AS item_count
-                        FROM
-                            certificate_asset
-                        WHERE
-                            crt_name != 'Root'
-                            AND TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') >= DATE '""" + yesterday + """'
-                        AND
-                            collection_date >= '""" + yesterday + """'      
-                        GROUP BY crt_name, crt_expire_date
-                        ORDER BY TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') ASC
-                        LIMIT 7
-                    """
-        # -----------------------------인증서리스트 더보기 및 카운트----------------------------
-        elif type == 'cert_listDataMore':
-            query = """
-                        select 
-                            computer_name, os, ip, crt_name, crt_expire_date
-                        from 
-                            certificate_asset 
-                        where 
-                            crt_name != 'Root'
-                        and
-                            crt_name = '""" + data[3] + """'
-                        AND
-                            collection_date >= '""" + yesterday + """'    
-                        and
-                            (computer_name ILIKE '%""" + data[2] + """%' or
-                            os ILIKE '%""" + data[2] + """%' or
-                            ip ILIKE '%""" + data[2] + """%' or
-                            crt_name ILIKE '%""" + data[2] + """%' or
-                            crt_expire_date ILIKE '%""" + data[2] + """%')
-                        GROUP BY 
-                            crt_name, crt_expire_date, computer_name, os, ip
-                        order by 
-                            crt_expire_date asc
-                        LIMIT """ + data[0] + """
-                        OFFSET (""" + data[1] + """-1) * """ + data[0] + """
-                    """
+        # elif type == 'cert_listData':
+        #     query = """
+        #                 SELECT
+        #                     crt_name, crt_expire_date, COUNT(computer_name) AS item_count
+        #                 FROM
+        #                     certificate_asset
+        #                 WHERE
+        #                     crt_name != 'Root'
+        #                     AND TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') >= DATE '""" + yesterday + """'
+        #                 AND
+        #                     collection_date >= '""" + yesterday + """'
+        #                 GROUP BY crt_name, crt_expire_date
+        #                 ORDER BY TO_DATE(crt_expire_date, 'MM/DD/YYYY HH24') ASC
+        #                 LIMIT 7
+        #             """
+        # # -----------------------------인증서리스트 더보기 및 카운트----------------------------
+        # elif type == 'cert_listDataMore':
+        #     query = """
+        #                 select
+        #                     computer_name, os, ip, crt_name, crt_expire_date
+        #                 from
+        #                     certificate_asset
+        #                 where
+        #                     crt_name != 'Root'
+        #                 and
+        #                     crt_name = '""" + data[3] + """'
+        #                 AND
+        #                     collection_date >= '""" + yesterday + """'
+        #                 and
+        #                     (computer_name ILIKE '%""" + data[2] + """%' or
+        #                     os ILIKE '%""" + data[2] + """%' or
+        #                     ip ILIKE '%""" + data[2] + """%' or
+        #                     crt_name ILIKE '%""" + data[2] + """%' or
+        #                     crt_expire_date ILIKE '%""" + data[2] + """%')
+        #                 GROUP BY
+        #                     crt_name, crt_expire_date, computer_name, os, ip
+        #                 order by
+        #                     crt_expire_date asc
+        #                 LIMIT """ + data[0] + """
+        #                 OFFSET (""" + data[1] + """-1) * """ + data[0] + """
+        #             """
 
-        elif type == 'cert_listDataMoreCount':
-            query = """
-                        select
-                            COUNT(*)
-                        from 
-                            certificate_asset 
-                        where 
-                            crt_name != 'Root' 
-                        and
-                            crt_name = '""" + data[3] + """'
-                        and
-                            (crt_name ILIKE '%""" + data[2] + """%' or
-                            crt_expire_date ILIKE '%""" + data[2] + """%' or
-                            computer_name ILIKE '%""" + data[2] + """%' or
-                            os ILIKE '%""" + data[2] + """%' or
-                            ip ILIKE '%""" + data[2] + """%') 
-                        and    
-                            collection_date >= '""" + yesterday + """'  
-                    """
+        # elif type == 'cert_listDataMoreCount':
+        #     query = """
+        #                 select
+        #                     COUNT(*)
+        #                 from
+        #                     certificate_asset
+        #                 where
+        #                     crt_name != 'Root'
+        #                 and
+        #                     crt_name = '""" + data[3] + """'
+        #                 and
+        #                     (crt_name ILIKE '%""" + data[2] + """%' or
+        #                     crt_expire_date ILIKE '%""" + data[2] + """%' or
+        #                     computer_name ILIKE '%""" + data[2] + """%' or
+        #                     os ILIKE '%""" + data[2] + """%' or
+        #                     ip ILIKE '%""" + data[2] + """%')
+        #                 and
+        #                     collection_date >= '""" + yesterday + """'
+        #             """
         # -----------------------------최대 CPU 점유 프로세스 더보기 및 카운트-------------
         elif type == 'highCpuProc_listData' :
             query = """
@@ -473,7 +473,7 @@ def plug_in(type, data=None):
                         ('count', int(R[1]))
                     )
                 ))
-            elif type in ['cert_listData', 'report_listData_unMgmt_idle', 'report_listData_alarm']:
+            elif type in ['report_listData_unMgmt_idle', 'report_listData_alarm']:
                 SDL.append(dict(
                     (
                         ('name', R[0]),
@@ -498,16 +498,16 @@ def plug_in(type, data=None):
                         ('group', R[2])
                     )
                 ))
-            elif type == 'cert_listDataMore':
-                SDL.append(dict(
-                    (
-                        ('computer_name', R[0]),
-                        ('os', R[1]),
-                        ('ip', R[2]),
-                        ('crt_name', R[3]),
-                        ('crt_expire_date', R[4]),
-                    )
-                ))
+            # elif type == 'cert_listDataMore':
+            #     SDL.append(dict(
+            #         (
+            #             ('computer_name', R[0]),
+            #             ('os', R[1]),
+            #             ('ip', R[2]),
+            #             ('crt_name', R[3]),
+            #             ('crt_expire_date', R[4]),
+            #         )
+            #     ))
             else:
                 SDL.append(R)
         return SDL

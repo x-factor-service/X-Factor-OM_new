@@ -14,7 +14,12 @@
                     </div>
                     <div class="row align-items-center">
                         <div class="col-12">
+                            {% if sbomDataList.sbom_pieData %}
                             <div id="sbom_pie" style="width: 100%;"></div>
+                            {% else %}
+<!--                                <img src="{% static 'radar.gif' %}">-->
+                                <p>No data available for pie chart.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

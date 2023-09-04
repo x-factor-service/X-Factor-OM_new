@@ -24,7 +24,7 @@ def Dashboard(type=None):
         virtual_pieData = []
         discover_lineData = []
         allAsset_lineData = []
-        cert_listData = []
+        # cert_listData = []
         sbom_listData = []
         idle_lineData = []
         highCpuProc_listData = []
@@ -106,12 +106,12 @@ def Dashboard(type=None):
             logger.warning('dashboardFunction.py - Error Occurred')
             logger.warning('Error - idle_lineData')
         # -----------------------------인증서리스트  ------------------------------------
-        try:
-            cert_listData = inputDb('cert_listData')
-            logger.info('dashboardFunction.py - cert_listData - Success')
-        except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - cert_listData')
+        # try:
+        #     cert_listData = inputDb('cert_listData')
+        #     logger.info('dashboardFunction.py - cert_listData - Success')
+        # except:
+        #     logger.warning('dashboardFunction.py - Error Occurred')
+        #     logger.warning('Error - cert_listData')
         # -----------------------------최대 CPU 점유 프로세스 더보기 -----------------------
         try:
             highCpuProc_listData = inputDb('highCpuProc_listData')
@@ -181,7 +181,7 @@ def Dashboard(type=None):
             "virtual_pieData": virtual_pieData,
             "allAsset_lineData": allAsset_lineData,
             "discover_lineData": discover_lineData,
-            "cert_listData": cert_listData,
+            # "cert_listData": cert_listData,
             "sbom_listData": sbom_listData,
             "idle_lineData": idle_lineData,
             "highCpuProc_listData": highCpuProc_listData,
