@@ -249,16 +249,15 @@ def computerGroup_paging(request):
         dataG = responseGroup.json()
         # print(dataG['data'][0])
 
-
         for i in range(len(dataG['data']) - 1):
             if con_set == 'all':
-                if dataG['data'][i]['name'].lower().startswith(search) or dataG['data'][i]['content_set']['name'].lower().startswith(search) or dataG['data'][i]['text'].lower().startswith(search):
-                    groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
+                if dataG['data'][i]['name'].lower().startswith(search) or dataG['data'][i]['content_set']['name'].lower().startswith(search) or dataG['data'][i].get('text', '').lower().startswith(search):
+                    groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i].get('text', '')})
             elif dataG['data'][i]['content_set']['name'] == con_set and search is None:
-                groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
+                groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i].get('text', '')})
             elif dataG['data'][i]['content_set']['name'] == con_set:
-                if dataG['data'][i]['name'].lower().startswith(search) or dataG['data'][i]['content_set']['name'].lower().startswith(search) or dataG['data'][i]['text'].lower().startswith(search):
-                    groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i]['text']})
+                if dataG['data'][i]['name'].lower().startswith(search) or dataG['data'][i]['content_set']['name'].lower().startswith(search) or dataG['data'][i].get('text', '').lower().startswith(search):
+                    groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i].get('text', '')})
 
         Count = len(groupsList)
         RD = {'item': groupsList,
