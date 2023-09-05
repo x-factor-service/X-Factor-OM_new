@@ -1,276 +1,7 @@
 //SBOM 페이지
 var aa = '../sbom_detail/?cpe='
-var sbom_dataTable = function () {
-    var dashboardpopupTable = $('#sbom_dataTable').DataTable({
-        dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
-        lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
-        responsive: true,
-        searching: true,
-        ordering: true,
-        serverSide: true,
-        displayLength: false,
-        order: [
-            [ 5, "desc"],
-            [ 1, "asc"]
-        ],
-        ajax: {
-            url: 'paging/',
-            type: "POST",
-            dataSrc: function (res) {
-                var data = res.data.item;
-                return data;
-            }
-        },
-        columns: [
-            {data: 'index', width: "5%"},
-            {data: 'name', width: "20%"},
-            {data: 'version', width: "10%"},
-            {data: 'cpe', width: "45%"},
-            {data: 'type', width: "10%"},
-            {data: 'count', width: "10%"}
-        ],
-        columnDefs: [
-            {targets: 0, width: "5%", className: 'text-center', orderable: false},
-            {
-                targets: 1, width: "20%", className: '', render: function (data, type, row) {
-                    return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #b6effb"; title="' + row.name + '" data-toggle="tooltip" onclick="openPopupWindow(\''+aa+row.cpe+'\', 1500, 600)">' + data + '<input type="hidden" name="cpe" value=row.cpe></a></span>'
-                }
-            },
-            {
-                targets: 2, width: "10%", className: '', render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.version + '" data-toggle="tooltip">' + data + '</span>'
-                }
-            },
-            {targets: 3, width: "45%", style: 'text-center text-truncate', render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.cpe + '" data-toggle="tooltip">' + data + '</span>'
-                }},
-            {targets: 4, width: "10%", style: 'text-center text-truncate', render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.type + '" data-toggle="tooltip">' + data + '</span>'
-                }},
-            {targets: 5, width: "10%", className: 'text-center'},
-        ],
-        language: {
-            "decimal": "",
-            "info": "전체 _TOTAL_건",
-            "infoEmpty": "데이터가 없습니다.",
-            "emptyTable": "데이터가 없습니다.",
-            "thousands": ",",
-            "lengthMenu": "페이지당 _MENU_ 개씩 보기",
-            "loadingRecords": "로딩 중입니다.",
-            "processing": "",
-            "zeroRecords": "검색 결과 없음",
-            "paginate": {
-                "first": "처음",
-                "last": "끝",
-                "next": "다음",
-                "previous": "이전"
-            },
-            "search": "검색:",
-            "infoFiltered": "(전체 _MAX_ 건 중 검색결과)",
-            "infoPostFix": "",
-        },
-        pagingType: 'numbers',
 
-        drawCallback: function () {
-            var current_page = dashboardpopupTable.page;
-            var total_pages = dashboardpopupTable.page.info().pages;
-            $('#sbom_nexts').remove();
-            $('#sbom_after').remove();
-
-            if (total_pages > 10) {
-                $('<button type="button" class="btn" id="sbom_nexts">≫</button>')
-                    .insertAfter('#sbom_dataTable_paginate .paginate_button:last');
-                $('<button type="button" class="btn" id="sbom_after">≪</button>')
-                    .insertBefore('#sbom_dataTable_paginate .paginate_button:first');
-            }
-        }
-    });
-
-    $(document).on('click', '#sbom_nexts, #sbom_after', function() {
-        var current_page = dashboardpopupTable.page();
-        var total_pages = dashboardpopupTable.page.info().pages;
-        if ($(this).attr('id') == 'sbom_nexts') {
-                if (current_page + 10 < total_pages) {
-                    dashboardpopupTable.page(current_page + 10).draw('page');
-                } else {
-                    dashboardpopupTable.page(total_pages - 1).draw('page');
-                }
-                } else {
-                    dashboardpopupTable.page(Math.max(current_page - 10, 0)).draw('page');
-                }
-    });
-    $(document).ready(function() {
-    var customStyle = '<style>#sbom_nexts, #sbom_after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
-    $('head').append(customStyle);
-    });
-
-};
-
-function openPopupWindow(url, width, height){
-    var left = (screen.width - width) /2;
-    var top = (screen.height - height) /2;
-    var windowFeatures = 'width=' + width + ',height=' + height + ', left=' + left + ', top'
-    window.open(url, '_blank',windowFeatures)
-    return false;
-}
-
-var sbom_cveTable = function () {
-    var dashboardpopupTable = $('#sbom_cveTable').DataTable({
-        dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
-        lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
-        responsive: true,
-        searching: true,
-        ordering: true,
-        serverSide: true,
-        displayLength: false,
-        order: [[ 6, "desc" ]],
-        ajax: {
-            url: 'paging_cve/',
-            type: "POST",
-            dataSrc: function (res) {
-                var data = res.data.item;
-                return data;
-            }
-        },
-        columns: [
-            {data: 'index', width: "6%"},
-            {data: 'comp_name', width: "29%"},
-            {data: 'comp_ver', width: "15%"},
-            {data: 'cve_id', width: "20%"},
-            {data: 'score', width: "15%"},
-            {data: 'vuln_last_reported', width: "15%"},
-            {data: 'number', visible: false}
-        ],
-        columnDefs: [
-            {targets: 0, width: "6%", className: 'text-center', orderable: false},
-            {
-                targets: 1,
-                width: "29%",
-                render: function (data, type, row) {
-                    return '<div class="click_search" style="cursor: pointer; color: #D3FFBF; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.comp_name + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            },
-            {
-                targets: 2,
-                width: "15%",
-                render: function (data, type, row) {
-                    if (data === null) {
-                        data = '';
-                    }
-                    return '<div class="click_search" style="cursor: pointer; color: #D3FFBF; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.comp_ver + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            },
-            {
-                targets: 3,
-                width: "20%",
-                render: function (data, type, row) {
-                    return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.cve_id + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            },
-            {
-                targets: 4,
-                width: "15%",
-                render: function (data, type, row) {
-                    return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.score + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            },
-            {
-                targets: 5,
-                width: "15%",
-                render: function (data, type, row) {
-                    return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.vuln_last_reported + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            },
-            {
-                targets: 6,
-                render: function (data, type, row) {
-                    return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.number + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            }
-        ],
-        language: {
-            "decimal": "",
-            "info": "전체 _TOTAL_건",
-            "infoEmpty": "데이터가 없습니다.",
-            "emptyTable": "데이터가 없습니다.",
-            "thousands": ",",
-            "lengthMenu": "페이지당 _MENU_ 개씩 보기",
-            "loadingRecords": "로딩 중입니다.",
-            "processing": "",
-            "zeroRecords": "검색 결과 없음",
-            "paginate": {
-                "first": "처음",
-                "last": "끝",
-                "next": "다음",
-                "previous": "이전"
-            },
-            "search": "검색:",
-            "infoFiltered": "(전체 _MAX_ 건 중 검색결과)",
-            "infoPostFix": "",
-        },
-        pagingType: 'numbers',
-
-        drawCallback: function () {
-            var current_page = dashboardpopupTable.page;
-            var total_pages = dashboardpopupTable.page.info().pages;
-            $('#cve_nexts').remove();
-            $('#cve_after').remove();
-
-            if (total_pages > 10) {
-                $('<button type="button" class="btn" id="cve_nexts">≫</button>')
-                    .insertAfter('#sbom_dataTable_paginate .paginate_button:last');
-                $('<button type="button" class="btn" id="cve_after">≪</button>')
-                    .insertBefore('#sbom_dataTable_paginate .paginate_button:first');
-            };
-
-            $('#sbom_cveTable tbody').off('click', 'tr').on('click', 'tr', function () {
-                var data = dashboardpopupTable.row(this).data();
-                var cveId = data.solution;
-                var accordionExists = $(this).next('.accordion-row').length > 0;
-                if (accordionExists) {
-                    $(this).next('.accordion-row').remove();
-                    return;
-                }
-                var accordionHTML = `
-                <tr class="accordion-row">
-                    <td colspan="${dashboardpopupTable.columns().nodes().length}">
-                        <div class="accordion" id="accordionExample">
-                            <div class="card">
-                                <div class="card-body">
-                                    <strong>취약점 설명 :</strong> ${data.note}
-                                    <hr>
-                                    <strong>대응 방안 :</strong> ${data.solution}
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                `;
-                $(this).after(accordionHTML);
-            });
-        }
-    });
-
-    $(document).on('click', '#cve_nexts, #cve_after', function() {
-        var current_page = dashboardpopupTable.page();
-        var total_pages = dashboardpopupTable.page.info().pages;
-        if ($(this).attr('id') == 'cve_nexts') {
-                if (current_page + 10 < total_pages) {
-                    dashboardpopupTable.page(current_page + 10).draw('page');
-                } else {
-                    dashboardpopupTable.page(total_pages - 1).draw('page');
-                }
-                } else {
-                    dashboardpopupTable.page(Math.max(current_page - 10, 0)).draw('page');
-                }
-    });
-    $(document).ready(function() {
-    var customStyle = '<style>#cve_nexts, #cve_after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
-    $('head').append(customStyle);
-    });
-
-};
-
+//CVE가 탐지된 SBOM 테이블
 var cveInSbomTable = function () {
     var dashboardpopupTable = $('#cveInSbom_dataTable').DataTable({
         dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center mb-6 d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
@@ -304,60 +35,41 @@ var cveInSbomTable = function () {
             }
         },
         columns: [
-            {data: 'index', width: "6%"},
-            {data: 'comp_name', width: "29%"},
-            {data: 'comp_ver', width: "15%"},
-            {data: 'cve_id', width: "20%"},
-            {data: 'score', width: "15%"},
-            {data: 'vuln_last_reported', width: "15%"},
+            {data: 'index'},
+            {data: 'comp_name'},
+            {data: 'comp_ver'},
+            {data: 'cve_id'},
+            {data: 'score'},
+            {data: 'vuln_last_reported'},
+            {data: 'vuln_last_reported'},
             {data: 'number', visible: false}
         ],
         columnDefs: [
-            {targets: 0, width: "5%", className: 'text-center', orderable: false},
-            {
-                targets: 1,
-                width: "29%",
-                render: function (data, type, row) {
-                    return '<div class="click_search text-center" style="cursor: pointer; color: #D3FFBF; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.comp_name + '" data-toggle="tooltip">' + data + '</div>'
+            {targets: 0, width: '5%', className: 'text-center', orderable: false},
+            {targets: 1, width: '31%', render: function (data, type, row) {
+                return '<a href="../cve_detail/" class="text-center text-truncate text-teal sbom-cursor sbom-component fs-12px fw-bold" title="' + row.comp_name + '" data-toggle="tooltip">' + data + '</a>'
+            }},
+            {targets: 2, width: '16%', render: function (data, type, row) {
+                if (data === null) {
+                    data = '';
                 }
-            },
-            {
-                targets: 2,
-                width: "15%",
-                render: function (data, type, row) {
-                    if (data === null) {
-                        data = '';
-                    }
-                    return '<div class="click_search text-center" style="cursor: pointer; color: #D3FFBF; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.comp_ver + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            },
-            {
-                targets: 3,
-                width: "20%",
-                render: function (data, type, row) {
-                    return '<div class="text-center" style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.cve_id + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            },
-            {
-                targets: 4,
-                width: "15%",
-                render: function (data, type, row) {
-                    return '<div class="text-center" style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.score + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            },
-            {
-                targets: 5,
-                width: "15%",
-                render: function (data, type, row) {
-                    return '<div class="text-center" style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.vuln_last_reported + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            },
-            {
-                targets: 6,
-                render: function (data, type, row) {
-                    return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="' + row.number + '" data-toggle="tooltip">' + data + '</div>'
-                }
-            }
+                return '<div class="text-center text-truncate text-teal sbom-cursor fs-12px fw-bold" title="' + row.comp_ver + '" data-toggle="tooltip">' + data + '</div>'
+            }},
+            {targets: 3, width: '21%', render: function (data, type, row) {
+                return '<div class="text-center text-truncate sbom-cursor fs-12px" title="' + row.cve_id + '" data-toggle="tooltip">' + data + '</div>'
+            }},
+            {targets: 4, width: '11%', render: function (data, type, row) {
+                return '<div class="text-center text-truncate sbom-cursor fs-12px" title="' + row.score + '" data-toggle="tooltip">' + data + '</div>'
+            }},
+            {targets: 5, width: '10%', render: function (data, type, row) {
+                return '<div class="text-center text-truncate sbom-cursor fs-12px" title="' + row.vuln_last_reported + '" data-toggle="tooltip">' + data + '</div>'
+            }},
+            {targets: 6, width: '6%', render: function (data, type, row) {
+                return '<div class="text-center text-truncate sbom-cursor fs-12px" title="' + row.vuln_last_reported + '" data-toggle="tooltip">' + data + '</div>'
+            }},
+            {targets: 7, render: function (data, type, row) {
+                return '<div class="text-center text-truncate sbom-cursor fs-12px" title="' + row.number + '" data-toggle="tooltip">' + data + '</div>'
+            }}
         ],
         language: {
             "decimal": "",
@@ -393,32 +105,6 @@ var cveInSbomTable = function () {
                 $('<button type="button" class="btn" id="cveInSbom_after">≪</button>')
                     .insertBefore('#cveInSbom_dataTable_paginate .paginate_button:first');
             };
-
-            $('#cveInSbom_dataTable tbody').off('click', 'tr').on('click', 'tr', function () {
-                var data = dashboardpopupTable.row(this).data();
-                var cveId = data.solution; // 4번째 컬럼의 데이터
-                var accordionExists = $(this).next('.accordion-row').length > 0;
-                if (accordionExists) {
-                    $(this).next('.accordion-row').remove();
-                    return;
-                }
-                var accordionHTML = `
-                <tr class="accordion-row">
-                    <td colspan="${dashboardpopupTable.columns().nodes().length}">
-                        <div class="accordion" id="accordionExample">
-                            <div class="card">
-                                <div class="card-body">
-                                    <strong>취약점 설명 :</strong> ${data.note}
-                                    <hr>
-                                    <strong>대응 방안 :</strong> ${data.solution}
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                `;
-                $(this).after(accordionHTML);
-            });
         }
     });
 
@@ -439,25 +125,68 @@ var cveInSbomTable = function () {
     var customStyle = '<style>#cveInSbom_nexts, #cveInSbom_after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
     $('head').append(customStyle);
     });
-
 };
 
+//sbom detail table : 자산 목록 테이블
+var sbomDetail_datatable = function () {
+	var dashboardpopupTable = $('#sbom_detail_dataTable').DataTable({
+		dom: "<'row mb-3'<'col-md-4 mb-3 mb-md-0'l><'col-md-8 text-right'<'d-flex justify-content-end'fB>>>t<'row align-items-center'<'mr-auto col-md-6 mb-3 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
+		lengthMenu: [10, 20, 30, 40, 50],
+		responsive: true,
+		searching: true,
+		autoWidth: false,
+		ordering: false,
+		serverSide: false,
+		processing: true,
+		columnDefs: [
+		    {targets: 0, width: '5%', className: 'text-center'},
+		    {targets: 1, width: '10%', className: 'text-center'},
+		    {targets: 2, width: '10%', className: 'text-center'},
+		    {targets: 3, width: '15%', className: 'text-center'},
+		    {targets: 4, width: '10%', className: 'text-center'},
+		    {targets: 5, width: '10%', className: 'text-center '},
+		    {targets: 6, width: '40%', className: 'text-truncate'},
+		],
+		language: {
+			"decimal": "",
+			"info": "현재 _START_ - _END_건 / 전체 _TOTAL_건",
+			"infoEmpty": "데이터가 없습니다.",
+			"emptyTable": "데이터가 없습니다.",
+			"thousands": ",",
+			"lengthMenu": "페이지당 _MENU_ 개씩 보기",
+			"loadingRecords": "로딩 중입니다.",
+			"processing": "",
+			"zeroRecords": "검색 결과 없음",
+			"paginate": {
+				"first": "처음",
+				"last": "끝",
+				"next": "다음",
+				"previous": "이전"
+			},
+			"search": "검색:",
+			"infoFiltered": "(전체 _MAX_ 건 중 검색결과)",
+			"infoPostFix": "",
+		},
+	});
+};
 
-var sbomInCveTable = function () {
-    var dashboardpopupTable = $('#sbomInCve_dataTable').DataTable({
+//SBOM 테이블
+var sbom_dataTable = function () {
+    var dashboardpopupTable = $('#sbom_dataTable').DataTable({
         dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
         lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
         responsive: true,
         searching: true,
         ordering: true,
         serverSide: true,
+        autoWidth: false,
         displayLength: false,
         order: [
             [ 5, "desc"],
             [ 1, "asc"]
         ],
         ajax: {
-            url: 'paging_sic/',
+            url: 'paging/',
             type: "POST",
             dataSrc: function (res) {
                 var data = res.data.item;
@@ -465,32 +194,28 @@ var sbomInCveTable = function () {
             }
         },
         columns: [
-            {data: 'index', width: "5%"},
-            {data: 'name', width: "20%"},
-            {data: 'version', width: "10%"},
-            {data: 'cpe', width: "45%"},
-            {data: 'type', width: "10%"},
-            {data: 'count', width: "10%"}
+            {data: 'index'},
+            {data: 'name'},
+            {data: 'version'},
+            {data: 'cpe'},
+            {data: 'type'},
+            {data: 'count'}
         ],
         columnDefs: [
-            {targets: 0, width: "5%", className: 'text-center', orderable: false},
-            {
-                targets: 1, width: "20%", className: '', render: function (data, type, row) {
-                    return '<div style="cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #b6effb"; title="' + row.name + '" data-toggle="tooltip" onclick="openPopupWindow(\''+aa+row.cpe+'\', 1500, 600)">' + data + '<input type="hidden" name="cpe" value=row.cpe></a></span>'
-                }
-            },
-            {
-                targets: 2, width: "10%", className: '', render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.version + '" data-toggle="tooltip">' + data + '</span>'
-                }
-            },
-            {targets: 3, width: "45%", style: 'text-center text-truncate', render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.cpe + '" data-toggle="tooltip">' + data + '</span>'
-                }},
-            {targets: 4, width: "10%", style: 'text-center text-truncate', render: function (data, type, row) {
-                    return '<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"; title="' + row.type + '" data-toggle="tooltip">' + data + '</span>'
-                }},
-            {targets: 5, width: "10%", className: 'text-center'},
+            {targets: 0, width: '5%', className: 'text-center', orderable: false},
+            {targets: 1, width: '20%', className: '', render: function (data, type, row) {
+                return '<div class="text-start text-truncate text-teal fs-12px fw-bold" title="' + row.name + '" data-toggle="tooltip" onclick="openPopupWindow(\''+aa+row.cpe+'\', 1500, 600)">' + data + '<input type="hidden" name="cpe" value=row.cpe></a></span>'
+            }},
+            {targets: 2, width: '10%', className: '', render: function (data, type, row) {
+                return '<div class="text-center text-truncate fs-12px" title="' + row.version + '" data-toggle="tooltip">' + data + '</span>'
+            }},
+            {targets: 3, width: '50%', className: '', render: function (data, type, row) {
+                return '<div class="text-start text-truncate fs-12px" title="' + row.cpe + '" data-toggle="tooltip">' + data + '</span>'
+            }},
+            {targets: 4, width: '10%', className: '', render: function (data, type, row) {
+                return '<div class="text-center text-truncate fs-12px" title="' + row.type + '" data-toggle="tooltip">' + data + '</span>'
+            }},
+            {targets: 5, width: '5%', className: 'text-center text-truncate fs-12px'},
         ],
         language: {
             "decimal": "",
@@ -548,7 +273,7 @@ var sbomInCveTable = function () {
     });
 };
 
-// SBOM 페이지 차트
+//SBOM 페이지 차트
 var handleRenderChartSBOM = function () {
     // global apexchart settings
     Apex = {
@@ -633,7 +358,12 @@ var handleRenderChartSBOM = function () {
       series: sbom_pieDataCount,
       chart: {
         type: 'pie',
-        height: 180
+        height: 180,
+        events: {
+            mounted: (chart) => {
+            chart.windowResizeHandler();
+            },
+        },
       },
       stroke: {
         width: 0
@@ -682,6 +412,11 @@ var handleRenderChartSBOM = function () {
       chart: {
         type: 'line',
         height: 200,
+        events: {
+            mounted: (chart) => {
+            chart.windowResizeHandler();
+            },
+        },
         zoom: {
           enabled: false
         },
@@ -735,11 +470,14 @@ var handleRenderChartSBOM = function () {
           }
         }
       },
-      colors: ['#ADFF2F'],
+      colors: ['#546E7A'],
       fill: {
         type: 'gradient',
         gradient: {
-
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.9,
+          stops: [0, 100]
         }
       },
       markers: {
@@ -778,64 +516,35 @@ var handleRenderChartSBOM = function () {
     );
 
     sbom_line_chart.render();
+};
 
+function adjustWidth() {
+    const cveNavItem = document.querySelector('.cveList');
+    const sbomNavItem = document.querySelector('.sbomList');
+    const chartContainer = document.querySelector('.col-xl-3');
+    const tableContainer = document.querySelector('.col-xl-9');
 
-    var categories_ip = sbomDataList.sbom_barData.map(item => item.ip);
-    var countData = sbomDataList.sbom_barData.map(item => parseInt(item.count, 10));
-    var sbomBarChart = {
-              series: [{
-              name: '오픈소스 개수',
-              data: countData
-            }],
-              chart: {
-              type: 'bar',
-              height: 200
-            },
-            plotOptions: {
-              bar: {
-                borderRadius: 4,
-                horizontal: true,
-              }
-            },
-            dataLabels: {
-              enabled: false
-            },
-            xaxis: {
-              categories: categories_ip
+    sbomNavItem.addEventListener('click', function() {
+        chartContainer.style.display = 'none';
+        tableContainer.classList.remove('col-xl-9');
+        tableContainer.classList.add('col-xl-12');
+    });
 
-            },
-            colors: ['#00FFFF','#00BFFF'],
-            };
-
-            var sbomBarChart = new ApexCharts(document.querySelector("#sbomBarChart"), sbomBarChart);
-            sbomBarChart.render();
-    };
+    cveNavItem.addEventListener('click', function() {
+        chartContainer.style.display = 'block';
+        tableContainer.classList.remove('col-xl-12');
+        tableContainer.classList.add('col-xl-9');
+    });
+}
 
 
 
 $(document).ready(function () {
-    $('a[data-target="#detect"]').click(function(event) {
-        event.preventDefault();
-        $('a[data-target="#all"]').removeClass('active');
-        $('a[data-target="#detect"]').addClass('active');
-        $('#all').hide();
-        $('#detect').show();
-    });
-    $('a[data-target="#all"]').click(function(event) {
-        event.preventDefault();
-        $('a[data-target="#detect"]').removeClass('active');
-        $('a[data-target="#all"]').addClass('active');
-        $('#detect').hide();
-        $('#all').show();
-    });
-
-
-
-    handleRenderChartSBOM();
-    sbom_dataTable();
-    sbom_cveTable();
     cveInSbomTable();
-    sbomInCveTable();
+    sbom_dataTable();
+    sbomDetail_datatable();
+    handleRenderChartSBOM();
+    adjustWidth();
 });
 
 

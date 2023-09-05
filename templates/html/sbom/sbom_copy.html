@@ -1,0 +1,155 @@
+{% extends 'common/base.html' %}
+{% block content %}
+{% load static %}
+<div id="content" class="p-1rem" style="display:flex; justify-content:space-between;">
+<div id="loadingSpinner" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <div id="loadingText">Loading.</div>
+</div>
+    <div class="row justify-content-center" style="height:90vh;">
+        <div class="col-3" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <div class="card mb-3" style="height:32%;">
+                <div class="card-body">
+                    <div class="d-flex fw-bold fs-12px mb-4">
+                        <div class="flex-grow-1">탐지된 취약 오픈소스 Top 5</div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <div id="sbom_pie" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+            <div class="card mb-3" style="height:32%">
+                <div class="card-body">
+                    <div class="d-flex fw-bold fs-12px mb-2">
+                        <div class="flex-grow-1">취약 오픈소스가 탐지된 자산 추이(최근 7일)</div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <div id="sbom_line" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+            <div class="card" style="height:32%;">
+                <div class="card-body">
+                    <div class="d-flex fw-bold fs-12px mb-2">
+                        <div class="flex-grow-1">최다 취약 오픈소스 보유 자산 Top 5</div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <div id="" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxxl-9 col-lg-9" id="detect" >
+            <div id="cveInSbom_dataTable_wrapper" class="card">
+                <div class="scroll-none card-body text-white text-opacity-100" style="height:90vh; overflow-y: auto;">
+                    <ul class="col-xxxl-8 col-lg-12 nav mb-2 nav-tabs2 nav-tabs-v2">
+                        <li class="nav-item" style="font-size:20px;"><a class="active nav-link" style="cursor: pointer;" data-target="#detect">탐지목록</a></li>
+                        <li class="nav-item" style="font-size:20px;"><a class="nav-link" style="cursor: pointer;" data-target="#all">전체목록</a></li>
+                    </ul>
+                    <div class="mb-5" style="text-align: center; font-size: 40px; font-weight: bold">CVE가 탐지된 SBOM 목록</div>
+                        <table id="cveInSbom_dataTable" class="table-sm-se w-100 text-white text-opacity-100 sbom-table-fix">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>컴포넌트명</th>
+                            <th>컴포넌트 버전</th>
+                            <th>CVE ID</th>
+                            <th>심각도</th>
+                            <th>최종 보고일</th>
+                            <th>number</th>
+                        </tr>
+                        </thead>
+                        </table>
+                        <table id="sbomInCve_dataTable" class="table-sm-se w-100 text-white text-opacity-100 sbom-table-fix mt-5">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Packages Name</th>
+                            <th>Version</th>
+                            <th>CPE</th>
+                            <th>Type</th>
+                            <th>number</th>
+                        </tr>
+                        </thead>
+                        </table>
+                </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxxl-9 col-lg-9" id="all" style="display:none;">
+            <div class="card text-white text-opacity-100" style="height:90vh;">
+                <div id="sbom_dataTable_wrapper" class="card-body">
+                <ul class="col-xxxl-8 col-lg-12 nav mb-2 nav-tabs2 nav-tabs-v2">
+                    <li class="nav-item" style="font-size:20px;"><a class="nav-link" style="cursor: pointer;" data-target="#detect">탐지목록</a></li>
+                    <li class="nav-item" style= "font-size:20px;"><a class="active nav-link" style="cursor: pointer;" data-target="#all">전체목록</a></li>
+                </ul>
+                <div class="scroll-none" style="height:81vh; overflow-y: auto;">
+                    <div style="text-align: center; font-size: 40px; font-weight: bold">SBOM</div>
+                    <table id="sbom_dataTable" class="table-sm-se w-100 text-white text-opacity-100 sbom-table-fix">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Packages Name</th>
+                            <th>Version</th>
+                            <th>CPE</th>
+                            <th>Type</th>
+                            <th>Count</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div style="text-align: center; font-size: 40px; font-weight: bold" class="mt-5">CVE</div>
+                    <table id="sbom_cveTable" class="table-sm-se w-100 text-white text-opacity-100 sbom-table-fix">
+                        <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>컴포넌트명</th>
+                            <th>컴포넌트 버전</th>
+                            <th>CVE ID</th>
+                            <th>심각도</th>
+                            <th>최종 보고일</th>
+                            <th>number</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
