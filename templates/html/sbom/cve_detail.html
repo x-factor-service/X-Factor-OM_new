@@ -1,0 +1,89 @@
+{% extends 'common/base.html' %}
+{% block content %}
+{% load static %}
+
+<div id="content" class="app-content p-2rem m-0">
+    <div class="row justify-content-center">
+        <div class="col-xl-10">
+            <!-- BEGIN page-header -->
+            <h1 class="page-header mb-5">
+                CVE 상세
+            </h1>
+            <!-- END page-header -->
+            <div class="cveTable-component mb-4">
+                <table id="cve_detail_dataTable" class="table table-sm-se w-100 text-white text-opacity-100 fs-12px text-center">
+                    <thead class="table-active">
+                    <tr>
+                        <th>컴포넌트명</th>
+                        <th>컴포넌트 버전</th>
+                        <th>CVE ID</th>
+                        <th>심각도</th>
+                        <th>최종 보고일</th>
+                        <th>Count</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-truncate">sqlite</td>
+                        <td>1.0.1-beta</td>
+                        <td class="text-truncate ">CVE-2016-0799</td>
+                        <td>10.0 (Critical)</td>
+                        <td>2022/05/03</td>
+                        <td>9</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="cve-vuln mb-5">
+                <dl class="row m-1 bg-info bg-opacity-25 line-height-2 pt-1 ">
+                    <dt class="col-sm-2 text-danger text-center">취약점 설명</dt>
+                    <dd class="col-sm-10 mb-0">${data.note}</dd>
+                    <dt class="col-sm-2 text-danger text-center">대응 방안</dt>
+                    <dd class="col-sm-10 mb-0">${data.solution}</dd>
+                </dl>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="cveTable-container">
+                        <table id="sbom_detail_dataTable" class="table table-hover table-sm-se w-100 text-white text-opacity-100 fs-12px">
+                            <thead class="table-active text-center">
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Computer Name</th>
+                                <th scope="col">Ipv4 Address</th>
+                                <th scope="col">Packages Name</th>
+                                <th scope="col">Packages Version</th>
+                                <th scope="col">Packages Type</th>
+                                <th scope="col">Packages Path</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for data in chartData.detail_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ data.cn }}</td>
+                                <td>{{ data.ip }}</td>
+                                <td style="text-align: center; word-break: break-all;">{{ data.pn }}</td>
+                                <td style="text-align: center; word-break: break-all;">{{ data.pv }}</td>
+                                <td>{{ data.type }}</td>
+                                <td style="word-break: break-all;">{{ data.parent }}</td>
+                                <td style="text-align: center">{{ data.count }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
