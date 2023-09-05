@@ -1,7 +1,7 @@
 import logging
 from datetime import timedelta, datetime
 from pprint import pprint
-
+import pytz
 import pandas as pd
 from django.core import serializers
 from django.shortcuts import render, redirect
@@ -179,6 +179,33 @@ def deploy_action_val(request):
         if CAQ.status_code == 200:
             DPAD = DETR(CAQ.json(), request.session['sessionid'], 'deploy')
             DEOP(DPAD, 'action_log')
+            result = CAQ.json()
+
+            # package name 추출
+            pn = result['data']['package_spec']['name']
+
+            # action id 추출
+            action_id = result['data']['id']
+
+            # 실행 시간 추출
+            U_date = result['data']['package_spec']['creation_time']
+            parsed_date = datetime.strptime(U_date, '%Y-%m-%dT%H:%M:%Sz')
+
+            utc_tz = pytz.timezone('UTC')
+            kr_tz = pytz.timezone('Asia/Seoul')
+
+            utc_datetime = utc_tz.localize(parsed_date)
+            kr_datetime = utc_datetime.astimezone(kr_tz)
+
+            action_date = kr_datetime.strftime('%Y-%m-%d %H:%M:%S')
+
+            AJURL = apiUrl + '/api/v2/result_data/action/' + str(action_id)
+            sleep(12)
+            AJ = requests.get(AJURL, headers=PSQ, verify=False)
+
+            print(action_id)
+            print(AJ.json())
+
 
     return redirect('deploy')
 
