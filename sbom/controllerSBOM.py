@@ -151,3 +151,12 @@ def sbom_in_cve(request):
                   }
     return JsonResponse(returnData)
 
+def cve_detail(request) :
+    DCDL = DashboardData()
+    res_data = {}
+    if not 'sessionid' in request.session:
+        res_data['error'] = '먼저 로그인을 해주세요.'
+        return render(request, 'common/login.html', res_data)
+    else:
+        returnData = {'data': '김민주'}
+        return render(request, 'sbom/cve_detail.html', returnData)
