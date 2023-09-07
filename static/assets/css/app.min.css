@@ -19146,6 +19146,10 @@ fieldset:disabled .btn {
     height: 500px !important
 }
 
+.h-510px {
+    height: 510px !important
+}
+
 .h-520px {
     height: 520px !important
 }
@@ -30683,8 +30687,8 @@ body .note-modal-backdrop {
 
 /* mini delpoy scroll*/
 .mini-deploy-scroll{
-    height: 100px;
-    max-height: 100px;
+    height: 150px;
+    max-height: 200px;
     overflow-y: auto;
 }
 .mini-deploy-scroll::-webkit-scrollbar {
@@ -31256,6 +31260,35 @@ li.disabled {
     padding:0;
     overflow:visible;
     cursor:pointer;
+}
+
+.error_msg {
+    line-height: 40px;
+}
+
+.border_style {
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 4px;
+}
+
+.status-list {
+    padding: 4px 4px 0 4px;
+}
+
+.status-item {
+    border: 1px solid rgba(255,255,255, .75);
+}
+
+.status-sequence {
+    height: 92px;
+    line-height: 92px;
+    border-right: 1px solid rgba(255,255,255, .75);
+}
+
+.status-info {
+    height: 92px;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .nav.nav-tabs2.nav-tabs-v2>.nav-item>.nav-link {
