@@ -29,7 +29,7 @@
                                         <th scope="col">컴포넌트 버전</th>
                                         <th scope="col">CVE ID</th>
                                         <th scope="col">심각도</th>
-                                        <th scope="col">최종 보고일</th>
+                                        <th scope="col">마지막 탐지일</th>
                                         <th scope="col">Count</th>
                                     </tr>
                                     </thead>
@@ -48,9 +48,9 @@
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col">Packages Name</th>
-                                        <th scope="col">Version</th>
-                                        <th scope="col">CPE</th>
-                                        <th scope="col">Type</th>
+                                        <th scope="col">Packages Version</th>
+                                        <th scope="col">Packages Path</th>
+                                        <th scope="col">Packages Type</th>
                                         <th scope="col">Count</th>
                                     </tr>
                                     </thead>
@@ -73,10 +73,10 @@
         <div class="col-xl-3">
             <div class="card mb-3 sbomChart-container">
                 <div class="card-body">
-                    <div class="d-flex fw-bold small text-start mb-3">
-                        <span class="flex-grow-1">최다 취약 오픈소스 보유 자산 (상위 5개)</span>
+                    <div class="d-flex fw-bold small text-start">
+                        <span class="flex-grow-1">취약한 오픈소스를 가장 많이 보유한 자산 (상위 5개)</span>
                     </div>
-                    <div class="w-100">bar chart</div>
+                    <div class="w-100"><div id ="sbomBarChart"></div></div>
                 </div>
                 <div class="card-arrow">
                     <div class="card-arrow-top-left"></div>
@@ -87,10 +87,10 @@
             </div>
             <div class="card mb-3 sbomChart-container">
                 <div class="card-body">
-                    <div class="d-flex fw-bold small text-start mb-3">
-                        <span class="flex-grow-1">탐지된 취약 오픈소스 (상위 5개)</span>
+                    <div class="d-flex fw-bold small text-start mb-4">
+                        <span class="flex-grow-1">가장 많이 탐지된 취약 오픈소스 (상위 5개)</span>
                     </div>
-                    <div class="w-100">pie chart</div>
+                    <div class="w-100"><div id="sbom_pie"></div></div>
                 </div>
                 <div class="card-arrow">
                     <div class="card-arrow-top-left"></div>
@@ -102,9 +102,9 @@
             <div class="card sbomChart-container">
                 <div class="card-body">
                     <div class="d-flex fw-bold small text-start mb-3">
-                        <span class="flex-grow-1">취약 오픈소스가 탐지된 자산 추이 (상위 5개)</span>
+                        <span class="flex-grow-1">취약 오픈소스가 탐지된 자산 수 추이 (최근 7일)</span>
                     </div>
-                    <div class="w-100">line chart</div>
+                    <div class="w-100"><div id="sbom_line"></div></div>
                 </div>
                 <div class="card-arrow">
                     <div class="card-arrow-top-left"></div>
