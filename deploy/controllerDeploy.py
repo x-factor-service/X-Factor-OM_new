@@ -1,6 +1,7 @@
 import logging
 from datetime import timedelta, datetime
 from pprint import pprint
+import threading
 import pytz
 import pandas as pd
 from django.core import serializers
@@ -181,108 +182,134 @@ def deploy_action_val(request):
             DPAD = DETR(CAQ.json(), request.session['sessionid'], 'deploy')
             DEOP(DPAD, 'action_log')
 
-            # # ########################test용 computer group total count 계산 #################################
-            # TCG = CSRJ['data']['text']
-            # JURL = apiUrl + '/api/v2/questions'
-            # body = {
-            #     "query_text": "Get Computer Name and IP Address from all machines with ( All Computers and All Computers and " + TCG + ")"
-            # }
-            # JQP = requests.post(JURL, headers=PSQ, json=body, verify=False)
-            # JQPR = JQP.json()
-            # JCGI = JQPR['data']['id']
-            # JTCURL = apiUrl + '/api/v2/result_data/question/' + str(JCGI)
-            # for i in range(5):
-            #     sleep(1)
-            #
-            #     CGRD = requests.get(JTCURL, headers=PSQ, verify=False)
-            #     CGTC = CGRD.json()
-            #     CGTCR = CGTC['data']['result_sets'][0]['row_count_machines']
-            #
-            # ###############################
-            # 여기서 부터 테스트 시작
-            result = CAQ.json()
+            thread = threading.Thread(target=action_status_task, args=(CAQ.json(), PSQ,))
+            thread.start()
 
-            # package name 추출
-            pn = result['data']['package_spec']['name']
+    request.session['current_session_key'] = request.session.session_key
 
-            # action id 추출
-            action_id = result['data']['id']
+    return redirect('/deploy?show_table=true')
+def action_status_task(result,PSQ):
 
-            # 실행 시간 추출
-            U_date = result['data']['package_spec']['creation_time']
-            parsed_date = datetime.strptime(U_date, '%Y-%m-%dT%H:%M:%Sz')
-
-            utc_tz = pytz.timezone('UTC')
-            kr_tz = pytz.timezone('Asia/Seoul')
-
-            utc_datetime = utc_tz.localize(parsed_date)
-            kr_datetime = utc_datetime.astimezone(kr_tz)
-
-            action_date = kr_datetime.strftime('%Y-%m-%d %H:%M:%S')
-
-            AJURL = apiUrl + '/api/v2/result_data/action/' + str(action_id)
-            sleep(23)
-            AJ = requests.get(AJURL, headers=PSQ, verify=False)
-            AJD = AJ.json()
-
-            ################# action result ##################
-            action_result = []
-
-            for i in range(len(AJD['data']['result_sets'][0]['rows'])+1):
-                try:
-                    key = AJD['data']['result_sets'][0]['rows'][i]['data'][0][0]['text']
-                    value = AJD['data']['result_sets'][0]['rows'][i]['data'][1][0]['text'].split(':')
-
-                    action_result.append({key : value[1]})
-                except (IndexError,KeyError):
-                    pass
-
-            ASdata = [pn,action_id,action_date,action_result]
-            DSOP(ASdata)
-            print(ASdata)
-            # print(AJD['data']['result_sets'][0]['rows'][0]['data'][0][0])
-            # print(AJD['data']['result_sets'][0]['rows'][0]['data'][1][0])
-            # print(AJD['data']['result_sets'][0]['rows'][1]['data'][0][0])
-            # print(AJD['data']['result_sets'][0]['rows'][1]['data'][1][0])
-            # #######################!111111111111111111111##########################
-            # total = 0
-            # i = 0
-            # while total < CGTCR:
-            #     sleep(1)
-            #     AJ = requests.get(AJURL, headers=PSQ, verify=False)
-            #     AJD = AJ.json()
-            #     try:
-            #         value1 = AJD['data']['result_sets'][0]['rows'][i]['data']
-            #         print(value1)
-            #         value = int(AJD['data']['result_sets'][0]['rows'][i]['data'][2][0]['text'])
-            #         total += value
-            #         print(total)
-            #         i += 1
-            #     except:
-            #         print('아직')
-            # print(AJD['data']['result_sets'][0]['rows'])
-            # print(action_id)
-            ########################22222222222222222222222222#######################
-            # total = 0
-            # for i in range(10):
-            #     while total < CGTCR:
-            #         sleep(2)
-            #         AJ = requests.get(AJURL, headers=PSQ, verify=False)
-            #         AJD = AJ.json()
-            #         # print(AJD)
-            #
-            #         # Ensure the data exists before trying to access it
-            #         if len(AJD['data']['result_sets'][0]['rows']) > i:
-            #             value = int(AJD['data']['result_sets'][0]['rows'][i]['data'][2][0]['text'])
-            #             print(AJD['data']['result_sets'][0]['rows'][i])
-            #             print(value)
-            #             total += value
-            #             print(total)
+    # progress 바 스타트
 
 
+    # # ########################test용 computer group total count 계산 #################################
+    # TCG = CSRJ['data']['text']
+    # JURL = apiUrl + '/api/v2/questions'
+    # body = {
+    #     "query_text": "Get Computer Name and IP Address from all machines with ( All Computers and All Computers and " + TCG + ")"
+    # }
+    # JQP = requests.post(JURL, headers=PSQ, json=body, verify=False)
+    # JQPR = JQP.json()
+    # JCGI = JQPR['data']['id']
+    # JTCURL = apiUrl + '/api/v2/result_data/question/' + str(JCGI)
+    # for i in range(5):
+    #     sleep(1)
+    #
+    #     CGRD = requests.get(JTCURL, headers=PSQ, verify=False)
+    #     CGTC = CGRD.json()
+    #     CGTCR = CGTC['data']['result_sets'][0]['row_count_machines']
+    #
+    # ###############################
+    # 여기서 부터 테스트 시작
+    # package name 추출
+    pn = result['data']['package_spec']['name']
 
-    return redirect('deploy')
+    # action id 추출
+    action_id = result['data']['id']
 
+    # 실행 시간 추출
+    U_date = result['data']['package_spec']['creation_time']
+    parsed_date = datetime.strptime(U_date, '%Y-%m-%dT%H:%M:%Sz')
+
+    utc_tz = pytz.timezone('UTC')
+    kr_tz = pytz.timezone('Asia/Seoul')
+
+    utc_datetime = utc_tz.localize(parsed_date)
+    kr_datetime = utc_datetime.astimezone(kr_tz)
+
+    action_date = kr_datetime.strftime('%Y-%m-%d %H:%M:%S')
+
+    AJURL = apiUrl + '/api/v2/result_data/action/' + str(action_id)
+    sleep(23)
+    AJ = requests.get(AJURL, headers=PSQ, verify=False)
+    AJD = AJ.json()
+
+    ################# action result ##################
+    action_result = []
+
+    for i in range(len(AJD['data']['result_sets'][0]['rows']) + 1):
+        try:
+            key = AJD['data']['result_sets'][0]['rows'][i]['data'][0][0]['text']
+            value = AJD['data']['result_sets'][0]['rows'][i]['data'][1][0]['text'].split(':')
+
+            action_result.append({key: value[1]})
+        except (IndexError, KeyError):
+            pass
+
+    print(action_result)
+    completed_count = 0
+    failed_count = 0
+    expired_count = 0
+
+    for result in action_result:
+        status = next(iter(result.values()))
+
+
+        if status == 'Completed.':
+            completed_count += 1
+        elif status == 'Failed.':
+            failed_count += 1
+        elif status == 'Expired.':
+            expired_count += 1
+
+    total_count = completed_count + failed_count + expired_count
+    completed_per = str(int((completed_count / total_count) * 100)) + '%'
+    failed_per = str(int((failed_count / total_count) * 100)) + '%'
+    expired_per = str(int((expired_count / total_count) * 100)) + '%'
+
+    BData = [completed_per, failed_per, expired_per]
+    ASdata = [pn, action_id, action_date, action_result, BData]
+    DSOP(ASdata)
+
+    # print(AJD['data']['result_sets'][0]['rows'][0]['data'][0][0])
+    # print(AJD['data']['result_sets'][0]['rows'][0]['data'][1][0])
+    # print(AJD['data']['result_sets'][0]['rows'][1]['data'][0][0])
+    # print(AJD['data']['result_sets'][0]['rows'][1]['data'][1][0])
+    # #######################!111111111111111111111##########################
+    # total = 0
+    # i = 0
+    # while total < CGTCR:
+    #     sleep(1)
+    #     AJ = requests.get(AJURL, headers=PSQ, verify=False)
+    #     AJD = AJ.json()
+    #     try:
+    #         value1 = AJD['data']['result_sets'][0]['rows'][i]['data']
+    #         print(value1)
+    #         value = int(AJD['data']['result_sets'][0]['rows'][i]['data'][2][0]['text'])
+    #         total += value
+    #         print(total)
+    #         i += 1
+    #     except:
+    #         print('아직')
+    # print(AJD['data']['result_sets'][0]['rows'])
+    # print(action_id)
+    ########################22222222222222222222222222#######################
+    # total = 0
+    # for i in range(10):
+    #     while total < CGTCR:
+    #         sleep(2)
+    #         AJ = requests.get(AJURL, headers=PSQ, verify=False)
+    #         AJD = AJ.json()
+    #         # print(AJD)
+    #
+    #         # Ensure the data exists before trying to access it
+    #         if len(AJD['data']['result_sets'][0]['rows']) > i:
+    #             value = int(AJD['data']['result_sets'][0]['rows'][i]['data'][2][0]['text'])
+    #             print(AJD['data']['result_sets'][0]['rows'][i])
+    #             print(value)
+    #             total += value
+    #             print(total)
 @csrf_exempt
 def package_paging(request):
     if Customer == 'NC' or Customer == 'Xfactor':

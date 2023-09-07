@@ -70,9 +70,9 @@ def deploy_status(data):
 
         IQ = """
             insert into """ + AR + """ (
-                deploy_name, action_id, action_date, action_result, deploy_collection_date
+                deploy_name, action_id, action_date, action_result, arcount, deploy_collection_date
                 ) values (
-                    %s, %s, %s, %s,'""" + today + """'
+                    %s, %s, %s, %s, %s,'""" + today + """'
                 )
         """
 
@@ -80,9 +80,9 @@ def deploy_status(data):
         CG = data[1]
         CM = data[2]
         AD = data[3]
+        AC = data[4]
 
-
-        dataList = PA, CG, CM, str(AD)
+        dataList = PA, CG, CM, str(AD), str(AC)
             # print(dataList)
         insertCur.execute(IQ, (dataList))
         insertConn.commit()
