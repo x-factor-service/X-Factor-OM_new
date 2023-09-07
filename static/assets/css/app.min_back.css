@@ -19070,10 +19070,6 @@ fieldset:disabled .btn {
     height: 224px !important
 }
 
-.h-230px {
-    height: 230px !important
-}
-
 .h-240px {
     height: 240px !important
 }
@@ -19126,10 +19122,6 @@ fieldset:disabled .btn {
     height: 400px !important
 }
 
-.h-410px {
-    height: 410px !important
-}
-
 .h-430px {
     height: 430px !important
 }
@@ -19156,10 +19148,6 @@ fieldset:disabled .btn {
 
 .h-550px {
     height: 550px !important
-}
-
-.h-590px {
-    height: 590px !important
 }
 
 .h-600px {
@@ -30659,7 +30647,7 @@ body .note-modal-backdrop {
 
 /* Deploy  scroll CSS*/
 .deploy-scroll{
-    height: 350px;
+    height: 500px;
     max-height: 500px;
     overflow-y: auto;
 }
@@ -30700,7 +30688,7 @@ body .note-modal-backdrop {
 }
 
 .action-log-scroll {
-    max-height: 167px;
+    max-height: 200px;
     overflow-y: auto;
 }
 .action-log-scroll::-webkit-scrollbar {
@@ -30930,7 +30918,7 @@ input:checked+labl::before{
     width : 150px;
 }
 
-/* BEGIN sbom & deploy css 추가 */
+/* BEGIN sbom css 추가*/
 .sbom-table-fix {
     table-layout: fixed;
 }
@@ -31168,9 +31156,9 @@ tr {
 }
 
 #errorDiv {
-    color: orange;
-    text-align: center;
-}
+        color: orange;
+        text-align: center;
+    }
 
 /* 애니메이션 효과를 정의합니다. */
 @keyframes hideText {
@@ -31246,17 +31234,7 @@ li.disabled {
 .disabled-span {
         pointer-events: none;
         opacity: 0.6;
-}
-
-.btn-init {
-    background: inherit ;
-    border:none;
-    box-shadow:none;
-    border-radius:0;
-    padding:0;
-    overflow:visible;
-    cursor:pointer;
-}
+    }
 
 .nav.nav-tabs2.nav-tabs-v2>.nav-item>.nav-link {
     border: none;
@@ -31322,4 +31300,5 @@ li.disabled {
 #cve_detail_dataTable tbody tr td{
     border-width: 1px;
 }
-/* END sbom & deploy css 추가*/
+
+/* END SBOM css 추가*/
