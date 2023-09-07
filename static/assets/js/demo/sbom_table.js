@@ -123,7 +123,7 @@ var comp_ver = urlParams.get('comp_ver');
 var sbomDetail_datatable = function () {
 	var dashboardpopupTable = $('#sbom_detail_dataTable').DataTable({
 		dom: "<'row mb-3'<'col-md-4 mb-3 mb-md-0'l><'col-md-8 text-right'<'d-flex justify-content-end'fB>>>t<'row align-items-center'<'mr-auto col-md-6 mb-3 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
-		lengthMenu: [10, 20, 30, 40, 50],
+		lengthMenu: [15, 20, 30, 40, 50],
 		responsive: true,
 		searching: true,
 		ordering: true,
@@ -158,17 +158,17 @@ var sbomDetail_datatable = function () {
 		columnDefs: [
 		    {targets: 0, width: '5%', className: 'text-center'},
 		    {targets: 1, width: '10%', className: 'text-center', render: function (data, type, row) {
-                return '<div class="text-center text-truncate text-teal sbom-cursor fs-12px fw-bold" title="' + row.computer_name + '" data-toggle="tooltip">' + data + '</div>'}},
+                return '<div class="text-center text-truncate text-teal fs-12px fw-bold" title="' + row.computer_name + '" data-toggle="tooltip">' + data + '</div>'}},
 		    {targets: 2, width: '7%', className: 'text-center', render: function (data, type, row) {
-                return '<div class="text-center text-truncate text-teal sbom-cursor fs-12px fw-bold" title="' + row.ipv4_address + '" data-toggle="tooltip">' + data + '</div>'}},
+                return '<div class="text-center text-truncate text-teal fs-12px fw-bold" title="' + row.ipv4_address + '" data-toggle="tooltip">' + data + '</div>'}},
 		    {targets: 3, width: '9%', className: 'text-center', render: function (data, type, row) {
-                return '<div class="text-center text-truncate text-teal sbom-cursor fs-12px fw-bold" title="' + row.name + '" data-toggle="tooltip">' + data + '</div>'}},
+                return '<div class="text-center text-truncate text-teal fs-12px fw-bold" title="' + row.name + '" data-toggle="tooltip">' + data + '</div>'}},
 		    {targets: 4, width: '9%', className: 'text-center', render: function (data, type, row) {
-                return '<div class="text-center text-truncate text-teal sbom-cursor fs-12px fw-bold" title="' + row.version + '" data-toggle="tooltip">' + data + '</div>'}},
+                return '<div class="text-center text-truncate text-teal fs-12px fw-bold" title="' + row.version + '" data-toggle="tooltip">' + data + '</div>'}},
 		    {targets: 5, width: '52%', className: 'text-center', render: function (data, type, row) {
-                return '<div class="text-center text-truncate text-teal sbom-cursor fs-12px fw-bold" title="' + row.path + '" data-toggle="tooltip">' + data + '</div>'}},
+                return '<div class="text-center text-truncate text-teal fs-12px fw-bold" title="' + row.path + '" data-toggle="tooltip">' + data + '</div>'}},
 		    {targets: 6, width: '8%', className: 'text-truncate', render: function (data, type, row) {
-                return '<div class="text-center text-truncate text-teal sbom-cursor fs-12px fw-bold" title="' + row.type + '" data-toggle="tooltip">' + data + '</div>'}}
+                return '<div class="text-center text-truncate text-teal fs-12px fw-bold" title="' + row.type + '" data-toggle="tooltip">' + data + '</div>'}}
 		],
 		language: {
 			"decimal": "",
@@ -193,7 +193,7 @@ var sbomDetail_datatable = function () {
 	});
 };
 
-//SBOM 전체 테이블
+//SBOM 목록 전체 테이블
 var sbom_dataTable = function () {
     var dashboardpopupTable = $('#sbom_dataTable').DataTable({
         dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",

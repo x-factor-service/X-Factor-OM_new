@@ -31305,7 +31305,7 @@ li.disabled {
     text-decoration: none;
 }
 
-#sbom_dataTable tr td {
+#sbom_dataTable tr td, #cveInSbom_dataTable tr td {
     height: 20px;
 }
 
@@ -31321,5 +31321,9 @@ li.disabled {
 #cve_detail_dataTable thead tr th,
 #cve_detail_dataTable tbody tr td{
     border-width: 1px;
+}
+
+#sbom_detail_dataTable tbody tr td div, #sbom_dataTable tbody tr td div{
+    cursor: default;
 }
 /* END sbom & deploy css 추가*/
