@@ -62,13 +62,12 @@ def plug_in(table, day, type):
             """
         # --------------------- 전체 sbom 목록 ---------------------------------
         if table == 'sbom_paging':
-            column_names = ["name", "version", "cpe", "type", "count"]
+            column_names = ["name", "version", "path", "type", "count"]
             order_column_name = column_names[int(type[4]) - 1]
             order_direction = type[5]
-
             query = """
                 select
-                    name, version, cpe, type, count
+                    name, version, path, type, count
                 from
                     sbom_list
                 where
@@ -76,20 +75,37 @@ def plug_in(table, day, type):
                 AND
                     (name ILIKE '%""" + type[2] + """%' OR
                     version ILIKE '%""" + type[2] + """%' OR
-                    cpe ILIKE '%""" + type[2] + """%' OR
+                    path ILIKE '%""" + type[2] + """%' OR
                     type ILIKE '%""" + type[2] + """%' OR
                     count ILIKE '%""" + type[2] + """%')
                 AND
                     (name ILIKE '%""" + type[3] + """%' OR
                     version ILIKE '%""" + type[3] + """%' OR
-                    cpe ILIKE '%""" + type[3] + """%' OR
+                    path ILIKE '%""" + type[3] + """%' OR
                     type ILIKE '%""" + type[3] + """%' OR
                     count ILIKE '%""" + type[3] + """%')
                 order by
-                    """ + order_column_name + """ """ + order_direction + """
+                    CASE 
+                        WHEN '""" + order_column_name + """' = 'count' THEN 
+                            CAST(count AS INTEGER)
+                        ELSE 
+                            NULL
+                    END """ + order_direction + """,
+                    CASE 
+                        WHEN '""" + order_column_name + """' = 'name' THEN 
+                            name
+                        WHEN '""" + order_column_name + """' = 'version' THEN 
+                            version
+                        WHEN '""" + order_column_name + """' = 'path' THEN 
+                            path
+                        WHEN '""" + order_column_name + """' = 'type' THEN 
+                            type
+                        ELSE 
+                            NULL
+                    END """ + order_direction + """
                 LIMIT """ + type[0] + """
                 OFFSET (""" + type[1] + """ -1) * """ + type[0] + """
-                """
+            """
         # ------------------------------ 전체 sbom 목록 개수 -------------------------
         if table == 'sbom_paging_count':
             query = """
@@ -102,60 +118,19 @@ def plug_in(table, day, type):
                                 AND
                     (name ILIKE '%""" + type[2] + """%' OR
                     version ILIKE '%""" + type[2] + """%' OR
-                    cpe ILIKE '%""" + type[2] + """%' OR
+                    path ILIKE '%""" + type[2] + """%' OR
                     type ILIKE '%""" + type[2] + """%' OR
                     count ILIKE '%""" + type[2] + """%')
                 AND
                     (name ILIKE '%""" + type[3] + """%' OR
                     version ILIKE '%""" + type[3] + """%' OR
-                    cpe ILIKE '%""" + type[3] + """%' OR
+                    path ILIKE '%""" + type[3] + """%' OR
                     type ILIKE '%""" + type[3] + """%' OR
                     count ILIKE '%""" + type[3] + """%')
                 """
-        #----------------------- 전체 CVE 목록 --------------------------------
-        if table == 'sbom_cve':
-            column_names = ["comp_name", "comp_ver", "cve_id", "score", "vuln_last_reported", "number"]
-            order_column_index = int(type[3]) - 1
-            order_column_name = column_names[order_column_index]
-            order_direction = type[4]
-
-            if order_column_name == "score":
-                order_by_clause = "CAST(substring(score FROM '\\d+\\.\\d+') AS FLOAT) " + order_direction
-            else:
-                order_by_clause = order_column_name + " " + order_direction
-            query = """
-                select
-                    comp_name, comp_ver, cve_id, score, vuln_last_reported, number, note, solution
-                from
-                    sbom_cve
-                where
-                    comp_name Ilike '%""" + type[2] + """%' or
-                    comp_ver Ilike '%""" + type[2] + """%' or
-                    cve_id Ilike '%""" + type[2] + """%' or
-                    score Ilike '%""" + type[2] + """%' or
-                    vuln_last_reported Ilike '%""" + type[2] + """%'
-                order by """ + order_by_clause + """
-                LIMIT """ + type[0] + """
-                OFFSET (""" + type[1] + """ -1) * """ + type[0] + """           
-            """
-
-        # --------------------------------- 전체 CVE 목록 개수 --------------------------------
-        if table == 'sbom_cve_count':
-            query = """
-                select
-                    count(*)
-                from
-                    sbom_cve
-                where
-                    comp_name Ilike '%""" + type[2] + """%' or
-                    comp_ver Ilike '%""" + type[2] + """%' or
-                    cve_id Ilike '%""" + type[2] + """%' or
-                    score Ilike '%""" + type[2] + """%' or
-                    vuln_last_reported Ilike '%""" + type[2] + """%'         
-            """
-        # ---------------------------탐지목록 CVE 데이터 -----------------
+        # ---------------------------CVE가 탐지된 SBOM 목록 -----------------
         if table == 'cve_in_sbom':
-            column_names = ["comp_name", "comp_ver", "cve_id", "score", "vuln_last_reported", "number"]
+            column_names = ["comp_name", "comp_ver", "cve_id", "score", "detect_time", "detect_count"]
             order_column_index = int(type[3]) - 1
             order_column_name = column_names[order_column_index]
             order_direction = type[4]
@@ -164,57 +139,115 @@ def plug_in(table, day, type):
             else:
                 order_by_clause = order_column_name + " " + order_direction
             query = """
-                SELECT 
-                    comp_name, comp_ver, cve_id, score, vuln_last_reported, number, note, solution
-                FROM sbom_cve
-                WHERE EXISTS (
-                    SELECT 1
-                    FROM sbom_list
-                    WHERE
-                    (
-                          LOWER(sbom_list.name) = LOWER(sbom_cve.comp_name)
-                          AND
-                          LOWER(sbom_list.version) = LOWER(sbom_cve.comp_ver)
-                    )
-                )
-                AND
-                    (
-                    comp_name Ilike '%""" + type[2] + """%' or
-                    comp_ver Ilike '%""" + type[2] + """%' or
-                    cve_id Ilike '%""" + type[2] + """%' or
-                    score Ilike '%""" + type[2] + """%' or
-                    vuln_last_reported Ilike '%""" + type[2] + """%'
-                    )
-                order by """ + order_by_clause + """
-                LIMIT """ + type[0] + """
-                OFFSET (""" + type[1] + """ -1) * """ + type[0] + """
-            """
+                    SELECT 
+                        sbom_cve.comp_name, 
+                        sbom_cve.comp_ver, 
+                        cve_id, 
+                        score,
+                        COALESCE(COUNT(sbom_detail.name), 0) AS detect_count,
+                        COALESCE(DATE(sbom_detail.sbom_collection_date), (SELECT DATE(MAX(sbom_collection_date)) FROM sbom_detail)) AS detect_time
+                    FROM sbom_cve
+                    LEFT JOIN sbom_detail
+                    ON sbom_cve.comp_name = sbom_detail.name
+                    AND sbom_cve.comp_ver = sbom_detail.version
+                    WHERE 
+                        sbom_cve.comp_name ILIKE '%""" + type[2] + """%' OR
+                        sbom_cve.comp_ver ILIKE '%""" + type[2] + """%' OR 
+                        cve_id ILIKE '%""" + type[2] + """%' OR 
+                        score::text ILIKE '%""" + type[2] + """%'
+                    GROUP BY sbom_cve.comp_name, sbom_cve.comp_ver, cve_id, score, sbom_detail.sbom_collection_date
+                    ORDER BY """ + order_by_clause + """
+                    LIMIT """ + type[0] + """
+                    OFFSET (""" + type[1] + """ -1) * """ + type[0] + """
+                    """
             # ----------------------- 탐지목록 CVE 개수 -------------------------
         if table == 'cve_in_sbom_count':
-            query="""
-                SELECT 
-                    COUNT(*)
-                FROM sbom_cve
-                                WHERE EXISTS (
-                    SELECT 1
-                    FROM sbom_list
-                    WHERE
-                    (
-                        LOWER(sbom_list.name) = LOWER(sbom_cve.comp_name)
-                        AND
-                        LOWER(sbom_list.version) = LOWER(sbom_cve.comp_ver)
-                    )
-                )
-                AND
-                (
-                    comp_name Ilike '%""" + type[2] + """%' or
-                    comp_ver Ilike '%""" + type[2] + """%' or
-                    cve_id Ilike '%""" + type[2] + """%' or
-                    score Ilike '%""" + type[2] + """%' or
-                    vuln_last_reported Ilike '%""" + type[2] + """%'
-                )
+            query = """
+                    SELECT 
+                        count(*)
+                    FROM (
+                        SELECT sbom_cve.comp_name, sbom_cve.comp_ver, cve_id, score
+                        FROM sbom_cve
+                        LEFT JOIN sbom_detail
+                        ON sbom_cve.comp_name = sbom_detail.name
+                        AND sbom_cve.comp_ver = sbom_detail.version
+                        WHERE 
+                            sbom_cve.comp_name ILIKE '%""" + type[2] + """%' OR
+                            sbom_cve.comp_ver ILIKE '%""" + type[2] + """%' OR 
+                            cve_id ILIKE '%""" + type[2] + """%' OR 
+                            score::text ILIKE '%""" + type[2] + """%'
+                        GROUP BY sbom_cve.comp_name, sbom_cve.comp_ver, cve_id, score
+                        ) 
+                    AS derived_table;
+                    """
+        # ------ SBOM 더보기
+        if table == 'cve_detail':
+            query = """
+                WITH DetailCount AS (
+                    SELECT 
+                        sd.name,
+                        sd.version,
+                        COUNT(*) AS detect_count,
+                        MAX(DATE(sd.sbom_collection_date)) AS latest_collection_date
+                    FROM sbom_detail sd
+                    JOIN sbom_cve sc ON sd.name = sc.comp_name AND sd.version = sc.comp_ver
+                    WHERE sc.cve_id = '""" + type[0] + """' AND sc.comp_name = '""" + type[1] + """' AND sc.comp_ver = '""" + type[2] + """'
+                    GROUP BY sd.name, sd.version
+                )                
+                SELECT
+                    sc.comp_name,
+                    sc.comp_ver,
+                    sc.cve_id,
+                    sc.score,
+                    sc.note,
+                    sc.solution,
+                    COALESCE(dc.latest_collection_date, (SELECT DATE(MAX(sbom_collection_date)) FROM sbom_detail)) AS detect_time,
+                    COALESCE(dc.detect_count, 0) AS detect_count
+                FROM sbom_cve sc
+                LEFT JOIN DetailCount dc ON sc.comp_name = dc.name AND sc.comp_ver = dc.version
+                WHERE sc.cve_id = '""" + type[0] + """' AND sc.comp_name = '""" + type[1] + """' AND sc.comp_ver = '""" + type[2] + """';
             """
-
+        if table == 'asset_detail':
+            column_names = ["computer_name", "ipv4_address", "name", "version", "path", "type"]
+            order_column_name = column_names[int(type[6]) - 1]
+            order_direction = type[7]
+            query = """
+                SELECT
+                    sd.computer_name,
+                    sd.ipv4_address,
+                    sd.name,
+                    sd.version,
+                    sd.path,
+                    sd.type
+                FROM sbom_detail sd
+                JOIN sbom_cve sc ON sd.name = sc.comp_name AND sd.version = sc.comp_ver
+                WHERE sc.cve_id = '""" + type[0] + """' AND sc.comp_name = '""" + type[1] + """' AND sc.comp_ver = '""" + type[2] + """'
+                AND
+                    (sd.computer_name ILIKE '%""" + type[5] + """%' OR
+                    sd.ipv4_address ILIKE '%""" + type[5] + """%' OR
+                    sd.name ILIKE '%""" + type[5] + """%' OR
+                    sd.version ILIKE '%""" + type[5] + """%' OR
+                    sd.path ILIKE '%""" + type[5] + """%' OR
+                    sd.type ILIKE '%""" + type[5] + """%')
+                order by
+                    """ + order_column_name + """ """ + order_direction + """
+                LIMIT """ + type[3] + """
+                OFFSET (""" + type[4] + """ -1) * """ + type[3] + """         
+            """
+        if table == 'asset_detail_count':
+            query = """
+                SELECT COUNT(*)
+                FROM sbom_detail sd
+                JOIN sbom_cve sc ON sd.name = sc.comp_name AND sd.version = sc.comp_ver
+                WHERE sc.cve_id = '""" + type[0] + """' AND sc.comp_name = '""" + type[1] + """' AND sc.comp_ver = '""" + type[2] + """'
+                AND
+                    (sd.computer_name ILIKE '%""" + type[5] + """%' OR
+                    sd.ipv4_address ILIKE '%""" + type[5] + """%' OR
+                    sd.name ILIKE '%""" + type[5] + """%' OR
+                    sd.version ILIKE '%""" + type[5] + """%' OR
+                    sd.path ILIKE '%""" + type[5] + """%' OR
+                    sd.type ILIKE '%""" + type[5] + """%')           
+            """
         # ----------------------------- 탐지 목록 sbom 데이터 -------------------------------
         if table == 'sbom_in_cve':
             column_names = ["name", "version", "cpe", "type", "count"]
@@ -276,8 +309,8 @@ def plug_in(table, day, type):
             query = """
                     SELECT item, item_count 
                     from """ + StatisticsSBOM + """
-                    where classification = 'sbom_cve'
-                    ORDER BY item_count DESC
+                    where classification = 'sbom_pie_data'
+                    ORDER BY CAST(item_count AS INTEGER) DESC
             """
         # ---------------------Sbom line 차트------------------------
         if table == 'sbom_lineData':
@@ -296,7 +329,7 @@ def plug_in(table, day, type):
                     SELECT item, item_count 
                     from """ + StatisticsSBOM + """
                     where classification = 'sbom_bar_data'
-                    ORDER BY item_count DESC
+                    ORDER BY CAST(item_count AS INTEGER) DESC
             """
         Cur.execute(query)
         RS = Cur.fetchall()
@@ -320,7 +353,7 @@ def plug_in(table, day, type):
                         ('index', index),
                         ('name', R[0]),
                         ('version', R[1]),
-                        ('cpe', R[2]),
+                        ('path', R[2]),
                         ('type', R[3]),
                         ('count', R[4])
                     )
@@ -409,10 +442,34 @@ def plug_in(table, day, type):
                         ('comp_ver', R[1]),
                         ('cve_id', R[2]),
                         ('score', R[3]),
-                        ('vuln_last_reported', R[4]),
-                        ('number', R[5]),
-                        ('note', R[6]),
-                        ('solution', R[7])
+                        ('detect_count', R[4]),
+                        ('detect_time', R[5])
+                    )
+                ))
+            elif day == 'cve_detail':
+                SDL.append(dict(
+                    (
+                        ('comp_name', R[0]),
+                        ('comp_ver', R[1]),
+                        ('cve_id', R[2]),
+                        ('score', R[3]),
+                        ('note', R[4]),
+                        ('solution', R[5]),
+                        ('detect_time', R[6]),
+                        ('detect_count', R[7])
+                    )
+                ))
+            elif day == 'asset_detail':
+                index = (int(type[4]) - 1) * int(type[3]) + i
+                SDL.append(dict(
+                    (
+                        ('index', index),
+                        ('computer_name', R[0]),
+                        ('ipv4_address', R[1]),
+                        ('name', R[2]),
+                        ('version', R[3]),
+                        ('path', R[4]),
+                        ('type', R[5])
                     )
                 ))
             else:

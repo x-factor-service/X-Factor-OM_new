@@ -66,7 +66,6 @@ def sbom_paging(request):
     page = math.ceil(start / length) + 1
     data = [str(length), str(page), str(search_1), str(search_2), order_column, order_direction]
     Data = SDPI('sbom_paging', 'sbom', data)
-    #print(Data)
     Count = SDPI('sbom_paging_count', '', data)
     RD = {'item': Data}
     returnData = {'data': RD,
@@ -117,11 +116,11 @@ def cve_in_sbom(request):
     search = request.POST.get('search[value]')
     order_column = int(request.POST.get('order[0][column]'))
     order_direction = request.POST.get('order[0][dir]')
-
     page = math.ceil(start / length) + 1
     data = [str(length), str(page), str(search), order_column, order_direction]
     Data = SDPI('cve_in_sbom', 'cve_in_sbom', data)
     Count = SDPI('cve_in_sbom_count', '', data)
+
     RD = {'item': Data}
     returnData = {'data': RD,
                   'draw': draw,
@@ -151,12 +150,42 @@ def sbom_in_cve(request):
                   }
     return JsonResponse(returnData)
 
+@csrf_exempt
 def cve_detail(request) :
-    DCDL = DashboardData()
     res_data = {}
     if not 'sessionid' in request.session:
         res_data['error'] = '먼저 로그인을 해주세요.'
         return render(request, 'common/login.html', res_data)
     else:
-        returnData = {'data': '김민주'}
-        return render(request, 'sbom/cve_detail.html', returnData)
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            cve_id = request.POST.get('cve_id')
+            comp_name = request.POST.get('comp_name')
+            comp_ver = request.POST.get('comp_ver')
+            draw = int(request.POST.get('draw'))
+            start = int(request.POST.get('start'))
+            length = int(request.POST.get('length'))
+            search = request.POST.get('search[value]')
+            page = math.ceil(start / length) + 1
+            order_column = int(request.POST.get('order[0][column]'))
+            order_direction = request.POST.get('order[0][dir]')
+
+            asset_data = [cve_id, comp_name, comp_ver, str(length), str(page), str(search), order_column, order_direction]
+            assetData = SDPI('asset_detail', 'asset_detail', asset_data)
+            Count = SDPI('asset_detail_count', '', asset_data)
+
+            RD = {'assetItem': assetData}
+            returnData = {'data': RD,
+                          'draw': draw,
+                          'recordsTotal': Count,
+                          'recordsFiltered': Count,
+                          }
+            return JsonResponse(returnData)
+        else:
+            cve_id = request.GET.get('cve_id')
+            comp_name = request.GET.get('comp_name')
+            comp_ver = request.GET.get('comp_ver')
+            cve_data = [cve_id, comp_name, comp_ver]
+            cveData = SDPI('cve_detail', 'cve_detail', cve_data)
+            RD = {'cveItem': cveData}
+            returnData = {'data': RD}
+            return render(request, 'sbom/cve_detail.html', returnData)
