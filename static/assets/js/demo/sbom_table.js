@@ -404,10 +404,6 @@ var handleRenderChartSBOM = function () {
     }, 100);
 
 
-
-// sbom line chart
-    var categories_date = sbomDataList.sbom_lineData.map(item => item.date);
-    var linecount = sbomDataList.sbom_lineData.map(item => parseInt(item.count, 10));
     var sbomLineChart = {
       chart: {
         type: 'line',
@@ -446,10 +442,10 @@ var handleRenderChartSBOM = function () {
       },
       series: [{
         name: '자산 수',
-        data: linecount
+        data: [5000, 5200, 5500, 5300, 5600, 5700, 5900]  // 여기에 실제 데이터를 넣으세요!
       }],
       xaxis: {
-        categories: categories_date,
+        categories: ['07-20', '07-21', '07-22', '07-23', '07-24', '07-25', '07-26'],  // 여기에 실제 날짜를 넣으세요!
         labels: {
           style: {
             colors: "rgba(" + app.color.whiteRgb + ", 1)",
