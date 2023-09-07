@@ -1,0 +1,587 @@
+{% extends 'common/base.html' %}
+{% block content %}
+{% load static %}
+<!-- BEGIN #header -->
+
+<!-- END #header -->
+
+<!-- BEGIN #sidebar -->
+
+<!-- END #sidebar -->
+
+<!-- BEGIN #content -->
+<div id="content" class="p-2rem">
+    <!-- BEGIN row -->
+    <div class="row">
+        <!-- BEGIN col-9 -->
+        <div class="col-5" id="colVal1">
+            <!-- BEGIN card -->
+            <div class="card mb-2">
+                <!-- BEGIN card-body -->
+                <div class="card-body card-body text-white text-opacity-100">
+                    <div style="display: flex; justify-content: space-between;">
+                    <div class="d-flex">
+                    <div class="" style="text-align: left; font-size: 30px; font-weight: bold">Packages</div>
+                        <ul class="nav nav-tabs2 nav-tabs-v2 px-3" role="tablist">
+                            <li class="btn1" role="presentation" id="registryLi">
+                            <span class="btn1" id="registry" style="height: 35px; margin-right: 10px; font-size: 20px; font-weight: bold;">Reg edit</span>
+                            </li>
+                        </ul>
+                    </div>
+                        <select style="width: 130px; height: 35px; margin-right: 10px;" class="form-select content_selec" aria-label=".form-select-lg example" name="type">
+                            <option value="Default" selected disabled hidden>Content Set</option>
+                            <option value="all">all</option>
+                            <option value="Default">Default</option>
+                            <option value="Asset">Asset</option>
+                            <option value="SBOM">SBOM</option>
+                            <option value="Client Management">Client Management</option>
+                            <option value="Incident Response">Incident Response</option>
+                            <option value="Endpoint Configuration">Endpoint Configuration</option>
+                        </select>
+                    </div>
+                    <div class="deploy-scroll">
+                    <table id="packageDataTable" class="table-sm-se w-100 text-white text-opacity-100">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Content Set</th>
+                        <th>Command</th>
+                    </tr>
+                    </thead>
+
+<!--{#                        <tbody class="fs-12px mb-2">#}-->
+<!--{#                        {% for data in chartData.packageList %}#}-->
+<!--{#                        <tr class="clickP">#}-->
+<!--{#                            <td id="checkRow"><input class="form-check-input" type="checkbox" id="chkRow2" value="{{ data.Name }}"></td>#}-->
+<!--{#                            <td>#}-->
+<!--{#                                {{ data.Display_name }}#}-->
+<!--{#                            </td>#}-->
+<!--{#                            <td>#}-->
+<!--{#                                {{ data.Content_set }}#}-->
+<!--{#                            </td>#}-->
+<!--{#                            <td>#}-->
+<!--{#                                {{ data.Command }}#}-->
+<!--{#                            </td>#}-->
+<!--{#                        </tr>#}-->
+<!--{#                        {% endfor %}#}-->
+<!--{#                    </tbody>#}-->
+                    </table>
+                    </div>
+                    <!-- BEGIN card-arrow -->
+                    <!-- END card-arrow -->
+                </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                <!-- END card-body -->
+            </div>
+            <!-- END card -->
+        </div>
+
+        <div class="col-2" id="colVal2" style="display: none">
+            <!-- BEGIN card -->
+            <div class="card mb-2">
+                <!-- BEGIN card-body -->
+                <div class="card-body" style="height: 577px">
+                    <div style="display: flex; justify-content: space-between;">
+                    <div style="text-align: left; font-size: 30px; font-weight: bold">Registry mod</div>
+                    </div>
+                    <br>
+                    <br>
+                    <form action="{% url 'change_registry' %}" method="post">
+                        {% csrf_token %}
+                        <div>OS Architecture</div>
+                        <select class="form-select selBox" aria-label=".form-select-lg example" name="arch">
+                          <option value="" selected disabled hidden>select...</option>
+                          <option value="32">32</option>
+                          <option value="64">64</option>
+                          <option value="Both">Both</option>
+                        </select>
+                        <br>
+                        <div>Registry Key Name</div>
+                        <input class="form-control inBox" type="text" name="path" style="width: 265px;" placeholder="HKLM\X-Factor\deploy">
+                        <br>
+                        <div>Value Name</div>
+                        <input class="form-control inBox" type="text" name="name" style="width: 265px;" placeholder="registry">
+                        <br>
+                        <div>Value Data</div>
+                        <input class="form-control inBox" type="text" name="value" style="width: 265px;" placeholder="True">
+                        <br>
+                        <div>Value Type</div>
+                        <select class="form-select selBox" aria-label=".form-select-lg example" name="type">
+                          <option value="" selected disabled hidden>select...</option>
+                          <option value="REG_SZ">REG_SZ</option>
+                          <option value="REG_EXPAND_SZ">REG_EXPAND_SZ</option>
+                          <option value="REG_BINARY">REG_BINARY</option>
+                          <option value="REG_DWORD">REG_DWORD</option>
+                          <option value="REG_QWORD">REG_QWORD</option>
+                          <option value="REG_MULTI_SZ">REG_MULTI_SZ</option>
+                        </select>
+                        <br>
+                        <div id="errorDiv">&nbsp</div>
+                        <div style="justify-content: center; display: flex">
+                            <input type="hidden" id="outputCGValue" name="outputCGValue">
+                        <button type="submit" id="create" class="btn btn-default fs-17px" style= "width: 150px; height: 40px; margin-top: 17px;">edit</button>
+                        </div>
+                    </form>
+                    <br>
+
+                    <!-- BEGIN card-arrow -->
+                    <!-- END card-arrow -->
+                </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                <!-- END card-body -->
+            </div>
+            <!-- END card -->
+        </div>
+
+        <div class="col-2" id="colVal3" style="display: none">
+            <!-- BEGIN card -->
+            <div class="card mb-2">
+                <!-- BEGIN card-body -->
+                <div class="card-body" style="height: 577px">
+                    <div style="display: flex; justify-content: space-between;">
+                    <div style="text-align: left; font-size: 30px; font-weight: bold">Enter parameters</div>
+                    </div>
+                    <br>
+                    <br>
+                    <form action="{% url 'change_registry' %}" method="post">
+                        {% csrf_token %}
+                        <div class="parameters-scroll" id="colval3">
+<!--{#                        <div>parameter 1#}-->
+<!--{#                        <input class="form-control inBox" type="text" name="param1">#}-->
+<!--{#                        </div>#}-->
+<!--{#                        <br>#}-->
+                        </div>
+                            <input type="hidden" id="outputCGValue" name="outputCGValue">
+                    </form>
+                    <br>
+
+                    <!-- BEGIN card-arrow -->
+                    <!-- END card-arrow -->
+                </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                <!-- END card-body -->
+            </div>
+            <!-- END card -->
+        </div>
+
+        <div id="" class="col-2 card" style="max-height: 577px;">
+            <label style="text-align: center; font-size: 25px; margin-top: 10px;">Deploy action</label>
+            <br>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+            <br>
+            <form method="post" action="{% url 'deploy_action_val' %}">
+                {% csrf_token %}
+            <div class="card" id="cb1">
+                <label style="color: white">package</label>
+                <div class="card-body">
+                <div class="mini-deploy-scroll">
+                    <div id="outputP"></div>
+                </div>
+                </div>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+            </div>
+            <br>
+            <div class="card" id="cb2">
+                <label style="color: white">computer group</label>
+                <div class="card-body">
+                <div class="mini-deploy-scroll">
+                    <div id="outputC"></div>
+                </div>
+                </div>
+            <div class="card-arrow">
+                <div class="card-arrow-top-left"></div>
+                <div class="card-arrow-top-right"></div>
+                <div class="card-arrow-bottom-left"></div>
+                <div class="card-arrow-bottom-right"></div>
+            </div>
+            </div>
+                <input type="hidden" id="outputPValue" name="outputPValue">
+                <input type="hidden" id="outputCValue" name="outputCValue">
+                <div id="pack"></div>
+                <br>
+                <div id="errorMsg" style="color:orange; text-align: center;">&nbsp <br><br></div>
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+<!--{#                <button type="submit" class="btn btn-default fs-17px" id="action_btn" style="width: 150px; height: 40px; border-color: orange; color: orange; background-color: transparent;"#}-->
+<!--{#                        onmouseover="this.style.backgroundColor='#ffe6b9';" onmouseout="this.style.backgroundColor='transparent';" value="action">action</button>#}-->
+                <button type="submit" class="btn btn-default fs-17px" id="action_btn" style="width: 150px; height: 40px; margin-top: 15px;"
+                        value="action">action</button>
+            </div>
+            </form>
+        </div>
+
+        <div class="col-5" id="colVal2">
+            <!-- BEGIN card -->
+            <div class="card mb-2">
+                <!-- BEGIN card-body -->
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between;">
+                    <div style="text-align: left; font-size: 30px; font-weight: bold">Computer Groups</div>
+                    <select style="width: 130px; height: 35px; margin-right: 10px" class="form-select group_selec" aria-label=".form-select-lg example" name="type">
+                          <option value="all" selected disabled hidden>Content Set</option>
+                          <option value="all">all</option>
+                          <option value="Default Filter Groups">Default Filter Groups</option>
+                          <option value="Default">Default</option>
+                          <option value="Reserved">Reserved</option>
+                    </select>
+                    </div>
+                    <!-- BEGIN title -->
+                    <!-- <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo osVersion-moreInfo"><i class="fas fa-ellipsis-h"></i></button> -->
+                    <!-- END title -->
+                    <!-- BEGIN stat-lg -->
+                    <!-- END stat-lg -->
+                    <div class="deploy-scroll">
+                    <table id="computerGroupDataTable" class="table-sm-se w-100 text-white text-opacity-100" >
+                    <thead>
+                    <tr>
+<!--{#                        <th style="width: 2%"> </th>#}-->
+                        <th>Name</th>
+                        <th>Content Set</th>
+                        <th>Expression</th>
+                    </tr>
+                    </thead>
+<!--{#                    <tbody class="fs-12px mb-2">#}-->
+<!--{#                        {% for data in chartData.groupsList %}#}-->
+<!--{#                        <tr class="clickC">#}-->
+<!--{#                            <td id="checkRow"><input class="form-check-input" type="checkbox" id="chkRow2" value="{{ data.Name }}"></td>#}-->
+<!--{#                            <td>#}-->
+<!--{#                                {{ data.Name }}#}-->
+<!--{#                            </td>#}-->
+<!--{#                            <td>#}-->
+<!--{#                                {{ data.Content_set }}#}-->
+<!--{#                            </td>#}-->
+<!--{#                            <td>#}-->
+<!--{#                                {{ data.Expression }}#}-->
+<!--{#                            </td>#}-->
+<!--{#                        </tr>#}-->
+<!--{#                        {% endfor %}#}-->
+<!--{#                    </tbody>#}-->
+                    </table>
+                    </div>
+                    <!-- BEGIN card-arrow -->
+                    <!-- END card-arrow -->
+                </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                <!-- END card-body -->
+            </div>
+            <!-- END card -->
+        </div>
+        <!-- BEGIN col-3 -->
+        <div class="col-12" style="margin-bottom: 200px">
+            <div class="card">
+            <div class="card-body">
+
+            <div class="d-flex fw-bold fs-12px">
+                <div style="text-align: left; font-size: 30px; font-weight: bold" class="mb-2">Action Log</div>
+            </div>
+            <div class="action-log-scroll">
+                <table id="action_log" class="table-sm-se w-100 text-white text-opacity-100" >
+                    <tbody>
+                    {% for data in chartData.actionLogList %}
+                    <tr>
+                        <td>{{ data.admin }} 계정이 {{ data.package }} package를 {{ data.computer_group }} group에게 deploy {{ data.comment }}! - {{ data.creation_date }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+                <div class="card-arrow">
+                    <div class="card-arrow-top-left"></div>
+                    <div class="card-arrow-top-right"></div>
+                    <div class="card-arrow-bottom-left"></div>
+                    <div class="card-arrow-bottom-right"></div>
+                </div>
+            </div>
+            </div>
+    </div>
+    <!-- END row -->
+</div>
+<!-- END #content -->
+<style>
+.highlight {
+    background-color: orange;
+}
+</style>
+{#<script src="/static/assets/js/demo/deploy_table.js">#}
+<script>
+    var tdValue = ''
+    var $clickedRow = ''
+    var isClicked = false
+    var colVal2OriginalPaddingRight = '';
+    var outputCValue = ''
+    var errorDiv = document.getElementById("errorDiv");
+    var spanElement = document.getElementById('registry');
+    document.addEventListener('DOMContentLoaded', function () {
+        {#$("#packageDataTable").on('click', 'tbody tr', function () {#}
+        {#$clickedRow = $(this);#}
+        {#isClicked = $clickedRow.hasClass('clicked');#}
+        {#tdValue = $clickedRow.find('td:eq(0)').text();#}
+        {#console.log("asdasdasdsadasadsads")#}
+        {#});#}
+
+
+    var resultP = document.getElementById('outputP');
+    var divElement1 = document.getElementById("colVal1");
+    var divElement2 = document.getElementById("colVal2");
+    var divElement3 = document.getElementById("colVal3");
+
+    function modifyClass() {
+        colVal2OriginalPaddingRight = window.getComputedStyle(divElement2).getPropertyValue("padding-right");
+        document.getElementById("action_btn").disabled = true;
+        if (divElement1.classList.contains('col-5')){
+            console.log(divElement2.classList)
+            resultP.innerHTML = '';
+            divElement1.classList.remove("col-5"); // 기존 클래스 제거
+            divElement1.classList.add("col-3");
+            divElement1.style.paddingRight = "0";// 새로운 클래스 추가
+            divElement2.removeAttribute("style");
+            $('#packageDataTable tbody tr').css('background-color', '');
+            $('#packageDataTable').off('click', 'tbody tr');
+            document.querySelector('.content_selec').disabled = true;
+            {#document.querySelector('packageDataTable_wrapper').disabled = true;#}
+        } else if(divElement1.classList.contains("col-3")) {
+            console.log("22222222")
+
+                console.log("asdasdasdasd")
+                divElement1.classList.remove("col-3"); // 기존 클래스 제거
+                divElement1.classList.add("col-5"); // 새로운 클래스 추가
+                divElement2.style.display = "none";
+                document.getElementById("action_btn").disabled = false;
+                document.querySelector('.content_selec').disabled = false;
+                divElement1.style.paddingRight = colVal2OriginalPaddingRight;
+                $('#packageDataTable').on('click', 'tbody tr', function () {
+                {#$('#packageDataTable tbody tr').not($clickedRow).removeClass('clicked').css('background-color', '');#}
+                    $('#packageDataTable tbody tr').css('pointer-events', 'auto');
+                    $clickedRow = $(this);
+                    isClicked = $clickedRow.hasClass('clicked');
+                    var tdValue = $clickedRow.find('td:eq(0)').text();
+                    var parentElement = document.getElementById("colval3");
+                    var parentElement1 = document.getElementById("pack");
+                    $('#packageDataTable tbody tr').not($clickedRow).removeClass('clicked').css('background-color', '');
+                    var spanElement = document.getElementById('registry');
+                    spanElement.classList.remove('disabled-span');
+                  // 클릭한 행의 상태에 따라 동작을 처리합니다.
+                    if (isClicked) {
+                        console.log("333333333333")
+                        divElement1 = document.getElementById("colVal1");
+                        divElement1.style.paddingRight = colVal2OriginalPaddingRight;// 새로운 클래스 추가
+                        //버튼 클릭 시 span 태그의 활성화/비활성화 상태 변경
+                        // 클릭한 행이 이미 선택된 상태인 경우 선택 해제
+                        divElement1 = document.getElementById("colVal1");
+                        divElement3 = document.getElementById("colVal3");
+                        divElement1.classList.remove("col-3"); // 기존 클래스 제거
+                        divElement1.classList.add("col-5"); // 새로운 클래스 추가
+                        divElement3.style.display = "none";
+                        // colval3 안에 있는 div 태그 모두 삭제
+                        while (parentElement.firstChild) {
+                            parentElement.removeChild(parentElement.firstChild);
+                        }
+                        // pack 안에 있는 div 태그 모두 삭제
+                        while (parentElement1.firstChild) {
+                            parentElement1.removeChild(parentElement1.firstChild);
+                        }
+                        $clickedRow.removeClass('clicked');
+                        $clickedRow.css('background-color', '');
+                        resultP.innerHTML = '';
+                        // $('tbody tr').removeClass('disabled');
+                        $('#packageDataTable tbody tr').css('pointer-events', 'auto');
+                    } else {
+                        divElement1 = document.getElementById("colVal1");
+                        divElement3 = document.getElementById("colVal3");
+                        //버튼 클릭 시 span 태그의 활성화/비활성화 상태 변경
+                        if (divElement1.classList.contains('col-3')) {
+                            spanElement.classList.remove('disabled-span');
+                        } else {
+                            spanElement.classList.add('disabled-span');
+                        }
+                         // colval3 안에 있는 div 태그 모두 삭제
+                        while (parentElement.firstChild) {
+                            parentElement.removeChild(parentElement.firstChild);
+                        }
+                        // pack 안에 있는 div 태그 모두 삭제
+                        while (parentElement1.firstChild) {
+                            parentElement1.removeChild(parentElement1.firstChild);
+                        }
+                        document.getElementById("registry").disabled = true;
+                        // 클릭한 행을 선택 상태로 하이라이트하고 다른 행의 클릭을 비활성화
+                        {#$('#packageDataTable tbody tr').not($clickedRow).css('pointer-events', 'none');#}
+                        // $('tbody tr').not($clickedRow).addClass('disabled');
+                        $clickedRow.addClass('clicked');
+                        resultP.innerHTML = tdValue + '<br>';
+                        $clickedRow.css('background-color', 'orange');
+                        var id = tdValue;
+
+                        // Ajax 요청을 보냅니다.
+                        $.ajax({
+                            type: 'POST', // HTTP 요청 방식을 선택합니다.
+                            url: 'packCheck/', // 데이터를 처리할 서버 엔드포인트 URL을 입력합니다.
+                            data: { 'id': id }, // 서버로 보낼 데이터를 설정합니다.
+                            success: function(response) {
+                                var divElement1 = document.getElementById("colVal1");
+                                var divElement3 = document.getElementById("colVal3");
+                              // 성공적인 응답을 받았을 때 수행할 동작을 정의합니다.
+                                console.log('성공2:', response);
+                                if (typeof response.a === 'number' && response.a > 0) {
+                                    param(response.a)
+                                    //버튼 클릭 시 span 태그의 활성화/비활성화 상태 변경
+                                     if (divElement1.classList.contains('col-3')) {
+                                        spanElement.classList.add('disabled-span');
+                                    }
+                                } else {
+                                    if (divElement1.classList.contains('col-5')) {
+                                        spanElement.classList.remove('disabled-span');
+                                    }
+                                    // colval3 안에 있는 div 태그 모두 삭제
+                                    while (parentElement.firstChild) {
+                                        parentElement.removeChild(parentElement.firstChild);
+                                    }
+                                    // pack 안에 있는 div 태그 모두 삭제
+                                    while (parentElement1.firstChild) {
+                                        parentElement1.removeChild(parentElement1.firstChild);
+                                    }
+                                    divElement1.classList.remove("col-3"); // 기존 클래스 제거
+                                    divElement1.classList.add("col-5"); // 새로운 클래스 추가
+                                    divElement2.style.display = "none";
+                                    divElement1.style.paddingRight = colVal2OriginalPaddingRight;// 새로운 클래스 추가
+                                    return
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                              // 오류가 발생했을 때 수행할 동작을 정의합니다.
+                                console.error('오류:', status, error);
+                            }
+                        });
+                    }
+                });
+        }
+    }
+
+    function param(count){
+        var divElement1 = document.getElementById("colVal1");
+        var divElement3 = document.getElementById("colVal3");
+        divElement1.classList.remove("col-5"); // 기존 클래스 제거
+        divElement1.classList.add("col-3"); // 새로운 클래스 추가
+        divElement3.style.display = "none";
+        divElement1.style.paddingRight = "0";// 새로운 클래스 추가
+        divElement3.removeAttribute("style");
+        var parentElement = document.getElementById("colval3"); // input 박스를 추가할 부모 요소를 가져옴
+        var parentElement1 = document.getElementById("pack"); // input 박스를 추가할 부모 요소를 가져옴
+        for (var i = 1; i <= count; i++) {
+            // div 태그 생성
+            var divElement = document.createElement("div");
+            divElement.textContent = "parameter " + i;
+            // input 요소 생성
+            var inputElement = document.createElement("input");
+            var inputHidden = document.createElement("input");
+            inputElement.type = "text";
+            inputHidden.type = "hidden";
+            inputElement.name = "param" + i;
+            inputHidden.name = "hiddenn" + i;
+            inputElement.classList.add("form-control");
+            // div 태그에 input 요소 추가
+            divElement.appendChild(inputElement);
+            // div 태그를 부모 요소에 추가
+            parentElement.appendChild(divElement);
+            parentElement1.appendChild(inputHidden);
+            // 줄 바꿈
+            var brElement = document.createElement("br");
+            parentElement.appendChild(brElement);
+        }
+    }
+
+    // 버튼 클릭 시 modifyClass 함수 호출
+    document.getElementById("registry").addEventListener("click", function () {
+        modifyClass();
+    });
+
+    document.getElementById("create").addEventListener("click", function (event) {
+
+        var inputs = document.querySelectorAll('.inBox, .selBox');
+        var hasEmptyValue = false;
+
+        // 각 입력란에 대해 값을 확인
+        inputs.forEach(function (inputElement) {
+            var inputValue = inputElement.value.trim(); // 입력값 양 끝의 공백 제거
+
+            // 입력값이 비어있는 경우
+            if (inputValue === '') {
+                // 테두리 색상을 빨간색으로 변경
+                inputElement.classList.add("error");
+                hasEmptyValue = true;
+            } else {
+                // 입력값이 있으면 테두리 색상을 원래 상태로 복구
+                inputElement.classList.remove("error");
+            }
+        });
+
+        // 하나라도 빈 곳이 있다면 submit 이벤트 막음
+        if (hasEmptyValue) {
+            errorDiv.textContent = '값을 모두 입력해주세요.';
+            event.preventDefault(); // submit 이벤트 막기
+        } else {
+            // 모든 입력값이 채워져 있으면 form submit 수행
+            errorDiv.innerHTML = '<br/>';
+            create();
+            if (document.getElementById('outputCGValue').value === '') {
+            errorDiv.textContent = 'computer group을 선택해주세요.';
+            event.preventDefault();
+            }
+            {#document.getElementById("create").submit();#}
+        }
+        if (confirm("수정하시겠습니까?") == true){
+           //true는 확인버튼을 눌렀을 때 코드 작성
+
+        }else{
+            event.preventDefault();
+            return;
+        }
+    });
+
+    // input과 select 태그에 input 이벤트 리스너 추가
+    var inputs = document.querySelectorAll('.inBox, .selBox');
+    inputs.forEach(function (inputElement) {
+        inputElement.addEventListener("input", function () {
+            // 입력값이 변경될 때마다 테두리 색상을 원래 상태로 복구
+            inputElement.classList.remove("error");
+        });
+    });
+
+    function create(){
+        outputCValue = document.getElementById('outputC').textContent;
+        document.getElementById('outputCGValue').value = outputCValue;
+    }
+});
+    window.setTimeout('window.location.reload()', 600000);
+
+</script>
+{% endblock %}

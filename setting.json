@@ -65,7 +65,8 @@
         "StatisticsSBOM": "sbom_statistics",
         "MenuTNM": "web_menusetting",
         "UserTNM": "web_user",
-        "LOG": "action_log"
+        "LOG": "action_log",
+        "DS" : "deploy_status"
     },
     "FILE": {
         "asset": {

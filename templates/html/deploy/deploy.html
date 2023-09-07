@@ -1,328 +1,194 @@
 {% extends 'common/base.html' %}
 {% block content %}
 {% load static %}
-<!-- BEGIN #header -->
-
-<!-- END #header -->
-
-<!-- BEGIN #sidebar -->
-
-<!-- END #sidebar -->
 
 <!-- BEGIN #content -->
-<div id="content" class="p-2rem">
+<div id="content" class="p-1rem">
     <!-- BEGIN row -->
     <div class="row">
-        <!-- BEGIN col-9 -->
-        <div class="col-5" id="colVal1">
-            <!-- BEGIN card -->
-            <div class="card mb-2">
-                <!-- BEGIN card-body -->
-                <div class="card-body card-body text-white text-opacity-100">
-                    <div style="display: flex; justify-content: space-between;">
-                    <div class="d-flex">
-                    <div class="" style="text-align: left; font-size: 30px; font-weight: bold">Packages</div>
-                        <ul class="nav nav-tabs2 nav-tabs-v2 px-3" role="tablist">
-                            <li class="btn1" role="presentation" id="registryLi">
-                            <span class="btn1" id="registry" style="height: 35px; margin-right: 10px; font-size: 20px; font-weight: bold;">Reg edit</span>
-                            </li>
-                        </ul>
-                    </div>
-                        <select style="width: 130px; height: 35px; margin-right: 10px;" class="form-select content_selec" aria-label=".form-select-lg example" name="type">
-                            <option value="Default" selected disabled hidden>Content Set</option>
-                            <option value="all">all</option>
-                            <option value="Default">Default</option>
-                            <option value="Asset">Asset</option>
-                            <option value="SBOM">SBOM</option>
-                            <option value="Client Management">Client Management</option>
-                            <option value="Incident Response">Incident Response</option>
-                            <option value="Endpoint Configuration">Endpoint Configuration</option>
-                        </select>
-                    </div>
-                    <div class="deploy-scroll">
-                    <table id="packageDataTable" class="table-sm-se w-100 text-white text-opacity-100">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Content Set</th>
-                        <th>Command</th>
-                    </tr>
-                    </thead>
-
-{#                        <tbody class="fs-12px mb-2">#}
-{#                        {% for data in chartData.packageList %}#}
-{#                        <tr class="clickP">#}
-{#                            <td id="checkRow"><input class="form-check-input" type="checkbox" id="chkRow2" value="{{ data.Name }}"></td>#}
-{#                            <td>#}
-{#                                {{ data.Display_name }}#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                {{ data.Content_set }}#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                {{ data.Command }}#}
-{#                            </td>#}
-{#                        </tr>#}
-{#                        {% endfor %}#}
-{#                    </tbody>#}
-                    </table>
-                    </div>
-                    <!-- BEGIN card-arrow -->
-                    <!-- END card-arrow -->
-                </div>
-                    <div class="card-arrow">
-                        <div class="card-arrow-top-left"></div>
-                        <div class="card-arrow-top-right"></div>
-                        <div class="card-arrow-bottom-left"></div>
-                        <div class="card-arrow-bottom-right"></div>
-                    </div>
-                <!-- END card-body -->
-            </div>
-            <!-- END card -->
-        </div>
-
-        <div class="col-2" id="colVal2" style="display: none">
-            <!-- BEGIN card -->
-            <div class="card mb-2">
-                <!-- BEGIN card-body -->
-                <div class="card-body" style="height: 577px">
-                    <div style="display: flex; justify-content: space-between;">
-                    <div style="text-align: left; font-size: 30px; font-weight: bold">Registry mod</div>
-                    </div>
-                    <br>
-                    <br>
-                    <form action="{% url 'change_registry' %}" method="post">
-                        {% csrf_token %}
-                        <div>OS Architecture</div>
-                        <select class="form-select selBox" aria-label=".form-select-lg example" name="arch">
-                          <option value="" selected disabled hidden>select...</option>
-                          <option value="32">32</option>
-                          <option value="64">64</option>
-                          <option value="Both">Both</option>
-                        </select>
-                        <br>
-                        <div>Registry Key Name</div>
-                        <input class="form-control inBox" type="text" name="path" style="width: 265px;" placeholder="HKLM\X-Factor\deploy">
-                        <br>
-                        <div>Value Name</div>
-                        <input class="form-control inBox" type="text" name="name" style="width: 265px;" placeholder="registry">
-                        <br>
-                        <div>Value Data</div>
-                        <input class="form-control inBox" type="text" name="value" style="width: 265px;" placeholder="True">
-                        <br>
-                        <div>Value Type</div>
-                        <select class="form-select selBox" aria-label=".form-select-lg example" name="type">
-                          <option value="" selected disabled hidden>select...</option>
-                          <option value="REG_SZ">REG_SZ</option>
-                          <option value="REG_EXPAND_SZ">REG_EXPAND_SZ</option>
-                          <option value="REG_BINARY">REG_BINARY</option>
-                          <option value="REG_DWORD">REG_DWORD</option>
-                          <option value="REG_QWORD">REG_QWORD</option>
-                          <option value="REG_MULTI_SZ">REG_MULTI_SZ</option>
-                        </select>
-                        <br>
-                        <div id="errorDiv">&nbsp</div>
-                        <div style="justify-content: center; display: flex">
-                            <input type="hidden" id="outputCGValue" name="outputCGValue">
-                        <button type="submit" id="create" class="btn btn-default fs-17px" style= "width: 150px; height: 40px; margin-top: 17px;">edit</button>
+        <!-- BEGIN col-6 -->
+        <div class="col-xl-6">
+            <div class="col-xl-12" id="colVal1">
+                <div class="card mb-3">
+                    <div class="card-body h-410px">
+                        <div class="d-flex justify-content-between">
+                            <div class="fw-bold text-start fs-16px">Packages</div>
+                            <ul class="nav nav-tabs2 nav-tabs-v2 px-3" role="tablist">
+                                <li class="btn1" role="presentation" id="registryLi">
+                                    <span id="registry"></span>
+                                </li>
+                            </ul>
+                            <select style="width: 130px; height: 35px; margin-right: 10px;" class="form-select content_selec" aria-label=".form-select-lg example" name="type">
+                                <option value="Default" selected disabled hidden>Content Set</option>
+                                <option value="all">all</option>
+                                <option value="Default">Default</option>
+                                <option value="Asset">Asset</option>
+                                <option value="SBOM">SBOM</option>
+                                <option value="Client Management">Client Management</option>
+                                <option value="Incident Response">Incident Response</option>
+                                <option value="Endpoint Configuration">Endpoint Configuration</option>
+                            </select>
                         </div>
-                    </form>
-                    <br>
-
-                    <!-- BEGIN card-arrow -->
-                    <!-- END card-arrow -->
-                </div>
-                    <div class="card-arrow">
-                        <div class="card-arrow-top-left"></div>
-                        <div class="card-arrow-top-right"></div>
-                        <div class="card-arrow-bottom-left"></div>
-                        <div class="card-arrow-bottom-right"></div>
-                    </div>
-                <!-- END card-body -->
-            </div>
-            <!-- END card -->
-        </div>
-
-        <div class="col-2" id="colVal3" style="display: none">
-            <!-- BEGIN card -->
-            <div class="card mb-2">
-                <!-- BEGIN card-body -->
-                <div class="card-body" style="height: 577px">
-                    <div style="display: flex; justify-content: space-between;">
-                    <div style="text-align: left; font-size: 30px; font-weight: bold">Enter parameters</div>
-                    </div>
-                    <br>
-                    <br>
-                    <form action="{% url 'change_registry' %}" method="post">
-                        {% csrf_token %}
-                        <div class="parameters-scroll" id="colval3">
-{#                        <div>parameter 1#}
-{#                        <input class="form-control inBox" type="text" name="param1">#}
-{#                        </div>#}
-{#                        <br>#}
+                        <div class="deploy-scroll">
+                            <table id="packageDataTable" class="table table-sm-se w-100 text-white text-opacity-100">
+                                <thead>
+                                <tr class="table-active">
+                                    <th>Name</th>
+                                    <th>Content Set</th>
+                                    <th>Command</th>
+                                </tr>
+                                </thead>
+                            </table>
                         </div>
-                            <input type="hidden" id="outputCGValue" name="outputCGValue">
-                    </form>
-                    <br>
-
-                    <!-- BEGIN card-arrow -->
-                    <!-- END card-arrow -->
-                </div>
+                    </div>
                     <div class="card-arrow">
                         <div class="card-arrow-top-left"></div>
                         <div class="card-arrow-top-right"></div>
                         <div class="card-arrow-bottom-left"></div>
                         <div class="card-arrow-bottom-right"></div>
                     </div>
-                <!-- END card-body -->
-            </div>
-            <!-- END card -->
-        </div>
-
-        <div id="" class="col-2 card" style="max-height: 577px;">
-            <label style="text-align: center; font-size: 25px; margin-top: 10px;">Deploy action</label>
-            <br>
-            <div class="card-arrow">
-                <div class="card-arrow-top-left"></div>
-                <div class="card-arrow-top-right"></div>
-                <div class="card-arrow-bottom-left"></div>
-                <div class="card-arrow-bottom-right"></div>
-            </div>
-            <br>
-            <form method="post" action="{% url 'deploy_action_val' %}">
-                {% csrf_token %}
-            <div class="card" id="cb1">
-                <label style="color: white">package</label>
-                <div class="card-body">
-                <div class="mini-deploy-scroll">
-                    <div id="outputP"></div>
                 </div>
-                </div>
-            <div class="card-arrow">
-                <div class="card-arrow-top-left"></div>
-                <div class="card-arrow-top-right"></div>
-                <div class="card-arrow-bottom-left"></div>
-                <div class="card-arrow-bottom-right"></div>
             </div>
-            </div>
-            <br>
-            <div class="card" id="cb2">
-                <label style="color: white">computer group</label>
-                <div class="card-body">
-                <div class="mini-deploy-scroll">
-                    <div id="outputC"></div>
-                </div>
-                </div>
-            <div class="card-arrow">
-                <div class="card-arrow-top-left"></div>
-                <div class="card-arrow-top-right"></div>
-                <div class="card-arrow-bottom-left"></div>
-                <div class="card-arrow-bottom-right"></div>
-            </div>
-            </div>
-                <input type="hidden" id="outputPValue" name="outputPValue">
-                <input type="hidden" id="outputCValue" name="outputCValue">
-                <div id="pack"></div>
-                <br>
-                <div id="errorMsg" style="color:orange; text-align: center;">&nbsp <br><br></div>
-            <div style="display: flex; justify-content: center; margin-top: 20px;">
-{#                <button type="submit" class="btn btn-default fs-17px" id="action_btn" style="width: 150px; height: 40px; border-color: orange; color: orange; background-color: transparent;"#}
-{#                        onmouseover="this.style.backgroundColor='#ffe6b9';" onmouseout="this.style.backgroundColor='transparent';" value="action">action</button>#}
-                <button type="submit" class="btn btn-default fs-17px" id="action_btn" style="width: 150px; height: 40px; margin-top: 15px;"
-                        value="action">action</button>
-            </div>
-            </form>
-        </div>
-
-        <div class="col-5" id="colVal2">
-            <!-- BEGIN card -->
-            <div class="card mb-2">
-                <!-- BEGIN card-body -->
-                <div class="card-body">
-                    <div style="display: flex; justify-content: space-between;">
-                    <div style="text-align: left; font-size: 30px; font-weight: bold">Computer Groups</div>
-                    <select style="width: 130px; height: 35px; margin-right: 10px" class="form-select group_selec" aria-label=".form-select-lg example" name="type">
-                          <option value="all" selected disabled hidden>Content Set</option>
-                          <option value="all">all</option>
-                          <option value="Default Filter Groups">Default Filter Groups</option>
-                          <option value="Default">Default</option>
-                          <option value="Reserved">Reserved</option>
-                    </select>
+            <div class="col-xl-12" id="colVal2">
+                <div class="card">
+                    <div class="card-body h-410px">
+                        <div class="d-flex justify-content-between mb-10px">
+                            <div class="text-start fs-16px fw-bold">Computer Groups</div>
+                            <select style="width: 130px; height: 35px; margin-right: 10px" class="form-select group_selec" aria-label=".form-select-lg example" name="type">
+                                <option value="all" selected disabled hidden>Content Set</option>
+                                <option value="all">all</option>
+                                <option value="Default Filter Groups">Default Filter Groups</option>
+                                <option value="Default">Default</option>
+                                <option value="Reserved">Reserved</option>
+                            </select>
+                        </div>
+                        <div class="deploy-scroll">
+                            <table id="computerGroupDataTable" class="table table-sm-se w-100 text-white text-opacity-100" >
+                                <thead>
+                                <tr class="table-active">
+                                    <th>Name</th>
+                                    <th>Content Set</th>
+                                    <th>Expression</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
-                    <!-- BEGIN title -->
-                    <!-- <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo osVersion-moreInfo"><i class="fas fa-ellipsis-h"></i></button> -->
-                    <!-- END title -->
-                    <!-- BEGIN stat-lg -->
-                    <!-- END stat-lg -->
-                    <div class="deploy-scroll">
-                    <table id="computerGroupDataTable" class="table-sm-se w-100 text-white text-opacity-100" >
-                    <thead>
-                    <tr>
-{#                        <th style="width: 2%"> </th>#}
-                        <th>Name</th>
-                        <th>Content Set</th>
-                        <th>Expression</th>
-                    </tr>
-                    </thead>
-{#                    <tbody class="fs-12px mb-2">#}
-{#                        {% for data in chartData.groupsList %}#}
-{#                        <tr class="clickC">#}
-{#                            <td id="checkRow"><input class="form-check-input" type="checkbox" id="chkRow2" value="{{ data.Name }}"></td>#}
-{#                            <td>#}
-{#                                {{ data.Name }}#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                {{ data.Content_set }}#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                {{ data.Expression }}#}
-{#                            </td>#}
-{#                        </tr>#}
-{#                        {% endfor %}#}
-{#                    </tbody>#}
-                    </table>
-                    </div>
-                    <!-- BEGIN card-arrow -->
-                    <!-- END card-arrow -->
-                </div>
                     <div class="card-arrow">
                         <div class="card-arrow-top-left"></div>
                         <div class="card-arrow-top-right"></div>
                         <div class="card-arrow-bottom-left"></div>
                         <div class="card-arrow-bottom-right"></div>
                     </div>
-                <!-- END card-body -->
-            </div>
-            <!-- END card -->
-        </div>
-        <!-- BEGIN col-3 -->
-        <div class="col-12" style="margin-bottom: 200px">
-            <div class="card">
-            <div class="card-body">
-
-            <div class="d-flex fw-bold fs-12px">
-                <div style="text-align: left; font-size: 30px; font-weight: bold" class="mb-2">Action Log</div>
-            </div>
-            <div class="action-log-scroll">
-                <table id="action_log" class="table-sm-se w-100 text-white text-opacity-100" >
-                    <tbody>
-                    {% for data in chartData.actionLogList %}
-                    <tr>
-                        <td>{{ data.admin }} 계정이 {{ data.package }} package를 {{ data.computer_group }} group에게 deploy {{ data.comment }}! - {{ data.creation_date }}</td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-                <div class="card-arrow">
-                    <div class="card-arrow-top-left"></div>
-                    <div class="card-arrow-top-right"></div>
-                    <div class="card-arrow-bottom-left"></div>
-                    <div class="card-arrow-bottom-right"></div>
                 </div>
             </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card">
+                        <div class="card-body h-590px">
+                            <div class="fw-bold text-start fs-16px">Deploy Action</div>
+                            <form method="post" action="{% url 'deploy_action_val' %}">
+                                {% csrf_token %}
+                                <div id="cb1">
+                                    <label>package</label>
+                                    <div class="mini-deploy-scroll" style="border: 1px solid #fff">
+                                        <div id="outputP"></div>
+                                    </div>
+                                </div>
+                                <div id="cb2">
+                                    <label>computer group</label>
+                                    <div class="mini-deploy-scroll" style="border: 1px solid #fff">
+                                        <div id="outputC"></div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="outputPValue" name="outputPValue">
+                                <input type="hidden" id="outputCValue" name="outputCValue">
+                                <div id="pack"></div>
+                                <div id="errorMsg" style="color:orange; text-align: center;">&nbsp <br><br></div>
+                                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                                    <button type="submit" class="btn btn-default fs-17px" id="action_btn" style="width: 150px; height: 40px; margin-top: 15px;"
+                                            value="action">action</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-arrow">
+                            <div class="card-arrow-top-left"></div>
+                            <div class="card-arrow-top-right"></div>
+                            <div class="card-arrow-bottom-left"></div>
+                            <div class="card-arrow-bottom-right"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2" id="colVal3" style="display: none">
+                    <div class="card">
+                        <div class="card-body" style="height: 577px">
+                            <div style="display: flex; justify-content: space-between;">
+                                <div class="fw-bold text-start fs-16px">Enter parameters</div>
+                            </div>
+                            <form action="{% url 'change_registry' %}" method="post">
+                                {% csrf_token %}
+                                <div class="parameters-scroll" id="colval3">
+                                </div>
+                                <input type="hidden" id="outputCGValue" name="outputCGValue">
+                            </form>
+                        </div>
+                        <div class="card-arrow">
+                            <div class="card-arrow-top-left"></div>
+                            <div class="card-arrow-top-right"></div>
+                            <div class="card-arrow-bottom-left"></div>
+                            <div class="card-arrow-bottom-right"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body h-590px">
+                            <div class="fw-bold text-start fs-16px">Deploy Status</div>
+                            <div style="height: 500px; border: 1px solid #fff; border-radius: 4px;">
+                                <table>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-arrow">
+                            <div class="card-arrow-top-left"></div>
+                            <div class="card-arrow-top-right"></div>
+                            <div class="card-arrow-bottom-left"></div>
+                            <div class="card-arrow-bottom-right"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="mt-3">
+                <div class="card">
+                    <div class="card-body h-230px">
+                        <div class="d-flex">
+                            <p class="fw-bold text-start fs-16px mb-8px">Action Log</p>
+                            <button class="btn-init"><i class="fas fa-expand-arrows-alt fa-fw me-1" style="color: #fff;"></i></button>
+                        </div>
+                        <div class="action-log-scroll">
+                            <table id="action_log" class="table table-sm-se w-100 text-white text-opacity-100 fs-12px" >
+                                <tbody>
+                                {% for data in chartData.actionLogList %}
+                                <tr>
+                                    <td>{{ data.admin }} 계정이 {{ data.package }} package를 {{ data.computer_group }} group에게 deploy {{ data.comment }}! - {{ data.creation_date }}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-arrow">
+                        <div class="card-arrow-top-left"></div>
+                        <div class="card-arrow-top-right"></div>
+                        <div class="card-arrow-bottom-left"></div>
+                        <div class="card-arrow-bottom-right"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- END row -->
 </div>
@@ -342,12 +208,7 @@
     var errorDiv = document.getElementById("errorDiv");
     var spanElement = document.getElementById('registry');
     document.addEventListener('DOMContentLoaded', function () {
-        {#$("#packageDataTable").on('click', 'tbody tr', function () {#}
-        {#$clickedRow = $(this);#}
-        {#isClicked = $clickedRow.hasClass('clicked');#}
-        {#tdValue = $clickedRow.find('td:eq(0)').text();#}
-        {#console.log("asdasdasdsadasadsads")#}
-        {#});#}
+
 
 
     var resultP = document.getElementById('outputP');

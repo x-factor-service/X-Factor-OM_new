@@ -9,6 +9,7 @@ from sbom.dashboardFunctionSBOM import DashboardData
 from common.controller.controllerCommon import MenuSetting
 from deploy.transformDeploy import transform as DETR
 from deploy.output.deployOutput import plug_in as DEOP
+from deploy.output.deployOutput import deploy_status as DSOP
 from deploy.input.db import plug_in as DIPI
 from om.input.db import plug_in as PDPI
 from django.http import JsonResponse, HttpResponse
@@ -179,6 +180,26 @@ def deploy_action_val(request):
         if CAQ.status_code == 200:
             DPAD = DETR(CAQ.json(), request.session['sessionid'], 'deploy')
             DEOP(DPAD, 'action_log')
+
+            # # ########################test용 computer group total count 계산 #################################
+            # TCG = CSRJ['data']['text']
+            # JURL = apiUrl + '/api/v2/questions'
+            # body = {
+            #     "query_text": "Get Computer Name and IP Address from all machines with ( All Computers and All Computers and " + TCG + ")"
+            # }
+            # JQP = requests.post(JURL, headers=PSQ, json=body, verify=False)
+            # JQPR = JQP.json()
+            # JCGI = JQPR['data']['id']
+            # JTCURL = apiUrl + '/api/v2/result_data/question/' + str(JCGI)
+            # for i in range(5):
+            #     sleep(1)
+            #
+            #     CGRD = requests.get(JTCURL, headers=PSQ, verify=False)
+            #     CGTC = CGRD.json()
+            #     CGTCR = CGTC['data']['result_sets'][0]['row_count_machines']
+            #
+            # ###############################
+            # 여기서 부터 테스트 시작
             result = CAQ.json()
 
             # package name 추출
@@ -200,11 +221,64 @@ def deploy_action_val(request):
             action_date = kr_datetime.strftime('%Y-%m-%d %H:%M:%S')
 
             AJURL = apiUrl + '/api/v2/result_data/action/' + str(action_id)
-            sleep(12)
+            sleep(23)
             AJ = requests.get(AJURL, headers=PSQ, verify=False)
+            AJD = AJ.json()
 
-            print(action_id)
-            print(AJ.json())
+            ################# action result ##################
+            action_result = []
+
+            for i in range(len(AJD['data']['result_sets'][0]['rows'])+1):
+                try:
+                    key = AJD['data']['result_sets'][0]['rows'][i]['data'][0][0]['text']
+                    value = AJD['data']['result_sets'][0]['rows'][i]['data'][1][0]['text'].split(':')
+
+                    action_result.append({key : value[1]})
+                except (IndexError,KeyError):
+                    pass
+
+            ASdata = [pn,action_id,action_date,action_result]
+            DSOP(ASdata)
+            print(ASdata)
+            # print(AJD['data']['result_sets'][0]['rows'][0]['data'][0][0])
+            # print(AJD['data']['result_sets'][0]['rows'][0]['data'][1][0])
+            # print(AJD['data']['result_sets'][0]['rows'][1]['data'][0][0])
+            # print(AJD['data']['result_sets'][0]['rows'][1]['data'][1][0])
+            # #######################!111111111111111111111##########################
+            # total = 0
+            # i = 0
+            # while total < CGTCR:
+            #     sleep(1)
+            #     AJ = requests.get(AJURL, headers=PSQ, verify=False)
+            #     AJD = AJ.json()
+            #     try:
+            #         value1 = AJD['data']['result_sets'][0]['rows'][i]['data']
+            #         print(value1)
+            #         value = int(AJD['data']['result_sets'][0]['rows'][i]['data'][2][0]['text'])
+            #         total += value
+            #         print(total)
+            #         i += 1
+            #     except:
+            #         print('아직')
+            # print(AJD['data']['result_sets'][0]['rows'])
+            # print(action_id)
+            ########################22222222222222222222222222#######################
+            # total = 0
+            # for i in range(10):
+            #     while total < CGTCR:
+            #         sleep(2)
+            #         AJ = requests.get(AJURL, headers=PSQ, verify=False)
+            #         AJD = AJ.json()
+            #         # print(AJD)
+            #
+            #         # Ensure the data exists before trying to access it
+            #         if len(AJD['data']['result_sets'][0]['rows']) > i:
+            #             value = int(AJD['data']['result_sets'][0]['rows'][i]['data'][2][0]['text'])
+            #             print(AJD['data']['result_sets'][0]['rows'][i])
+            #             print(value)
+            #             total += value
+            #             print(total)
+
 
 
     return redirect('deploy')
