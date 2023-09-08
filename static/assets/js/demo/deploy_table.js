@@ -215,7 +215,7 @@ $(document).ready(function () {
                 data: { 'id': id }, // 서버로 보낼 데이터를 설정합니다.
                 success: function(response) {
                   // 성공적인 응답을 받았을 때 수행할 동작을 정의합니다.
-                    console.log('성공:', response);
+                    // console.log('성공:', response);
                     if (typeof response.a === 'number' && response.a > 0) {
                         param(response.a);
                         toggleDivClasses();
@@ -234,7 +234,7 @@ $(document).ready(function () {
                 cache: true, // AJAX 호출 결과를 캐시하도록 브라우저에 지시
                 error: function(xhr, status, error) {
                   // 오류가 발생했을 때 수행할 동작을 정의합니다.
-                    console.error('오류:', status, error);
+                    // console.error('오류:', status, error);
                 },
             });
         }
@@ -324,7 +324,8 @@ $(document).ready(function () {
         var outputCValue = document.getElementById('outputC').textContent;
         var inputElements = document.querySelectorAll("#colVal3_param input");
         var parentElement = document.getElementById("colVal3_param");
-        console.log(parentElement + '1');
+
+        // console.log(parentElement + '1');
         inputs.forEach(function (input) {
             if (input.value === '') {
                 input.classList.add('error-border');
