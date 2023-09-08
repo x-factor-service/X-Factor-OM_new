@@ -30720,8 +30720,8 @@ body .note-modal-backdrop {
 }
 
 .parameters-scroll{
-    height: 450px;
-    max-height: 450px;
+    height: 510px;
+    max-height: 510px;
     overflow-y: auto;
 }
 .parameters-scroll::-webkit-scrollbar {
@@ -31252,16 +31252,6 @@ li.disabled {
         opacity: 0.6;
 }
 
-.btn-init {
-    background: inherit ;
-    border:none;
-    box-shadow:none;
-    border-radius:0;
-    padding:0;
-    overflow:visible;
-    cursor:pointer;
-}
-
 .error_msg {
     line-height: 40px;
 }
@@ -31276,13 +31266,15 @@ li.disabled {
 }
 
 .status-item {
-    border: 1px solid rgba(255,255,255, .75);
+    border: 1px solid rgba(255,255,255, 1);
 }
 
 .status-sequence {
     height: 92px;
     line-height: 92px;
     border-right: 1px solid rgba(255,255,255, .75);
+    background-color: rgba(255,255,255,.75);
+    color: #000;
 }
 
 .status-info {
@@ -31291,11 +31283,40 @@ li.disabled {
     justify-content: space-evenly;
 }
 
+.expanded {
+	    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1120;
+    border-radius: 0;
+    margin: 0 !important;
+    padding: 0.3125rem !important;
+    background: rgba(29, 40, 53, .95)
+}
+
+.action_body {
+    height: 230px;
+}
+
 .nav.nav-tabs2.nav-tabs-v2>.nav-item>.nav-link {
     border: none;
     border-bottom: 3px solid transparent;
     font-size : 20px;
     color : #fff;
+}
+
+.clicked  {
+    background-color: orange;
+}
+
+.none {
+   display: none;
+}
+
+.blocked {
+    display: block;
 }
 
 .nav.nav-tabs2.nav-tabs-v2>.nav-item>.nav-link.active,
@@ -31330,7 +31351,8 @@ li.disabled {
     height: 656px;
 }
 
-.sbom-cursor {
+.sbom-cursor,
+.deploy-cursor {
     cursor: pointer;
 }
 .sbom-component {

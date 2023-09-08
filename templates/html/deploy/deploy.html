@@ -79,13 +79,13 @@
                             <div class="fw-bold text-start fs-16px mb-4">Deploy Action</div>
                             <form method="post" action="{% url 'deploy_action_val' %}">
                                 {% csrf_token %}
-                                <div id="cb1" class="mb-3 fs-14px">package<span><i class="fas fa-redo fs-10px ms-2"></i></span>
+                                <div id="cb1" class="mb-3 fs-14px">package<span><i id="deployPCK_resetBtn" class="fas fa-redo fs-10px ms-2 deploy-cursor"></i></span>
                                     <label for="outputP"></label>
                                     <div class="mini-deploy-scroll mt-2 p-3 fs-12px border_style">
                                         <div id="outputP"></div>
                                     </div>
                                 </div>
-                                <div id="cb2" class="mb-3 fs-14px">computer group<span><i class="fas fa-redo fs-10px ms-2"></i></span>
+                                <div id="cb2" class="mb-3 fs-14px">computer group<span><i id="deployGRP_resetBtn" class="fas fa-redo fs-10px ms-2 deploy-cursor"></i></span>
                                     <label for="outputC"></label>
                                     <div class="mini-deploy-scroll mt-2 p-3 fs-12px border_style">
                                         <div id="outputC"></div>
@@ -109,15 +109,15 @@
                     </div>
                 </div>
                 <!-- Parameter edit -->
-                <div class="col-xl-4" id="colVal3" style="display: none">
+                <div class="col-xl-4 none" id="colVal3">
                     <div class="card">
-                        <div class="card-body" style="height: 577px">
-                            <div style="display: flex; justify-content: space-between;">
+                        <div class="card-body h-590px">
+                            <div class="d-flex justify-content-between mb-4">
                                 <div class="fw-bold text-start fs-16px">Enter parameters</div>
                             </div>
                             <form action="{% url 'change_registry' %}" method="post">
                                 {% csrf_token %}
-                                <div class="parameters-scroll" id="colval3">
+                                <div class="parameters-scroll" id="colVal3_param">
                                 </div>
                                 <input type="hidden" id="outputCGValue" name="outputCGValue">
                             </form>
@@ -136,57 +136,9 @@
                         <div class="card-body h-590px">
                             <div class="fw-bold text-start fs-16px mb-4">Deploy Status</div>
                             <div class="h-510px bg-white bg-opacity-25">
-                                <ul class="status-list d-flex align-items-center flex-column w-100 h-100px m-0">
+                                <ul class="status-list d-flex align-items-center flex-column w-100 h-100px m-0 p-1">
                                     <li class="status-item d-flex align-items-center w-100 h-100">
                                         <div class="status-sequence fs-12px fw-bold w-10 text-center">01</div>
-                                        <div class="status-info w-90 d-flex p-1">
-                                            <p class="m-0 fs-12px"><strong class="fw-bold">Package Name:</strong> A Package</p>
-                                            <p class="m-0 fs-12px"><strong class="fw-bold">Action Date:</strong> 2023-08-30 09:00:00</p>
-                                            <div class="progress fs-10px">
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 33%">33%</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 23%">23%</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width: 13%">13%</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="status-item d-flex align-items-center w-100 h-100">
-                                        <div class="status-sequence fs-12px fw-bold w-10 text-center">02</div>
-                                        <div class="status-info w-90 d-flex p-1">
-                                            <p class="m-0 fs-12px"><strong class="fw-bold">Package Name:</strong> A Package</p>
-                                            <p class="m-0 fs-12px"><strong class="fw-bold">Action Date:</strong> 2023-08-30 09:00:00</p>
-                                            <div class="progress fs-10px">
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 33%">33%</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 23%">23%</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width: 13%">13%</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="status-item d-flex align-items-center w-100 h-100">
-                                        <div class="status-sequence fs-12px fw-bold w-10 text-center">03</div>
-                                        <div class="status-info w-90 d-flex p-1">
-                                            <p class="m-0 fs-12px"><strong class="fw-bold">Package Name:</strong> A Package</p>
-                                            <p class="m-0 fs-12px"><strong class="fw-bold">Action Date:</strong> 2023-08-30 09:00:00</p>
-                                            <div class="progress fs-10px">
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 33%">33%</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 23%">23%</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width: 13%">13%</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="status-item d-flex align-items-center w-100 h-100">
-                                        <div class="status-sequence fs-12px fw-bold w-10 text-center">04</div>
-                                        <div class="status-info w-90 d-flex p-1">
-                                            <p class="m-0 fs-12px"><strong class="fw-bold">Package Name:</strong> A Package</p>
-                                            <p class="m-0 fs-12px"><strong class="fw-bold">Action Date:</strong> 2023-08-30 09:00:00</p>
-                                            <div class="progress fs-10px">
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 33%">33%</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 23%">23%</div>
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width: 13%">13%</div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="status-item d-flex align-items-center w-100 h-100">
-                                        <div class="status-sequence fs-12px fw-bold w-10 text-center">05</div>
                                         <div class="status-info w-90 d-flex p-1">
                                             <p class="m-0 fs-12px"><strong class="fw-bold">Package Name:</strong> A Package</p>
                                             <p class="m-0 fs-12px"><strong class="fw-bold">Action Date:</strong> 2023-08-30 09:00:00</p>
@@ -210,12 +162,12 @@
                 </div>
             </div>
             <!-- Action log -->
-            <div class="mt-3">
+            <div class="mt-3 actionLog_area">
                 <div class="card">
-                    <div class="card-body h-230px">
+                    <div class="card-body action_body">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <p class="fw-bold text-start fs-16px m-0">Action Log</p>
-                            <button class="btn-init"><i class="fas fa-expand-arrows-alt fs-14px text-white"></i></button>
+                            <a id="expand_actionLog" href="#"  class="text-inverse text-opacity-50 text-decoration-none"><i class="fa fa-fw fa-expand fs-14px text-white"></i></a>
                         </div>
                         <div class="action-log-scroll">
                             <table id="action_log" class="table table-sm-se w-100 text-white text-opacity-100 fs-12px" >
@@ -243,13 +195,29 @@
     <!-- END row -->
 </div>
 <!-- END #content -->
-<style>
-.highlight {
-    background-color: orange;
-}
-</style>
+
 <script>
+// action log 확장 아이콘 이벤트 리스너
+document.addEventListener("DOMContentLoaded", function() {
+    "use strict";
+    const expandToggle = document.getElementById("expand_actionLog");
+    const actionLogArea = document.querySelector(".actionLog_area");
+    const actionLogScrollDiv = actionLogArea.querySelector("div > table#action_log").parentNode;
+    const actionLogBody = document.querySelector(".action-body");
 
+    expandToggle.addEventListener("click", function(e) {
+        e.preventDefault();
 
+        if (actionLogArea.classList.contains("expanded")) {
+            actionLogArea.classList.remove("expanded");
+            actionLogScrollDiv.classList.add("action-log-scroll");
+            actionLogBody.style.height = '230px';  // card-body 원래 높이 230px 로 다시 설정
+        } else {
+            actionLogArea.classList.add("expanded");
+            actionLogScrollDiv.classList.remove("action-log-scroll");
+            actionLogBody.style.height = '100%';  // card-body 확장 높이 100%로 다시 설정
+        }
+    });
+});
 </script>
 {% endblock %}
