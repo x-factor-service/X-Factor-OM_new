@@ -20,6 +20,7 @@ from email.mime.text import MIMEText
 from time import sleep
 from sbom.input.db import plug_in as SDPI
 import requests
+from django.http import HttpResponseRedirect
 import smtplib
 import json
 import math
@@ -82,8 +83,27 @@ def deploy(request):
             actionLog = DIPI('action_log', '', '')
             for i in range(len(actionLog)):
                 actionLogList.append({'package': actionLog[i][0], 'computer_group': actionLog[i][1], 'comment': actionLog[i][2], 'admin': actionLog[i][3], 'creation_date': actionLog[i][4]})
+            # ======================action_status data 가져오기 ================
+            action_status_List = []
+            action_status_Data = DIPI('action_status', '', '')
 
-            chartData = {'packageList': packageList, 'groupsList': groupsList, 'actionLogList': actionLogList}
+            for i in range(len(action_status_Data)):
+                action_status_List.append({
+                    'packageName': action_status_Data[i][0],
+                    'action_date': action_status_Data[i][2],
+                    'action_status': eval(action_status_Data[i][4]),
+                    'action_result': eval(action_status_Data[i][3])
+                })
+
+
+            chartData = {'packageList': packageList, 'groupsList': groupsList, 'actionLogList': actionLogList, 'actionStatusList': action_status_List}
+
+            pre_redirect_data = request.session.get('pre_redirect_data', None)
+
+            if pre_redirect_data is not None:
+                chartData['preRedirectData'] = pre_redirect_data
+                del request.session['pre_redirect_data']
+
             returnData = {'menuList': menuListDB, 'chartData': chartData, 'Customer': Customer, 'Login_Method': Login_Method}
 
             request.POST = None
@@ -98,7 +118,13 @@ def report(request):
 def deploy_action(request):
     returnData = {'menuList': menuListDB, 'Customer': Customer}
     return render(request, 'deploy/deploy.html', returnData)
-
+#수정중 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+def handle_action_completion():
+    print("다시 리다이렉트")
+    # response = HttpResponseRedirect('/deploy')
+    # response.status_code = 302
+    # return response
+# 수정중!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 def deploy_action_val(request):
     input_values = []
     ivCnt = 0
@@ -182,13 +208,21 @@ def deploy_action_val(request):
             DPAD = DETR(CAQ.json(), request.session['sessionid'], 'deploy')
             DEOP(DPAD, 'action_log')
 
-            thread = threading.Thread(target=action_status_task, args=(CAQ.json(), PSQ,))
+            thread = threading.Thread(target=action_status_task, args=(CAQ.json(), PSQ, handle_action_completion))
             thread.start()
-
+        ND = CAQ.json()
+    NDD = []
+    NDD.append(ND['data']['package_spec']['name'])
+    utc_time_str = ND['data']['package_spec']['creation_time']
+    utc_time = datetime.strptime(utc_time_str, '%Y-%m-%dT%H:%M:%SZ')
+    atime = utc_time + timedelta(hours=9)
+    NDD.append(atime.strftime('%Y-%m-%d %H:%M:%S'))
+    print(NDD)
+    request.session['pre_redirect_data'] = NDD
     request.session['current_session_key'] = request.session.session_key
 
-    return redirect('/deploy?show_table=true')
-def action_status_task(result,PSQ):
+    return redirect('deploy')
+def action_status_task(result,PSQ, callback_func):
 
     # progress 바 스타트
 
@@ -231,13 +265,34 @@ def action_status_task(result,PSQ):
     action_date = kr_datetime.strftime('%Y-%m-%d %H:%M:%S')
 
     AJURL = apiUrl + '/api/v2/result_data/action/' + str(action_id)
-    sleep(23)
-    AJ = requests.get(AJURL, headers=PSQ, verify=False)
-    AJD = AJ.json()
+
+    # 완료 시점 체크를 위해 만든 반복 구간 12초에 한번씩 반복
+    # 주석처리 부분을 살리면 이중 체크 데이터가 그전 데이터와 일치 할 때 반복 종료 sleep 시간을 많이 안준다면 필요
+
+    prev_rows = None
+    while True:
+        sleep(12)
+        AJ = requests.get(AJURL, headers=PSQ, verify=False)
+        AJD = AJ.json()
+
+        rows = AJD['data']['result_sets'][0]['rows']
+
+        if rows and all(row['data'][1][0]['text'] and 'Running.' not in row['data'][1][0]['text'] and 'Downloading.' not in row['data'][1][0]['text'] for row in rows):
+            # break
+
+
+            current_rows = AJD['data']['result_sets'][0]['rows']
+
+            if prev_rows is not None and current_rows and prev_rows == current_rows:
+                break
+            prev_rows = current_rows if current_rows else prev_rows
+
+
+
 
     ################# action result ##################
     action_result = []
-
+    # DB 용 데이터 가공
     for i in range(len(AJD['data']['result_sets'][0]['rows']) + 1):
         try:
             key = AJD['data']['result_sets'][0]['rows'][i]['data'][0][0]['text']
@@ -247,7 +302,6 @@ def action_status_task(result,PSQ):
         except (IndexError, KeyError):
             pass
 
-    print(action_result)
     completed_count = 0
     failed_count = 0
     expired_count = 0
@@ -263,7 +317,7 @@ def action_status_task(result,PSQ):
         elif status == 'Expired.':
             expired_count += 1
 
-    total_count = completed_count + failed_count + expired_count
+    total_count = completed_count + expired_count + failed_count
     completed_per = str(int((completed_count / total_count) * 100)) + '%'
     failed_per = str(int((failed_count / total_count) * 100)) + '%'
     expired_per = str(int((expired_count / total_count) * 100)) + '%'
@@ -271,7 +325,8 @@ def action_status_task(result,PSQ):
     BData = [completed_per, failed_per, expired_per]
     ASdata = [pn, action_id, action_date, action_result, BData]
     DSOP(ASdata)
-
+    print('끝')
+    callback_func()
     # print(AJD['data']['result_sets'][0]['rows'][0]['data'][0][0])
     # print(AJD['data']['result_sets'][0]['rows'][0]['data'][1][0])
     # print(AJD['data']['result_sets'][0]['rows'][1]['data'][0][0])

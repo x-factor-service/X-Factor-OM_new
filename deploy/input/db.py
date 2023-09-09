@@ -60,7 +60,13 @@ def plug_in(table, day, type):
                 order by
                     log_collection_date desc
             """
-
+        elif table == 'action_status':
+            query = """
+                select deploy_name, action_id, TO_CHAR(action_date, 'YYYY-MM-DD HH24:MI:SS') as action_date, action_result, arcount
+                from deploy_status
+                order by deploy_collection_date desc
+                limit 5
+            """
         # if table == 'sbom_paging':
         #     query = """
         #         select

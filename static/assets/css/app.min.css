@@ -31263,6 +31263,7 @@ li.disabled {
 
 .status-list {
     padding: 4px 4px 0 4px;
+    gap:8%;
 }
 
 .status-item {
