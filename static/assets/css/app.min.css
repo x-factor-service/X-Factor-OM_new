@@ -31296,6 +31296,12 @@ li.disabled {
     background: rgba(29, 40, 53, .95)
 }
 
+.actionLog_area.expanded {
+    max-height: 100%; /* action log 확장될 때 높이 */
+    overflow-y: auto;
+}
+
+
 .action_body {
     height: 230px;
 }
