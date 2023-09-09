@@ -30668,7 +30668,7 @@ body .note-modal-backdrop {
     overflow-y: auto;
 }
 .deploy-scroll::-webkit-scrollbar {
-  width: 0.5em; /* 스크롤바의 너비를 설정합니다. */
+  width: 0em; /* 스크롤바의 너비를 설정합니다. */
 }
 
 .deploy-scroll::-webkit-scrollbar-track {
