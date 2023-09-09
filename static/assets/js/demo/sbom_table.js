@@ -1,6 +1,6 @@
 //SBOM 페이지
 var sbom_all = '../sbom_detail/?cpe='
-
+var colors = ['#0079BF', '#0088A8', '#00867A', '#5BC160', '#DAD056'];
 //CVE가 탐지된 SBOM 테이블
 var cveInSbomTable = function () {
     var dashboardpopupTable = $('#cveInSbom_dataTable').DataTable({
@@ -424,7 +424,7 @@ var handleRenderChartSBOM = function () {
                 return val.toFixed(1) + '%';
             }
         },
-        colors: ['#0079BF', '#0088A8', '#00867A', '#5BC160', '#DAD056'],
+        colors: colors,
         fill: {
             type: 'gradient'
         },
@@ -566,7 +566,6 @@ var handleRenderChartSBOM = function () {
     var countData = sbomDataList.sbom_barData.map(item => parseInt(item.count, 10));
     var sbomBarChart = {
               series: [{
-              name: '취약 오픈소스 개수',
               data: countData
             }],
               chart: {
@@ -584,18 +583,23 @@ var handleRenderChartSBOM = function () {
               enabled: false
             },
             xaxis: {
-              categories: categories_ip
-
+              categories: categories_ip,
+              labels: {
+                formatter: function(value) {
+                    return Math.round(value); // 소수점을 반올림하여 제거
+                }
+              }
             },
-            colors: ['#0079BF', '#0088A8', '#00867A', '#5BC160', '#DAD056'],
+            colors: colors,
             fill: {
                 type: 'gradient'
             },
             tooltip: {
-                y: {
-                    formatter: function(val) {
-                        return Math.round(val); // 소수점을 반올림하여 제거
-                    }
+                custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                    var bgColor = colors[dataPointIndex];
+                    return '<div style="padding: 7px 15px; background-color: ' + bgColor + '; color: #000; font-weight: bold; font-size: 11px;">' +
+                           '취약 오픈소스 개수: ' + series[seriesIndex][dataPointIndex] +
+                           '</div>';
                 }
             },
             legend: {
