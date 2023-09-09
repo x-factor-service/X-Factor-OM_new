@@ -31273,6 +31273,7 @@ li.disabled {
 
 .status-list {
     padding: 4px 4px 0 4px;
+    gap:8%;
 }
 
 .status-item {
@@ -31283,6 +31284,8 @@ li.disabled {
     height: 92px;
     line-height: 92px;
     border-right: 1px solid rgba(255,255,255, .75);
+    background-color: rgba(255,255,255,.75);
+    color: black;
 }
 
 .status-info {

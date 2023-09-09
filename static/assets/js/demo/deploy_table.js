@@ -131,8 +131,231 @@ var deploy_computerGroup = function () {
 
 $(document).ready(function () {
 
-    deploy_package();
-    deploy_computerGroup();
+    var $clickedRow = ''
+    var resultP = document.getElementById('outputP');
+    var resultC = document.getElementById('outputC');
+    var isRegistryEnabled = true;
+    var spanElement = document.getElementById('registry');
+    $("#packageDataTable").on('click', 'tbody tr', function () {
+        $clickedRow = $(this);
+        var isClicked = $clickedRow.hasClass('clicked');
 
+        // 원래 클릭했던 곳의 색을 없애기 위해 다른 행들의 클래스를 제거합니다.
+        $('#packageDataTable tbody tr').not($clickedRow).removeClass('clicked').css('background-color', '');
+
+        $clickedRow.addClass('clicked');
+        var tdValue = $clickedRow.find('td:eq(0)').text();
+        var parentElement = document.getElementById("colval3");
+        var parentElement1 = document.getElementById("pack");
+         // 클릭한 행의 상태에 따라 동작을 처리합니다.
+        spanElement.classList.remove('disabled-span');
+        if (isClicked) {
+            var divElement1 = document.getElementById("colVal1");
+            //버튼 클릭 시 span 태그의 활성화/비활성화 상태 변경
+            document.getElementById("registry").disabled = false;
+            divElement1 = document.getElementById("colVal1");
+            var divElement3 = document.getElementById("colVal3");
+            divElement1.classList.remove("col-3"); // 기존 클래스 제거
+            divElement1.classList.add("col-5"); // 새로운 클래스 추가
+            divElement3.style.display = "none";
+            divElement1.style.paddingRight = colVal2OriginalPaddingRight;// 새로운 클래스 추가
+            // colval3 안에 있는 div 태그 모두 삭제
+            while (parentElement.firstChild) {
+                parentElement.removeChild(parentElement.firstChild);
+            }
+            // pack 안에 있는 div 태그 모두 삭제
+            while (parentElement1.firstChild) {
+                parentElement1.removeChild(parentElement1.firstChild);
+            }
+            // 클릭한 행이 이미 선택된 상태인 경우 선택 해제
+            $clickedRow.removeClass('clicked');
+            $clickedRow.css('background-color', '');
+            resultP.innerHTML = resultP.innerHTML.replace(tdValue + '<br>', '');
+            // $('tbody tr').removeClass('disabled');
+            $('#packageDataTable tbody tr').css('pointer-events', 'auto');
+        } else {
+            divElement1 = document.getElementById("colVal1");
+
+            // colval3 안에 있는 div 태그 모두 삭제
+            while (parentElement.firstChild) {
+                parentElement.removeChild(parentElement.firstChild);
+            }
+            // pack 안에 있는 div 태그 모두 삭제
+            while (parentElement1.firstChild) {
+                parentElement1.removeChild(parentElement1.firstChild);
+            }
+            document.getElementById("registry").disabled = true;
+            // 클릭한 행을 선택 상태로 하이라이트하고 다른 행의 클릭을 비활성화
+            // $('#packageDataTable tbody tr').not($clickedRow).css('pointer-events', 'none');
+            // $('tbody tr').not($clickedRow).addClass('disabled');
+            $clickedRow.addClass('clicked');
+            resultP.innerHTML = tdValue + '<br>';
+            $clickedRow.css('background-color', 'orange');
+            var id = tdValue;
+
+          // Ajax 요청을 보냅니다.
+            $.ajax({
+                type: 'POST', // HTTP 요청 방식을 선택합니다.
+                url: 'packCheck/', // 데이터를 처리할 서버 엔드포인트 URL을 입력합니다.
+                data: { 'id': id }, // 서버로 보낼 데이터를 설정합니다.
+                success: function(response) {
+                  // 성공적인 응답을 받았을 때 수행할 동작을 정의합니다.
+                    console.log('성공:', response);
+                    if (typeof response.a === 'number' && response.a > 0) {
+                        param(response.a)
+                        //버튼 클릭 시 span 태그의 활성화/비활성화 상태 변경
+                        if (divElement1.classList.contains('col-3')) {
+                            spanElement.classList.add('disabled-span');
+                        }
+                    } else {
+                        if (divElement1.classList.contains('col-5')) {
+                            spanElement.classList.remove('disabled-span');
+                        }
+                        // colval3 안에 있는 div 태그 모두 삭제
+                        while (parentElement.firstChild) {
+                            parentElement.removeChild(parentElement.firstChild);
+                        }
+                        // pack 안에 있는 div 태그 모두 삭제
+                        while (parentElement1.firstChild) {
+                            parentElement1.removeChild(parentElement1.firstChild);
+                        }
+                        divElement1 = document.getElementById("colVal1");
+                        divElement3 = document.getElementById("colVal3");
+                        divElement1.classList.remove("col-3"); // 기존 클래스 제거
+                        divElement1.classList.add("col-5"); // 새로운 클래스 추가
+                        divElement3.style.display = "none";
+                        divElement1.style.paddingRight = colVal2OriginalPaddingRight;// 새로운 클래스 추가
+                        return
+                    }
+                },
+                error: function(xhr, status, error) {
+                  // 오류가 발생했을 때 수행할 동작을 정의합니다.
+                    console.error('오류:', status, error);
+                }
+            });
+        }
+    });
+
+    function param(count){
+        var divElement1 = document.getElementById("colVal1");
+        var divElement3 = document.getElementById("colVal3");
+        divElement1.classList.remove("col-5"); // 기존 클래스 제거
+        divElement1.classList.add("col-3"); // 새로운 클래스 추가
+        divElement3.style.display = "none";
+        divElement1.style.paddingRight = "0";// 새로운 클래스 추가
+        divElement3.removeAttribute("style");
+        var parentElement = document.getElementById("colval3"); // input 박스를 추가할 부모 요소를 가져옴
+        var parentElement1 = document.getElementById("pack"); // input 박스를 추가할 부모 요소를 가져옴
+        for (var i = 1; i <= count; i++) {
+            // div 태그 생성
+            var divElement = document.createElement("div");
+            divElement.textContent = "parameter " + i;
+            // input 요소 생성
+            var inputElement = document.createElement("input");
+            var inputHidden = document.createElement("input");
+            inputElement.type = "text";
+            inputHidden.type = "hidden";
+            inputElement.name = "param" + i;
+            inputHidden.name = "hiddenn" + i;
+            inputElement.classList.add("form-control");
+            // div 태그에 input 요소 추가
+            divElement.appendChild(inputElement);
+            // div 태그를 부모 요소에 추가
+            parentElement.appendChild(divElement);
+            parentElement1.appendChild(inputHidden);
+            // 줄 바꿈
+            var brElement = document.createElement("br");
+            parentElement.appendChild(brElement);
+        }
+    }
+
+
+    $("#computerGroupDataTable").on('click', 'tbody tr', function () {
+        var $clickedRow = $(this);
+        var isClicked = $clickedRow.hasClass('clicked');
+        var tdValue = $clickedRow.find('td:eq(0)').text();
+  // 클릭한 행의 상태에 따라 동작을 처리합니다.
+    if (isClicked) {
+
+    // 클릭한 행이 이미 선택된 상태인 경우 선택 해제
+    $clickedRow.removeClass('clicked');
+    $clickedRow.css('background-color', '');
+    resultC.innerHTML = resultC.innerHTML.replace(tdValue + '<br>', '');
+    $('tbody tr').removeClass('disabled');
+    // $('tbody tr').css('pointer-events', 'auto');
+    } else {
+    // 클릭한 행을 선택 상태로 하이라이트하고 다른 행의 클릭을 비활성화
+    // $('tbody tr').not($clickedRow).css('pointer-events', 'none');
+    $('tbody tr').not($clickedRow).addClass('disabled');
+    $clickedRow.addClass('clicked');
+    resultC.innerHTML += tdValue + '<br>';
+    $clickedRow.css('background-color', 'orange');
+    }
+});
+
+
+    // if ($("#sbom_dataTable").length > 0) {
+    var outputCValue = document.getElementById('outputC').textContent;
+    document.getElementById('outputCValue').value = outputCValue;
+    var errorMsgDiv = document.getElementById('errorMsg');
+    var outputP = document.getElementById('cb1');
+    var outputC = document.getElementById('cb2');
+    var inputs = document.querySelectorAll('.outputP, .outputC');
+    var parentElement1 = document.getElementById("pack");
+
+    inputs.forEach(function (input) {
+        input.addEventListener('input', function () {
+            errorMsgDiv.textContent = '';
+        });
+    });
+
+    document.getElementById('action_btn').addEventListener('click', function (event) {
+        var outputPValue = document.getElementById('outputP').textContent;
+        var outputCValue = document.getElementById('outputC').textContent;
+        var inputElements = document.querySelectorAll("#colval3 input");
+        var parentElement = document.getElementById("colval3");
+
+        inputs.forEach(function (input) {
+            if (input.value === '') {
+                input.classList.add('error-border');
+                event.preventDefault();
+            }
+        });
+
+        // 에러 메시지 출력
+        if (outputPValue === '' || outputCValue === '') {
+            event.preventDefault();
+            errorMsgDiv.textContent = 'package 또는 computer group을 선택해주세요.';
+
+        }else {
+            // 두 개의 값이 모두 있는 경우 에러 메시지 제거
+            errorMsgDiv.innerHTML = '<br/><br/>';
+            document.getElementById('outputPValue').value = outputPValue;
+            document.getElementById('outputCValue').value = outputCValue;
+        }
+
+        inputElements.forEach(function(inputElement, index) {
+            var hiddenInput = document.querySelector('input[name="hiddenn' +(index+1)+'"]');
+            var paramInput = document.querySelector('input[name="param' +(index+1)+'"]');
+            if (hiddenInput.length > 1) {
+                hiddenInput.value = inputElement.value;
+                paramInput.classList.remove("error")
+                alert(inputElement.value)
+            }else {
+                event.preventDefault();
+                paramInput.classList.add("error")
+                errorMsgDiv.textContent = '파라미터 값을 입력해 주세요.';
+            }
+
+        });
+            if (confirm("배포하시겠습니까?") == true){
+           //true는 확인버튼을 눌렀을 때 코드 작성
+            }else{
+                event.preventDefault();
+                return;
+            }
+    });
+        deploy_package();
+        deploy_computerGroup();
 });
 
