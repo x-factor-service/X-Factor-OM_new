@@ -317,13 +317,24 @@ $(document).ready(function () {
             errorMsgDiv.textContent = '';
         });
     });
-
+    var index = 0;
     // deploy action 버튼 이벤트 리스너
     document.getElementById('action_btn').addEventListener('click', function (event) {
         var outputPValue = document.getElementById('outputP').textContent;
         var outputCValue = document.getElementById('outputC').textContent;
         var inputElements = document.querySelectorAll("#colVal3_param input");
         var parentElement = document.getElementById("colVal3_param");
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = (now.getMonth() + 1).toString().padStart(2, '0');
+        var day = now.getDate().toString().padStart(2, '0');
+
+        var hours = now.getHours().toString().padStart(2, '0');
+        var minutes = now.getMinutes().toString().padStart(2, '0');
+        var seconds = now.getSeconds().toString().padStart(2, '0');
+
+        var ad = (year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" +seconds);
+
 
         // console.log(parentElement + '1');
         inputs.forEach(function (input) {
@@ -360,12 +371,122 @@ $(document).ready(function () {
 
         });
             if (confirm("배포하시겠습니까?") == true){
-           //true는 확인버튼을 눌렀을 때 코드 작성
-            }else{
+
+            var intervalMap = {};
+
+            function increaseProgressBar(id) {
+                var progressBarValue = 0;
+
+                var increaseInterval = setInterval(function() {
+
+                    var randomIncrease = Math.floor(Math.random() * 4) + 1;
+
+                    progressBarValue += randomIncrease;
+
+                    if (progressBarValue > 99) {
+                        clearInterval(increaseInterval);
+                        progressBarValue = 99;
+                    }
+
+                    var progressBarElement = document.querySelector('#' + id);
+                    if (progressBarElement !== null) {
+                      progressBarElement.style.width = progressBarValue + '%';
+                      progressBarElement.textContent = progressBarValue + '%';
+                    }
+                        if (progressBarValue === 99 && progressBarElement !== null) {
+                          clearInterval(intervalMap[id]);
+                          delete intervalMap[id];
+
+                        }
+                },2000);
+                intervalMap[id] = increaseInterval;
+            }
+
+            var ulElement = document.getElementById('as');
+
+            var liElement = document.createElement('li');
+            liElement.className = "status-item d-flex align-items-center w-100 h-100";
+
+            var innerHTMLString =
+                `<div class="status-sequence fs-12px fw-bold w-10 text-center">01</div>
+                <div class="status-info w-90 d-flex p-1">
+                    <p class="m-0 fs-12px"><strong class="fw-bold">Package Name:</strong> ${outputPValue}</p>
+                    <p class="m-0 fs-12px"><strong class="fw-bold">Action Date:</strong> ${ad}</p>
+                    <div class="progress fs-10px">
+                        <div id="progress-bar-${index}"class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: 0%">0%</div>
+                    </div>`;
+
+
+
+            liElement.innerHTML = innerHTMLString;
+
+            ulElement.insertBefore(liElement, ulElement.firstChild);
+
+                if (ulElement.children.length > 5) {
+                   ulElement.removeChild(ulElement.lastChild);
+                }
+                increaseProgressBar(`progress-bar-${index}`);
+
+                Array.from(ulElement.children).forEach(function(child, index) {
+                   child.querySelector('.status-sequence').textContent = '0' + (index + 1);
+                });
+                index++;
+                $.ajax({
+                    url: '/deploy_action_val/',
+                    type: 'POST',
+                    data: {
+                        outputPValue: outputPValue,
+                        outputCValue: outputCValue,
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function(response) {
+
+                        console.log(response);
+                        var progressBarId = `progress-bar-${index - 1}`;
+
+                        if (intervalMap[progressBarId]) {
+                            clearInterval(intervalMap[progressBarId]);
+                            delete intervalMap[progressBarId];
+                        }
+
+                        var progressBarElement = document.getElementById(progressBarId);
+
+                        if (progressBarElement) {
+
+                            progressBarElement.classList.remove('bg-warning', 'progress-bar-striped', 'progress-bar-animated');
+                            var parentDiv = progressBarElement.parentNode;
+
+                            parentDiv.removeChild(progressBarElement);
+
+                            var a = response.per[0];
+                            var b = response.per[1];
+
+                            var newProgressBarA = document.createElement('div');
+                            newProgressBarA.className = "progress-bar";
+                            newProgressBarA.style.width = a;
+                            newProgressBarA.textContent = a;
+
+                            var newProgressBarB = document.createElement('div');
+                            newProgressBarB.className = "progress-bar bg-danger";
+                            newProgressBarB.style.width = b;
+                            newProgressBarB.textContent = b;
+
+                            parentDiv.appendChild(newProgressBarA);
+                            parentDiv.appendChild(newProgressBarB);
+
+                            location.reload();
+
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            } else {
                 event.preventDefault();
                 return;
             }
-    });
+        });
     deploy_package();
     deploy_computerGroup();
 });

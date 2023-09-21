@@ -118,13 +118,7 @@ def report(request):
 def deploy_action(request):
     returnData = {'menuList': menuListDB, 'Customer': Customer}
     return render(request, 'deploy/deploy.html', returnData)
-#수정중 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-def handle_action_completion():
-    print("다시 리다이렉트")
-    # response = HttpResponseRedirect('/deploy')
-    # response.status_code = 302
-    # return response
-# 수정중!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 def deploy_action_val(request):
     input_values = []
     ivCnt = 0
@@ -207,171 +201,154 @@ def deploy_action_val(request):
         if CAQ.status_code == 200:
             DPAD = DETR(CAQ.json(), request.session['sessionid'], 'deploy')
             DEOP(DPAD, 'action_log')
+            result = CAQ.json()
+            # # ########################test용 computer group total count 계산 #################################
+            # TCG = CSRJ['data']['text']
+            # JURL = apiUrl + '/api/v2/questions'
+            # body = {
+            #     "query_text": "Get Computer Name and IP Address from all machines with ( All Computers and All Computers and " + TCG + ")"
+            # }
+            # JQP = requests.post(JURL, headers=PSQ, json=body, verify=False)
+            # JQPR = JQP.json()
+            # JCGI = JQPR['data']['id']
+            # JTCURL = apiUrl + '/api/v2/result_data/question/' + str(JCGI)
+            # for i in range(5):
+            #     sleep(1)
+            #
+            #     CGRD = requests.get(JTCURL, headers=PSQ, verify=False)
+            #     CGTC = CGRD.json()
+            #     CGTCR = CGTC['data']['result_sets'][0]['row_count_machines']
+            #
+            # ###############################
+            # 여기서 부터 테스트 시작
+            # package name 추출
+            pn = result['data']['package_spec']['name']
 
-            thread = threading.Thread(target=action_status_task, args=(CAQ.json(), PSQ, handle_action_completion))
-            thread.start()
-        ND = CAQ.json()
-    NDD = []
-    NDD.append(ND['data']['package_spec']['name'])
-    utc_time_str = ND['data']['package_spec']['creation_time']
-    utc_time = datetime.strptime(utc_time_str, '%Y-%m-%dT%H:%M:%SZ')
-    atime = utc_time + timedelta(hours=9)
-    NDD.append(atime.strftime('%Y-%m-%d %H:%M:%S'))
-    print(NDD)
-    request.session['pre_redirect_data'] = NDD
-    request.session['current_session_key'] = request.session.session_key
+            # action id 추출
+            action_id = result['data']['id']
 
-    return redirect('deploy')
-def action_status_task(result,PSQ, callback_func):
+            # 실행 시간 추출
+            U_date = result['data']['package_spec']['creation_time']
+            parsed_date = datetime.strptime(U_date, '%Y-%m-%dT%H:%M:%Sz')
 
-    # progress 바 스타트
+            utc_tz = pytz.timezone('UTC')
+            kr_tz = pytz.timezone('Asia/Seoul')
 
+            utc_datetime = utc_tz.localize(parsed_date)
+            kr_datetime = utc_datetime.astimezone(kr_tz)
 
-    # # ########################test용 computer group total count 계산 #################################
-    # TCG = CSRJ['data']['text']
-    # JURL = apiUrl + '/api/v2/questions'
-    # body = {
-    #     "query_text": "Get Computer Name and IP Address from all machines with ( All Computers and All Computers and " + TCG + ")"
-    # }
-    # JQP = requests.post(JURL, headers=PSQ, json=body, verify=False)
-    # JQPR = JQP.json()
-    # JCGI = JQPR['data']['id']
-    # JTCURL = apiUrl + '/api/v2/result_data/question/' + str(JCGI)
-    # for i in range(5):
-    #     sleep(1)
-    #
-    #     CGRD = requests.get(JTCURL, headers=PSQ, verify=False)
-    #     CGTC = CGRD.json()
-    #     CGTCR = CGTC['data']['result_sets'][0]['row_count_machines']
-    #
-    # ###############################
-    # 여기서 부터 테스트 시작
-    # package name 추출
-    pn = result['data']['package_spec']['name']
+            action_date = kr_datetime.strftime('%Y-%m-%d %H:%M:%S')
 
-    # action id 추출
-    action_id = result['data']['id']
+            AJURL = apiUrl + '/api/v2/result_data/action/' + str(action_id)
 
-    # 실행 시간 추출
-    U_date = result['data']['package_spec']['creation_time']
-    parsed_date = datetime.strptime(U_date, '%Y-%m-%dT%H:%M:%Sz')
+            # 완료 시점 체크를 위해 만든 반복 구간 12초에 한번씩 반복
+            # 주석처리 부분을 살리면 이중 체크 데이터가 그전 데이터와 일치 할 때 반복 종료 sleep 시간을 많이 안준다면 필요
 
-    utc_tz = pytz.timezone('UTC')
-    kr_tz = pytz.timezone('Asia/Seoul')
+            prev_rows = None
+            while True:
+                sleep(12)
+                AJ = requests.get(AJURL, headers=PSQ, verify=False)
+                AJD = AJ.json()
 
-    utc_datetime = utc_tz.localize(parsed_date)
-    kr_datetime = utc_datetime.astimezone(kr_tz)
+                rows = AJD['data']['result_sets'][0]['rows']
 
-    action_date = kr_datetime.strftime('%Y-%m-%d %H:%M:%S')
+                if rows and all(row['data'][1][0]['text'] and 'Running.' not in row['data'][1][0][
+                    'text'] and 'Downloading.' not in row['data'][1][0]['text'] for row in rows):
+                    # break
 
-    AJURL = apiUrl + '/api/v2/result_data/action/' + str(action_id)
+                    current_rows = AJD['data']['result_sets'][0]['rows']
 
-    # 완료 시점 체크를 위해 만든 반복 구간 12초에 한번씩 반복
-    # 주석처리 부분을 살리면 이중 체크 데이터가 그전 데이터와 일치 할 때 반복 종료 sleep 시간을 많이 안준다면 필요
+                    if prev_rows is not None and current_rows and prev_rows == current_rows:
+                        break
+                    prev_rows = current_rows if current_rows else prev_rows
 
-    prev_rows = None
-    while True:
-        sleep(12)
-        AJ = requests.get(AJURL, headers=PSQ, verify=False)
-        AJD = AJ.json()
+            ################# action result ##################
+            action_result = []
+            # DB 용 데이터 가공
+            for i in range(len(AJD['data']['result_sets'][0]['rows']) + 1):
+                try:
+                    key = AJD['data']['result_sets'][0]['rows'][i]['data'][0][0]['text']
+                    value = AJD['data']['result_sets'][0]['rows'][i]['data'][1][0]['text'].split(':')
 
-        rows = AJD['data']['result_sets'][0]['rows']
+                    action_result.append({key: value[1]})
+                except (IndexError, KeyError):
+                    pass
 
-        if rows and all(row['data'][1][0]['text'] and 'Running.' not in row['data'][1][0]['text'] and 'Downloading.' not in row['data'][1][0]['text'] for row in rows):
-            # break
-
-
-            current_rows = AJD['data']['result_sets'][0]['rows']
-
-            if prev_rows is not None and current_rows and prev_rows == current_rows:
-                break
-            prev_rows = current_rows if current_rows else prev_rows
+            completed_count = 0
+            failed_count = 0
 
 
+            for result in action_result:
+                status = next(iter(result.values()))
+
+                if status == 'Completed.':
+                    completed_count += 1
+                elif status == 'Failed.' or status == 'Expired.':
+                    failed_count += 1
+
+            total_count = completed_count + failed_count
+            completed_per = str(int((completed_count / total_count) * 100)) + '%'
+            failed_per = str(100 - int(completed_per.rstrip('%'))) + '%'
 
 
-    ################# action result ##################
-    action_result = []
-    # DB 용 데이터 가공
-    for i in range(len(AJD['data']['result_sets'][0]['rows']) + 1):
-        try:
-            key = AJD['data']['result_sets'][0]['rows'][i]['data'][0][0]['text']
-            value = AJD['data']['result_sets'][0]['rows'][i]['data'][1][0]['text'].split(':')
+            BData = [completed_per, failed_per]
 
-            action_result.append({key: value[1]})
-        except (IndexError, KeyError):
-            pass
+            ASdata = [pn, action_id, action_date, action_result, BData]
+            DSOP(ASdata)
+            # print(AJD['data']['result_sets'][0]['rows'][0]['data'][0][0])
+            # print(AJD['data']['result_sets'][0]['rows'][0]['data'][1][0])
+            # print(AJD['data']['result_sets'][0]['rows'][1]['data'][0][0])
+            # print(AJD['data']['result_sets'][0]['rows'][1]['data'][1][0])
+            # #######################!111111111111111111111##########################
+            # total = 0
+            # i = 0
+            # while total < CGTCR:
+            #     sleep(1)
+            #     AJ = requests.get(AJURL, headers=PSQ, verify=False)
+            #     AJD = AJ.json()
+            #     try:
+            #         value1 = AJD['data']['result_sets'][0]['rows'][i]['data']
+            #         print(value1)
+            #         value = int(AJD['data']['result_sets'][0]['rows'][i]['data'][2][0]['text'])
+            #         total += value
+            #         print(total)
+            #         i += 1
+            #     except:
+            #         print('아직')
+            # print(AJD['data']['result_sets'][0]['rows'])
+            # print(action_id)
+            ########################22222222222222222222222222#######################
+            # total = 0
+            # for i in range(10):
+            #     while total < CGTCR:
+            #         sleep(2)
+            #         AJ = requests.get(AJURL, headers=PSQ, verify=False)
+            #         AJD = AJ.json()
+            #         # print(AJD)
+            #
+            #         # Ensure the data exists before trying to access it
+            #         if len(AJD['data']['result_sets'][0]['rows']) > i:
+            #             value = int(AJD['data']['result_sets'][0]['rows'][i]['data'][2][0]['text'])
+            #             print(AJD['data']['result_sets'][0]['rows'][i])
+            #             print(value)
+            #             total += value
+            #             print(total)
+            RD = {'per': BData}
+            return JsonResponse(RD)
 
-    completed_count = 0
-    failed_count = 0
-    expired_count = 0
-
-    for result in action_result:
-        status = next(iter(result.values()))
 
 
-        if status == 'Completed.':
-            completed_count += 1
-        elif status == 'Failed.':
-            failed_count += 1
-        elif status == 'Expired.':
-            expired_count += 1
 
-    total_count = completed_count + expired_count + failed_count
-    completed_per = str(int((completed_count / total_count) * 100)) + '%'
-    failed_per = str(int((failed_count / total_count) * 100)) + '%'
-    expired_per = str(int((expired_count / total_count) * 100)) + '%'
 
-    BData = [completed_per, failed_per, expired_per]
-    ASdata = [pn, action_id, action_date, action_result, BData]
-    DSOP(ASdata)
-    print('끝')
-    callback_func()
-    # print(AJD['data']['result_sets'][0]['rows'][0]['data'][0][0])
-    # print(AJD['data']['result_sets'][0]['rows'][0]['data'][1][0])
-    # print(AJD['data']['result_sets'][0]['rows'][1]['data'][0][0])
-    # print(AJD['data']['result_sets'][0]['rows'][1]['data'][1][0])
-    # #######################!111111111111111111111##########################
-    # total = 0
-    # i = 0
-    # while total < CGTCR:
-    #     sleep(1)
-    #     AJ = requests.get(AJURL, headers=PSQ, verify=False)
-    #     AJD = AJ.json()
-    #     try:
-    #         value1 = AJD['data']['result_sets'][0]['rows'][i]['data']
-    #         print(value1)
-    #         value = int(AJD['data']['result_sets'][0]['rows'][i]['data'][2][0]['text'])
-    #         total += value
-    #         print(total)
-    #         i += 1
-    #     except:
-    #         print('아직')
-    # print(AJD['data']['result_sets'][0]['rows'])
-    # print(action_id)
-    ########################22222222222222222222222222#######################
-    # total = 0
-    # for i in range(10):
-    #     while total < CGTCR:
-    #         sleep(2)
-    #         AJ = requests.get(AJURL, headers=PSQ, verify=False)
-    #         AJD = AJ.json()
-    #         # print(AJD)
-    #
-    #         # Ensure the data exists before trying to access it
-    #         if len(AJD['data']['result_sets'][0]['rows']) > i:
-    #             value = int(AJD['data']['result_sets'][0]['rows'][i]['data'][2][0]['text'])
-    #             print(AJD['data']['result_sets'][0]['rows'][i])
-    #             print(value)
-    #             total += value
-    #             print(total)
+
+
 @csrf_exempt
 def package_paging(request):
     if Customer == 'NC' or Customer == 'Xfactor':
         search = request.POST.get('search').lower()
         con_set = request.POST.get('id')
         if con_set is None:
-            con_set = 'Default'
+            con_set = 'X-Factor'
         SKH = '{"username": "' + APIUNM + '", "domain": "", "password": "' + APIPWD + '"}'
         SKURL = apiUrl + SesstionKeyPath
         SKR = requests.post(SKURL, data=SKH, verify=False)

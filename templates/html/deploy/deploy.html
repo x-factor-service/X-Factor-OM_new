@@ -200,72 +200,36 @@
     var a = {{ chartData| safe}};
     var ulElement = document.getElementById('as');
 
-    // 'preRedirectData'가 있을 경우에만 추가합니다. 이 때, 전체 preRedirectData를 하나의 리스트 항목으로 만듭니다.
-    if (a.preRedirectData) {
-        createListItem(a.preRedirectData, 1, true);
-    }
-
-    // 기존의 'actionStatusList' 항목들을 추가합니다. preRedirectData가 있으면 그 수를 고려하여 최대 5개까지만 추가합니다.
-    for (var i = 0; i < Math.min(5 - (a.preRedirectData ? 1 : 0), a.actionStatusList.length); i++) {
+    for (var i = 0; i < a.actionStatusList.length; i++) {
         var item = a.actionStatusList[i];
-        createListItem(item, (a.preRedirectData ? 2 : 1) + i);
-    }
 
-    function createListItem(item, index, isPreRedirect=false) {
+
         var liElement = document.createElement('li');
         liElement.className = "status-item d-flex align-items-center w-100 h-100";
 
-       var innerHTMLString =
-            `<div class="status-sequence fs-12px fw-bold w-10 text-center">0${index}</div>
+
+        var width1 = item.action_status[0];
+        var width2 = item.action_status[1];
+        var width3 = item.action_status[2];
+        var innerHTMLString =
+            `<div class="status-sequence fs-12px fw-bold w-10 text-center">0${i+1}</div>
             <div class="status-info w-90 d-flex p-1">
-                <p class="m-0 fs-12px"><strong class="fw-bold">Package Name:</strong> ${isPreRedirect ? item[0] : item.packageName}</p>
-                <p class="m-0 fs-12px"><strong class="fw-bold">Action Date:</strong> ${isPreRedirect ? item[1] : item.action_date}</p>`;
-
-       if (!isPreRedirect) {
-           innerHTMLString +=
-               `<div class="progress fs-10px">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: ${item.action_status[0]}">${item.action_status[0]}</div>
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width: ${item.action_status[1]}">${item.action_status[1]}</div>
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" style="width: ${item.action_status[2]}">${item.action_status[2]}</div>
-                </div>`;
-       } else {
-           innerHTMLString +=
-               `<div class="progress fs-10px">
-                    <div id="progress-bar-${index}" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%">0%</div>
-                </div>`;
-       }
-        function increaseProgressBar(id) {
-            var progressBarValue = 0;
-
-            var increaseInterval = setInterval(function() {
-
-                var randomIncrease = Math.floor(Math.random() * 4) + 1;
-
-                progressBarValue += randomIncrease;
-
-                if (progressBarValue > 100) {
-                    clearInterval(increaseInterval);
-                    progressBarValue = 100;
-                }
-
-                var progressBarElement = document.querySelector('#' + id);
-                if (progressBarElement !== null) {
-                  progressBarElement.style.width = progressBarValue + '%';
-                  progressBarElement.textContent = progressBarValue + '%';
-                }
-            }, 2000); //
-        }
+                <p class="m-0 fs-12px"><strong class="fw-bold">Package Name:</strong> ${item.packageName}</p>
+                <p class="m-0 fs-12px"><strong class="fw-bold">Action Date:</strong> ${item.action_date}</p>
+                <div class="progress fs-10px">
+                    <div class="progress-bar" style="width: ${width1}">${width1}</div>
+                    <div class="progress-bar bg-danger" style="width: ${width2}">${width2}</div>
+                </div>
+            </div>`;
 
 
-        for (var i = 1; i <= a.actionStatusList.length; i++) {
-            increaseProgressBar('progress-bar-' + i);
-        }
-       innerHTMLString += '</ul>';
 
-       liElement.innerHTML = innerHTMLString;
+        innerHTMLString += '</ul>';
+
+        liElement.innerHTML = innerHTMLString;
 
        ulElement.appendChild(liElement);
-   }
+};
 // action log 확장 아이콘 이벤트 리스너
 document.addEventListener("DOMContentLoaded", function() {
     "use strict";
