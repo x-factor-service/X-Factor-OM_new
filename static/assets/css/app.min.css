@@ -31389,4 +31389,22 @@ li.disabled {
 #sbom_detail_dataTable tbody tr td div, #sbom_dataTable tbody tr td div{
     cursor: default;
 }
+
+.sd-header {
+}
+
+.sd-header.page-header {
+    color: #fff;
+    padding: 0;
+    border: none;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 1.75rem;
+    float:left;
+}
+
+.sback-btn {
+    float:right;
+}
+
 /* END sbom & deploy css 추가*/

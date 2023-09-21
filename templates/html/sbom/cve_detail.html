@@ -6,9 +6,12 @@
     <div class="row justify-content-center">
         <div class="col-xl-10">
             <!-- BEGIN page-header -->
-            <h1 class="page-header mb-5">
-                CVE 상세
-            </h1>
+            <div class="sd-header">
+                <h1 class="sd-header page-header mb-5">CVE 상세</h1>
+                <div class="sback-btn">
+                    <button id="backButton" type="button" class="btn btn-outline-light">뒤로가기</button>
+                </div>
+            </div>
             <!-- END page-header -->
             {% for item in data.cveItem %}
             <div class="cveTable-component mb-4">
@@ -86,6 +89,5 @@
         </div>
     </div>
 </div>
-
 {% endblock %}
 

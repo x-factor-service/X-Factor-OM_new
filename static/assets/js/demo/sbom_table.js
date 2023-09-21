@@ -631,8 +631,7 @@ function adjustWidth() {
         tableContainer.classList.remove('col-xl-12');
         tableContainer.classList.add('col-xl-9');
     });
-}
-
+};
 
 
 $(document).ready(function () {
@@ -641,6 +640,11 @@ $(document).ready(function () {
     sbomDetail_datatable();
     handleRenderChartSBOM();
     adjustWidth();
+
+});
+
+document.getElementById("backButton").addEventListener("click", function() {
+  history.back();
 });
 
 
