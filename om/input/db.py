@@ -426,6 +426,10 @@ def plug_in(table, day, type):
                         where
                             asset_list_statistics_collection_date >= '""" + DBSelectTime + """'
                         and NOT ipv_address IN ('unconfirmed')
+                        and
+                             (ipv_address Ilike '%""" + type[2] + """%' or             
+                             session_ip_count Ilike '%""" + type[2] + """%' or           
+                             computer_name Ilike '%""" + type[2] + """%')
                     """
 
 
