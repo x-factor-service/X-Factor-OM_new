@@ -1,6 +1,7 @@
 {% extends 'common/base.html' %}
 {% block content %}
 {% load static %}
+{% load humanize %}
 <!-- BEGIN #header -->
 <!-- END #header -->
 <!-- BEGIN #sidebar -->
@@ -108,6 +109,7 @@
                         </tr>
                         </thead>
                         <tbody class="fw-bold fs-12px mb-2" id="table-memProc-body">
+                        {% load humanize %}
                         {% for data in dataList.highMemProc_listData %}
                         <tr>
                             <td>
@@ -119,20 +121,20 @@
                                 </a>
                             </td>
                             <td style="text-align:center;">
-                                {{ data.count }}
+                                {{ data.count|intcomma }}
                             </td>
                         </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                     <div class="d-flex fw-bold fs-12px mb-2 mt-3">
-                        <div class="flex-grow-1">MEMORY 사용률 초과 서버</div>
+                        <div class="flex-grow-1">MEMORY 사용률 초과 자산</div>
                     </div>
-                    <div class="mb-2 fs-5 text-truncate">{{ dataList.memory_donutData }} / {{ dataList.allOnline_donutData }} 대</div>
+                    <div class="mb-2 fs-5">{{ dataList.memory_donutData }} / {{ dataList.allOnline_donutData|intcomma }} 대</div>
                     <div class="progress h-3px bg-secondary-transparent-2 mb-1">
                         <div id="mem-bar" class="progress-bar bg-white"></div>
                     </div>
-                    <div class="fs-11px text-inverse text-opacity-50 mb-2 text-truncate">
+                    <div class="fs-11px text-inverse text-opacity-50 mb-2">
                         95% 초과
                     </div>
 
@@ -171,20 +173,20 @@
                                 </a>
                             </td>
                             <td style="text-align:center;">
-                                {{ data.count }}
+                                {{ data.count|intcomma }}
                             </td>
                         </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                     <div class="d-flex fw-bold fs-12px mb-2 mt-3">
-                        <div class="flex-grow-1">CPU 사용률 초과 서버</div>
+                        <div class="flex-grow-1">CPU 사용률 초과 자산</div>
                     </div>
-                    <div class="mb-2 fs-5 text-truncate">{{ dataList.cpu_donutData }} / {{ dataList.allOnline_donutData }} 대</div>
+                    <div class="mb-2 fs-5">{{ dataList.cpu_donutData }} / {{ dataList.allOnline_donutData|intcomma }} 대</div>
                     <div class="progress h-3px bg-secondary-transparent-2 mb-1">
                         <div id="cpu-bar" class="progress-bar bg-white"></div>
                     </div>
-                    <div class="fs-11px text-inverse text-opacity-50 mb-2 text-truncate">
+                    <div class="fs-11px text-inverse text-opacity-50 mb-2">
                         95% 초과
                     </div>
                 </div>
@@ -222,20 +224,20 @@
                                 </a>
                             </td>
                             <td style="text-align:center;">
-                                {{ data.count }}
+                                {{ data.count|intcomma }}
                             </td>
                         </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                     <div class="d-flex fw-bold fs-12px mb-3 mt-3">
-                        <div class="flex-grow-1">DISK 사용률 초과 서버</div>
+                        <div class="flex-grow-1">DISK 사용률 초과 자산</div>
                     </div>
-                    <div class="mb-2 fs-5 text-truncate">{{ dataList.disk_donutData }} / {{ dataList.allOnline_donutData }} 대</div>
+                    <div class="mb-2 fs-5">{{ dataList.disk_donutData }} / {{ dataList.allOnline_donutData|intcomma }} 대</div>
                     <div class="progress h-3px bg-secondary-transparent-2 mb-1">
                         <div id="disk-bar" class="progress-bar bg-white"></div>
                     </div>
-                    <div class="fs-11px text-inverse text-opacity-50 mb-2 text-truncate">
+                    <div class="fs-11px text-inverse text-opacity-50 mb-2">
                         95% 초과
                     </div>
                 </div>

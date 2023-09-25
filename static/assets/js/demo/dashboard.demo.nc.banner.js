@@ -10,6 +10,12 @@ var randomNo = function () {
     return Math.floor(Math.random() * 60) + 30
 };
 
+var newColors = ['#009D83', '#33BFA5', '#A8D5BA', '#ff9f0c', '#FFB755', '#FFD1A1', '#FFE6CC', '#C7B299']
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 //value = ""
 var apexMemory95usageChart
 var apexMemory75usageChart
@@ -143,7 +149,10 @@ var handleRenderChartNC = function () {
           show: false,
           position: 'left',
         },
-        colors: ["#934903", "#b76306", "#db7f08", "#ff9f0c", "#ffbe48", "#ffd16d", "#ffe49d", "#fff3ce"],
+        colors: newColors,
+        fill:{
+            type: 'gradient'
+        },
         labels: osDonutName,
         series: osDonutValue,
         tooltip: {
@@ -157,7 +166,7 @@ var handleRenderChartNC = function () {
                 return '' + val + "<br>" + " Count:"
               }
             },
-            formatter: (value) => { return '' + value },
+            formatter: (value) => { return '' + numberWithCommas(value) },
           }
         }
     };
@@ -209,10 +218,13 @@ var handleRenderChartNC = function () {
         dataLabels: {
           enabled: true,
           style:{
-            fontSize: '9px',
-            fontWeight: 900,
+            fontSize: '12px',
+            fontWeight: 400,
             colors: ['#fff'],
           },
+            formatter: function(val, opts) {
+              return numberWithCommas(val);
+            },
             dropShadow: {
               enabled: true,
               top: 1,
@@ -227,7 +239,7 @@ var handleRenderChartNC = function () {
           width: 1,
           colors: ['transparent']
         },
-        colors: ["#f39c12", "#fdb43f", "#ffc365", "#c58a2e", "#e6b567"],
+        colors: ['#009D83', '#ff9f0c', '#C7B299'],
         series: [{
           data: value
         }],
@@ -249,7 +261,7 @@ var handleRenderChartNC = function () {
           labels: {
             show: true,
             formatter : function (val){
-                return parseInt(val);
+                return numberWithCommas(parseInt(val));
             }
           }
         },
@@ -267,7 +279,9 @@ var handleRenderChartNC = function () {
                 return ''
               }
             },
-            formatter: (value) => { return '' + value },
+            formatter: function(value) {
+              return numberWithCommas(value);
+            }
           }
         }
     };
@@ -323,7 +337,10 @@ var handleRenderChartNC = function () {
           show: false,
           position: 'left',
         },
-        colors: ["#934903", "#b76306", "#db7f08", "#ff9f0c", "#ffbe48"],
+        colors: newColors,
+        fill: {
+            type: 'gradient'
+        },
         labels: donutName,
         series: donutValue,
         tooltip: {
@@ -433,98 +450,7 @@ var handleRenderChartNC = function () {
         },
         fill: {
           type: 'gradient',
-          colors: '#b31217',
-          gradient: {
-            shade: 'dark',
-            type: 'horizontal',
-            shadeIntensity: 0.5,
-            gradientToColors: ['#870000'],
-            inverseColors: true,
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 100]
-          }
-        },
-        stroke: {
-          lineCap: 'round'
-        },
-        labels: [memory95+' 대'],
-    };
-    apexMemory95usageChart = new ApexCharts(
-    document.querySelector('#apexMemory95usageChart'),
-    apexMemory95usageOptions
-    );
-    apexMemory95usageChart.render();
-
-
-    //--------------------------------------------------------------------------
-    // Memory Usage - apexMemory75usageChart
-    //--------------------------------------------------------------------------
-    var apexMemory75usageOptions = {
-        series: [75],
-        chart: {
-          height: 250,
-          type: 'radialBar',
-          events: {
-            mounted: (chart) => {
-              chart.windowResizeHandler();
-            }
-          },
-        },
-        plotOptions: {
-          radialBar: {
-            startAngle: -135,
-            endAngle: 225,
-            hollow: {
-              margin: 0,
-              size: '70%',
-              background: 'transparent',
-              image: undefined,
-              imageOffsetX: 0,
-              imageOffsetY: 0,
-              position: 'front',
-              dropShadow: {
-                enabled: true,
-                top: 3,
-                left: 0,
-                blur: 4,
-                opacity: 0.24
-              }
-            },
-            track: {
-              background: ['rgba(' + app.color.whiteRgb + ', .30)'],
-              strokeWidth: '67%',
-              margin: 0, // margin is in pixels
-              dropShadow: {
-                enabled: true,
-                top: -3,
-                left: 0,
-                blur: 4,
-                opacity: 0.35
-              }
-            },
-            dataLabels: {
-              show: true,
-              name: {
-                offsetY: -10,
-                show: true,
-                color: '#fff',
-                fontSize: '20px'
-              },
-              value: {
-                formatter: function (val) {
-                  return parseInt(val) + '% 초과';
-                },
-                color: '#fff',
-                fontSize: '14px',
-                show: true,
-              }
-            }
-          }
-        },
-        fill: {
-          type: 'gradient',
-          colors: '#fe8c00',
+          colors: '#ff9f0c',
           gradient: {
             shade: 'dark',
             type: 'horizontal',
@@ -539,20 +465,20 @@ var handleRenderChartNC = function () {
         stroke: {
           lineCap: 'round'
         },
-        labels: [memory95 + memory75+ ' 대'],
+        labels: [numberWithCommas(memory95)+' 대'],
     };
-    apexMemory75usageChart = new ApexCharts(
-    document.querySelector('#apexMemory75usageChart'),
-    apexMemory75usageOptions
+    apexMemory95usageChart = new ApexCharts(
+    document.querySelector('#apexMemory95usageChart'),
+    apexMemory95usageOptions
     );
-    apexMemory75usageChart.render();
+    apexMemory95usageChart.render();
 
 
     //--------------------------------------------------------------------------
-    // Memory Usage - apexMemory60usageChart
+    // Memory Usage - apexMemory75usageChart
     //--------------------------------------------------------------------------
-    var apexMemory60usageOptions = {
-        series: [60],
+    var apexMemory75usageOptions = {
+        series: [75],
         chart: {
           height: 250,
           type: 'radialBar',
@@ -630,7 +556,98 @@ var handleRenderChartNC = function () {
         stroke: {
           lineCap: 'round'
         },
-        labels: [memory95 + memory75 + memory60 +' 대']
+        labels: [numberWithCommas(memory95 + memory75)+ ' 대'],
+    };
+    apexMemory75usageChart = new ApexCharts(
+    document.querySelector('#apexMemory75usageChart'),
+    apexMemory75usageOptions
+    );
+    apexMemory75usageChart.render();
+
+
+    //--------------------------------------------------------------------------
+    // Memory Usage - apexMemory60usageChart
+    //--------------------------------------------------------------------------
+    var apexMemory60usageOptions = {
+        series: [60],
+        chart: {
+          height: 250,
+          type: 'radialBar',
+          events: {
+            mounted: (chart) => {
+              chart.windowResizeHandler();
+            }
+          },
+        },
+        plotOptions: {
+          radialBar: {
+            startAngle: -135,
+            endAngle: 225,
+            hollow: {
+              margin: 0,
+              size: '70%',
+              background: 'transparent',
+              image: undefined,
+              imageOffsetX: 0,
+              imageOffsetY: 0,
+              position: 'front',
+              dropShadow: {
+                enabled: true,
+                top: 3,
+                left: 0,
+                blur: 4,
+                opacity: 0.24
+              }
+            },
+            track: {
+              background: ['rgba(' + app.color.whiteRgb + ', .30)'],
+              strokeWidth: '67%',
+              margin: 0, // margin is in pixels
+              dropShadow: {
+                enabled: true,
+                top: -3,
+                left: 0,
+                blur: 4,
+                opacity: 0.35
+              }
+            },
+            dataLabels: {
+              show: true,
+              name: {
+                offsetY: -10,
+                show: true,
+                color: '#fff',
+                fontSize: '20px'
+              },
+              value: {
+                formatter: function (val) {
+                  return parseInt(val) + '% 초과';
+                },
+                color: '#fff',
+                fontSize: '14px',
+                show: true,
+              }
+            }
+          }
+        },
+        fill: {
+          type: 'gradient',
+          colors: '#009D83',
+          gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            gradientToColors: ['#5ED1B6'],
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100]
+          }
+        },
+        stroke: {
+          lineCap: 'round'
+        },
+        labels: [numberWithCommas(memory95 + memory75 + memory60) +' 대']
 
     };
     apexMemory60usageChart = new ApexCharts(
@@ -730,97 +747,7 @@ var handleRenderChartNC = function () {
         },
         fill: {
           type: 'gradient',
-          colors: '#b31217',
-          gradient: {
-            shade: 'dark',
-            type: 'horizontal',
-            shadeIntensity: 0.5,
-            gradientToColors: ['#870000'],
-            inverseColors: true,
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 100]
-          }
-        },
-        stroke: {
-          lineCap: 'round'
-        },
-        labels: [cpu95 + ' 대'],
-    };
-    apexCPU95usageChart = new ApexCharts(
-    document.querySelector('#apexCPU95usageChart'),
-    apexCPU95usageOptions
-    );
-
-
-    //--------------------------------------------------------------------------
-    // CPU Usage - apexCPU75usageChart
-    //--------------------------------------------------------------------------
-    var apexCPU75usageOptions = {
-        series: [75],
-        chart: {
-          height: 250,
-          type: 'radialBar',
-          events: {
-            mounted: (chart) => {
-                chart.windowResizeHandler();
-            }
-          },
-        },
-        plotOptions: {
-          radialBar: {
-            startAngle: -135,
-            endAngle: 225,
-            hollow: {
-              margin: 0,
-              size: '70%',
-              background: 'transparent',
-              image: undefined,
-              imageOffsetX: 0,
-              imageOffsetY: 0,
-              position: 'front',
-              dropShadow: {
-                enabled: true,
-                top: 3,
-                left: 0,
-                blur: 4,
-                opacity: 0.24
-              }
-            },
-            track: {
-              background: ['rgba(' + app.color.whiteRgb + ', .30)'],
-              strokeWidth: '67%',
-              margin: 0, // margin is in pixels
-              dropShadow: {
-                enabled: true,
-                top: -3,
-                left: 0,
-                blur: 4,
-                opacity: 0.35
-              }
-            },
-            dataLabels: {
-              show: true,
-              name: {
-                offsetY: -10,
-                show: true,
-                color: '#fff',
-                fontSize: '20px'
-              },
-              value: {
-                formatter: function (val) {
-                  return parseInt(val) + '% 초과';
-                },
-                color: '#fff',
-                fontSize: '14px',
-                show: true,
-              }
-            }
-          }
-        },
-        fill: {
-          type: 'gradient',
-          colors: '#fe8c00',
+          colors: '#ff9f0c',
           gradient: {
             shade: 'dark',
             type: 'horizontal',
@@ -835,20 +762,19 @@ var handleRenderChartNC = function () {
         stroke: {
           lineCap: 'round'
         },
-        labels: [cpu95 + cpu75 + ' 대'],
+        labels: [numberWithCommas(cpu95) + ' 대'],
     };
-    apexCPU75usageChart = new ApexCharts(
-    document.querySelector('#apexCPU75usageChart'),
-    apexCPU75usageOptions
+    apexCPU95usageChart = new ApexCharts(
+    document.querySelector('#apexCPU95usageChart'),
+    apexCPU95usageOptions
     );
 
 
-
     //--------------------------------------------------------------------------
-    // CPU Usage - apexCPU60usageChart
+    // CPU Usage - apexCPU75usageChart
     //--------------------------------------------------------------------------
-    var apexCPU60usageOptions = {
-        series: [60],
+    var apexCPU75usageOptions = {
+        series: [75],
         chart: {
           height: 250,
           type: 'radialBar',
@@ -926,7 +852,98 @@ var handleRenderChartNC = function () {
         stroke: {
           lineCap: 'round'
         },
-        labels: [cpu95 + cpu75 + cpu60 + ' 대'],
+        labels: [numberWithCommas(cpu95 + cpu75) + ' 대'],
+    };
+    apexCPU75usageChart = new ApexCharts(
+    document.querySelector('#apexCPU75usageChart'),
+    apexCPU75usageOptions
+    );
+
+
+
+    //--------------------------------------------------------------------------
+    // CPU Usage - apexCPU60usageChart
+    //--------------------------------------------------------------------------
+    var apexCPU60usageOptions = {
+        series: [60],
+        chart: {
+          height: 250,
+          type: 'radialBar',
+          events: {
+            mounted: (chart) => {
+                chart.windowResizeHandler();
+            }
+          },
+        },
+        plotOptions: {
+          radialBar: {
+            startAngle: -135,
+            endAngle: 225,
+            hollow: {
+              margin: 0,
+              size: '70%',
+              background: 'transparent',
+              image: undefined,
+              imageOffsetX: 0,
+              imageOffsetY: 0,
+              position: 'front',
+              dropShadow: {
+                enabled: true,
+                top: 3,
+                left: 0,
+                blur: 4,
+                opacity: 0.24
+              }
+            },
+            track: {
+              background: ['rgba(' + app.color.whiteRgb + ', .30)'],
+              strokeWidth: '67%',
+              margin: 0, // margin is in pixels
+              dropShadow: {
+                enabled: true,
+                top: -3,
+                left: 0,
+                blur: 4,
+                opacity: 0.35
+              }
+            },
+            dataLabels: {
+              show: true,
+              name: {
+                offsetY: -10,
+                show: true,
+                color: '#fff',
+                fontSize: '20px'
+              },
+              value: {
+                formatter: function (val) {
+                  return parseInt(val) + '% 초과';
+                },
+                color: '#fff',
+                fontSize: '14px',
+                show: true,
+              }
+            }
+          }
+        },
+        fill: {
+          type: 'gradient',
+          colors: '#009D83',
+          gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            gradientToColors: ['#5ED1B6'],
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100]
+          }
+        },
+        stroke: {
+          lineCap: 'round'
+        },
+        labels: [numberWithCommas(cpu95 + cpu75 + cpu60) + ' 대'],
     };
     apexCPU60usageChart = new ApexCharts(
     document.querySelector('#apexCPU60usageChart'),
@@ -1021,12 +1038,12 @@ var handleRenderChartNC = function () {
         },
         fill: {
           type: 'gradient',
-          colors: '#b31217',
+          colors: '#ff9f0c',
           gradient: {
             shade: 'dark',
             type: 'horizontal',
             shadeIntensity: 0.5,
-            gradientToColors: ['#870000'],
+            gradientToColors: ['#f83600'],
             inverseColors: true,
             opacityFrom: 1,
             opacityTo: 1,
@@ -1036,7 +1053,7 @@ var handleRenderChartNC = function () {
         stroke: {
           lineCap: 'round'
         },
-        labels: [disk99 + disk95 + ' 대'],
+        labels: [numberWithCommas(disk99 + disk95) + ' 대'],
     };
     apexDisk95usageChart = new ApexCharts(
     document.querySelector('#apexDisk95usageChart'),
@@ -1111,12 +1128,12 @@ var handleRenderChartNC = function () {
         },
         fill: {
           type: 'gradient',
-          colors: '#fe8c00',
+          colors: '#F2C94C',
           gradient: {
             shade: 'dark',
             type: 'horizontal',
             shadeIntensity: 0.5,
-            gradientToColors: ['#f83600'],
+            gradientToColors: ['#F2994A'],
             inverseColors: true,
             opacityFrom: 1,
             opacityTo: 1,
@@ -1126,7 +1143,7 @@ var handleRenderChartNC = function () {
         stroke: {
           lineCap: 'round'
         },
-        labels: [disk99 + disk95 + disk75 + ' 대'],
+        labels: [numberWithCommas(disk99 + disk95 + disk75) + ' 대'],
     };
     apexDisk75usageChart = new ApexCharts(
     document.querySelector('#apexDisk75usageChart'),
@@ -1201,12 +1218,12 @@ var handleRenderChartNC = function () {
         },
         fill: {
           type: 'gradient',
-          colors: '#F2C94C',
+          colors: '#009D83',
           gradient: {
             shade: 'dark',
             type: 'horizontal',
             shadeIntensity: 0.5,
-            gradientToColors: ['#F2994A'],
+            gradientToColors: ['#5ED1B6'],
             inverseColors: true,
             opacityFrom: 1,
             opacityTo: 1,
@@ -1216,7 +1233,7 @@ var handleRenderChartNC = function () {
         stroke: {
           lineCap: 'round'
         },
-        labels: [disk99 + disk95 + disk75 + disk60 + ' 대'],
+        labels: [numberWithCommas(disk99 + disk95 + disk75 + disk60) + ' 대'],
     };
     apexDisk60usageChart = new ApexCharts(
     document.querySelector('#apexDisk60usageChart'),
@@ -1274,7 +1291,7 @@ var handleRenderChartNC = function () {
           labels: {
             show: true,
             formatter: function (val) {
-              return Math.round(val);
+              return numberWithCommas(Math.round(val));
             }
           }
         },
@@ -1289,7 +1306,7 @@ var handleRenderChartNC = function () {
                 return '' + val
               }
             },
-            formatter: (value) => { return '' + value },
+            formatter: (value) => { return '' + numberWithCommas(value) },
           }
         },
         legend: {
@@ -1353,7 +1370,7 @@ var handleRenderChartNC = function () {
           labels: {
             show: true,
             formatter: function (val) {
-              return Math.round(val);
+              return numberWithCommas(Math.round(val));
             }
           }
         },
@@ -1368,7 +1385,7 @@ var handleRenderChartNC = function () {
                 return '' + val
               }
             },
-            formatter: (value) => { return '' + value },
+            formatter: (value) => { return '' + numberWithCommas(value) },
           }
         },
         legend: {
@@ -1459,7 +1476,10 @@ var handleRenderChartNC = function () {
             return [group + "&nbsp;-&nbsp;" + value.w.globals.series[value.seriesIndex]]
             },
         },
-        colors: ["#934903", "#b76306", "#db7f08", "#ff9f0c", "#ffbe48"],
+        colors: newColors,
+        fill: {
+            type: 'gradient'
+        },
         labels: alarmName,
         series: alarmValue,
         tooltip: {
@@ -1532,8 +1552,8 @@ var handleRenderChartNC = function () {
         dataLabels: {
           enabled: true,
           style:{
-            fontSize: '9px',
-            fontWeight: 900,
+            fontSize: '11px',
+            fontWeight: 400,
             colors: ['#fff']
           },
           dropShadow: {
@@ -1552,7 +1572,7 @@ var handleRenderChartNC = function () {
           width: 1,
           colors: ['transparent']
         },
-        colors: ["#f39c12", "#fdb43f", "#ffc365"],
+        colors: ['#009D83', '#ff9f0c', '#C7B299'],
         series: [{
 
           data: vendorValue
@@ -1566,7 +1586,7 @@ var handleRenderChartNC = function () {
           labels: {
             show: true,
                 formatter : function (val){
-                return parseInt(val);
+                return numberWithCommas(parseInt(val));
             },
             style: {
               colors: '#fff',
@@ -1681,21 +1701,6 @@ worldMapData.forEach(function (datum) {
     .attr("r", 40)
     .attr("opacity", 0)
     .remove();
-
-  //			      .attr("class", "ring")
-  //			      .attr("transform", translateCircle(datum))
-  //			      .attr("r", 1)
-  //			      .style("fill", "rgba("+app.color.themeRgb+")")
-  //			      .style("opacity", .14)
-  //			      .style("fill-opacity", .14)
-  //			    .transition()
-  //			      .ease("linear")
-  //			      .duration(2000)
-  //			      .style("stroke-opacity", .14)
-  //			      .style("stroke-width", 0.1)
-  //			      .style("stroke", "rgba("+app.color.themeRgb+")")
-  //			      .attr("r", 30)
-  //			      .remove();
 })
 
 }, 1000);

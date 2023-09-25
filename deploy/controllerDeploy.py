@@ -366,14 +366,14 @@ def package_paging(request):
         # print(con_set)
         for i in range(len(dataP['data']) - 1):
             if con_set == 'all':
-                if dataP['data'][i]['name'].lower().startswith(search) or dataP['data'][i]['content_set']['name'].lower().startswith(search) or dataP['data'][i]['command'].lower().startswith(search):
+                if search in dataP['data'][i]['name'].lower() or search in dataP['data'][i]['content_set']['name'].lower() or search in dataP['data'][i]['command'].lower():
                     packageList.append({'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
                                         'Command': dataP['data'][i]['command']})
             elif dataP['data'][i]['content_set']['name'] == con_set and search is None:
                 packageList.append({'id': dataP['data'][i]['id'], 'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
                                     'Command': dataP['data'][i]['command'], 'Command_Timeout': dataP['data'][i]['command_timeout']})
             elif dataP['data'][i]['content_set']['name'] == con_set:
-                if dataP['data'][i]['name'].lower().startswith(search) or dataP['data'][i]['content_set']['name'].lower().startswith(search) or dataP['data'][i]['command'].lower().startswith(search):
+                if search in dataP['data'][i]['name'].lower() or search in dataP['data'][i]['content_set']['name'].lower() or search in dataP['data'][i]['command'].lower():
                     packageList.append({'Name': dataP['data'][i]['name'], 'Content_set': dataP['data'][i]['content_set']['name'],
                                         'Command': dataP['data'][i]['command']})
         Count = len(packageList)
@@ -411,12 +411,12 @@ def computerGroup_paging(request):
 
         for i in range(len(dataG['data']) - 1):
             if con_set == 'all':
-                if dataG['data'][i]['name'].lower().startswith(search) or dataG['data'][i]['content_set']['name'].lower().startswith(search) or dataG['data'][i].get('text', '').lower().startswith(search):
+                if search in dataG['data'][i]['name'].lower() or search in dataG['data'][i]['content_set']['name'].lower() or search in dataG['data'][i].get('text', '').lower():
                     groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i].get('text', '')})
             elif dataG['data'][i]['content_set']['name'] == con_set and search is None:
                 groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i].get('text', '')})
             elif dataG['data'][i]['content_set']['name'] == con_set:
-                if dataG['data'][i]['name'].lower().startswith(search) or dataG['data'][i]['content_set']['name'].lower().startswith(search) or dataG['data'][i].get('text', '').lower().startswith(search):
+                if search in dataG['data'][i]['name'].lower() or search in dataG['data'][i]['content_set']['name'].lower() or search in dataG['data'][i].get('text', '').lower():
                     groupsList.append({'Name': dataG['data'][i]['name'], 'Content_set': dataG['data'][i]['content_set']['name'], 'Expression': dataG['data'][i].get('text', '')})
 
         Count = len(groupsList)

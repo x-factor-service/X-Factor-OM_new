@@ -4,6 +4,9 @@ Version: 1.8.0
 Author: Sean Ngu
 
 */
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 
 var handleRenderReportTableData = function () {
 	var reportTable = $('#reportDailyTable, #reportWeeklyTable, #reportMonthlyTable').DataTable({
@@ -236,8 +239,8 @@ var OshandleRenderDashboardPopupTableData = function () {
 		columns: [
 			{data: 'index'},
 			{data: 'name'},
-			{data: 'count'},
-
+			{data: 'count', render: function(data, type, row) {
+                return numberWithCommas(data);}}
 		],
 		columnDefs : [
 		    {targets: 0, width: "10%", className: 'text-center'},
@@ -318,7 +321,9 @@ var serverhandleRenderDashboardPopupTableData = function () {
 		columns: [
 			{data: 'index'},
 			{data: 'name'},
-			{data: 'count'},
+			{data: 'count', render: function(data, type, row) {
+                return numberWithCommas(data);
+            }}
 		],
 		columnDefs: [
 		    {targets: 0, width: "10%", className: 'text-center'},
@@ -402,7 +407,8 @@ var runningServicehandleRenderDashboardPopupTableData = function (url) {
 		columns: [
 			{data: 'index'},
 			{data: 'name'},
-			{data: 'count'},
+			{data: 'count', render: function(data, type, row) {
+               				 return numberWithCommas(data);}}
 		],
 		columnDefs: [
 		    {targets: 0, width: "10%", className: 'text-center'},
@@ -573,7 +579,8 @@ var idleAssetHandleRenderDashboardPopupTableData = function () {
 			{data: 'computer_name'},
 			{data: 'chassis_type'},
 			{data: 'ipv_address'},
-			{data: 'disk_total_used_space'},
+			{data: 'disk_total_used_space', render: function(data, type, row) {
+                return numberWithCommas(data)}},
 			{data: 'last_logged_in_date'},
 
 		],
@@ -621,6 +628,23 @@ var idleAssetHandleRenderDashboardPopupTableData = function () {
             }
         }
 });
+        $(document).on('click', '#nexts, #after', function() {
+            var current_page = dashboardpopupTable.page();
+            var total_pages = dashboardpopupTable.page.info().pages;
+            if ($(this).attr('id') == 'nexts') {
+                    if (current_page + 10 < total_pages) {
+                        dashboardpopupTable.page(current_page + 10).draw('page');
+                    } else {
+                        dashboardpopupTable.page(total_pages - 1).draw('page');
+                    }
+                    } else {
+                        dashboardpopupTable.page(Math.max(current_page - 10, 0)).draw('page');
+                    }
+        });
+                $(document).ready(function() {
+                var customStyle = '<style>#nexts, #after {color: #FFFFFF; background-color: #FFFFFF26; margin-left: 5px; height: 33px; padding: 6px 12px; font-size: 15px; padding: 6px 12px; margin-right: 5px;}</style>';
+                $('head').append(customStyle);
+        });
 };
 
 
@@ -745,19 +769,21 @@ var handleRenderDashboardPopupTableData = function () {
 			{data : 'index'},
 			{data : 'ip'},
 			{data : 'name'},
-			{data : 'use'},
-			{data : 'total'},
-			{data : 'usage'},
-			{data : 'index'}
+			{data: 'use', render: function(data, type, row) {
+                return numberWithCommas(data);
+            }},
+			{data: 'total', render: function(data, type, row) {
+                return numberWithCommas(data);
+            }},
+			{data : 'usage'}
 		],
 		columnDefs: [
             {targets: 0, width: "10%", className: 'text-center'},
             {targets: 1, width: "15%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.ip+'" data-toggle="tooltip">'+data+'</span>'}},
-            {targets: 2, width: "35%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.name+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 2, width: "39%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.name+'" data-toggle="tooltip">'+data+'</span>'}},
             {targets: 3, width: "12%", className: 'text-center'},
             {targets: 4, width: "12%", className: 'text-center'},
-            {targets: 5, width: "12%", className: 'text-center'},
-            {targets: 6, width: "14%", render: function(data, type, row) {return '<select class="btn btn-outline-primary" onchange="confirm(this.options[this.selectedIndex].value)"><option value="" selected disabled>Action</option><option value="메일을 보내시겠습니까?">Mail</option><option value="알람을 보내시겠습니까?">Alarm</option><option value="정말로 리부팅을 실행시키겠습니까?">Reboot</option></select>'}},
+            {targets: 5, width: "12%", className: 'text-center'}
 		],
 		language: {
 			"decimal": "",
@@ -836,18 +862,17 @@ var CpuhandleRenderDashboardPopupTableData = function () {
 			{data: 'index'},
 			{data: 'ip'},
 			{data: 'name'},
-			{data: 'use'},
-			{data: 'usage'},
-			{data: 'index'},
-
+			{data: 'use', render: function(data, type, row) {
+                return numberWithCommas(data);
+            }},
+			{data: 'usage'}
 		],
 		columnDefs: [
             {targets: 0, width: "10%", className: 'text-center'},
-            {targets: 1, width: "20%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.ip+'" data-toggle="tooltip">'+data+'</span>'}},
-            {targets: 2, width: "34%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.name+'" data-toggle="tooltip">'+data+'</span>'}},
-            {targets: 3, width: "13%", className: 'text-center'},
-            {targets: 4, width: "9%", className: 'text-center'},
-            {targets: 5, width: "14%", render: function(data, type, row) {return '<select class="btn btn-outline-primary" onchange="confirm(this.options[this.selectedIndex].value)"><option value="" selected disabled>Action</option><option value="메일을 보내시겠습니까?">Mail</option><option value="알람을 보내시겠습니까?">Alarm</option><option value="정말로 리부팅을 실행시키겠습니까?">Reboot</option></select>'}},
+            {targets: 1, width: "15%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.ip+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 2, width: "49%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.name+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 3, width: "14%", className: 'text-center'},
+            {targets: 4, width: "12%", className: 'text-center'}
 		],
 		language: {
 			"decimal": "",
@@ -925,19 +950,21 @@ var DiskhandleRenderDashboardPopupTableData = function () {
 			{data : 'index'},
 			{data : 'ip'},
 			{data : 'name'},
-			{data : 'use'},
-			{data : 'total'},
-			{data : 'usage'},
-			{data : 'index'},
+			{data: 'use', render: function(data, type, row) {
+                return numberWithCommas(data);
+            }},
+			{data: 'total', render: function(data, type, row) {
+                return numberWithCommas(data);
+            }},
+			{data : 'usage'}
 		],
 		columnDefs: [
             {targets: 0, width: "10%", className: 'text-center'},
             {targets: 1, width: "15%", className: 'text-center text-truncate', render: function(data, type, row) {return '<span title="'+row.ip+'" data-toggle="tooltip">'+data+'</span>'}},
-            {targets: 2, width: "35%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.name+'" data-toggle="tooltip">'+data+'</span>'}},
+            {targets: 2, width: "39%", className: 'text-start text-truncate', render: function(data, type, row) {return '<span title="'+row.name+'" data-toggle="tooltip">'+data+'</span>'}},
             {targets: 3, width: "12%", className: 'text-center'},
             {targets: 4, width: "12%", className: 'text-center'},
-            {targets: 5, width: "12%", className: 'text-center'},
-            {targets: 6, width: "14%", render: function(data, type, row) {return '<select class="btn btn-outline-primary" onchange="confirm(this.options[this.selectedIndex].value)"><option value="" selected disabled>Action</option><option value="메일을 보내시겠습니까?">Mail</option><option value="알람을 보내시겠습니까?">Alarm</option><option value="정말로 리부팅을 실행시키겠습니까?">Reboot</option></select>'}},
+            {targets: 5, width: "12%", className: 'text-center'}
 		],
 		language: {
 			"decimal": "",
@@ -1127,7 +1154,9 @@ var connectDestinationIphandleRenderDashboardPopupTableData = function () {
 			{data: 'ip'},
 			{data: 'name'},
 			{data: 'port'},
-			{data: 'count'},
+			{data: 'count', render: function(data, type, row) {
+                return numberWithCommas(data);
+            }},
 		],
 		columnDefs: [
             {targets: 0, width: "10%", className: 'text-center'},

@@ -36,7 +36,7 @@ def DashboardData():
             logger.info('dashboardFunctionSBOM.py - sbom_package_list - Success')
         except:
             logger.warning('dashboardFunctionSBOM.py - Error Occurred')
-            logger.warning('Error - disk_donutData')
+            logger.warning('Error - sbom_package_list')
 
         #--------------SBOM에서 탐지된 취약 패키지----------------
         try:

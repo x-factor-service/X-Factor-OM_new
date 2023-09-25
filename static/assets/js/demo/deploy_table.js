@@ -182,10 +182,12 @@ $(document).ready(function () {
             // colVal3_param 안에 있는 div 태그 모두 삭제
             while (parentElement.firstChild) {
                 parentElement.removeChild(parentElement.firstChild);
+                resetDivClasses();
             }
             // pack 안에 있는 div 태그 모두 삭제
             while (parentElement1.firstChild) {
                 parentElement1.removeChild(parentElement1.firstChild);
+                resetDivClasses();
             }
             // 클릭한 행이 이미 선택된 상태인 경우 선택 해제
             $clickedRow.removeClass('clicked');
@@ -197,10 +199,12 @@ $(document).ready(function () {
             // colVal3_param 안에 있는 div 태그 모두 삭제
             while (parentElement.firstChild) {
                 parentElement.removeChild(parentElement.firstChild);
+                resetDivClasses();
             }
             // pack 안에 있는 div 태그 모두 삭제
             while (parentElement1.firstChild) {
                 parentElement1.removeChild(parentElement1.firstChild);
+                resetDivClasses();
             }
 
             $clickedRow.addClass('clicked');
@@ -222,11 +226,13 @@ $(document).ready(function () {
                     } else {
                         // colVal3_param 안에 있는 div 태그 모두 삭제
                         while (parentElement.firstChild) {
-                            parentElement.removeChild(parentElement.firstChild);
+                            resetDivClasses()
+//                            parentElement.removeChild(parentElement.firstChild);
                         }
                         // pack 안에 있는 div 태그 모두 삭제
                         while (parentElement1.firstChild) {
-                            parentElement1.removeChild(parentElement1.firstChild);
+                            resetDivClasses()
+//                            parentElement1.removeChild(parentElement1.firstChild);
                         }
                         return
                     }
@@ -293,6 +299,7 @@ $(document).ready(function () {
     $("#deployPCK_resetBtn").click(function() {
         $("#outputP").empty();
          $("#packageDataTable tbody tr").removeClass('clicked').css('background-color', '');
+         resetDivClasses()
     });
 
     //outputC 내부 콘텐츠를 재설정하는 기능
@@ -379,7 +386,7 @@ $(document).ready(function () {
 
                 var increaseInterval = setInterval(function() {
 
-                    var randomIncrease = Math.floor(Math.random() * 4) + 1;
+                    var randomIncrease = Math.floor(Math.random() * 4) + 2;
 
                     progressBarValue += randomIncrease;
 
@@ -398,7 +405,7 @@ $(document).ready(function () {
                           delete intervalMap[id];
 
                         }
-                },2000);
+                },800);
                 intervalMap[id] = increaseInterval;
             }
 

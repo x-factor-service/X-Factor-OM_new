@@ -4,8 +4,8 @@ var colors = ['#0079BF', '#0088A8', '#00867A', '#5BC160', '#DAD056'];
 //CVE가 탐지된 SBOM 테이블
 var cveInSbomTable = function () {
     var dashboardpopupTable = $('#cveInSbom_dataTable').DataTable({
-        dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center mb-6 d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
-        lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
+        dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center mb-6 d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
+        pageLength: 20,
         responsive: true,
         searching: true,
         ordering: true,
@@ -18,6 +18,27 @@ var cveInSbomTable = function () {
             dataSrc: function (res) {
                 var data = res.data.item;
                 return data;
+            }
+        },
+        createdRow: function (row, data, dataIndex) {
+            if (data.score) {
+                if (data.score.includes('Critical')) {
+                    $('td:eq(4)', row).css({
+                        'background-color': 'rgba(255, 0, 0, 0.5)',
+                    });
+                } else if (data.score.includes('High')) {
+                    $('td:eq(4)', row).css({
+                        'background-color': 'rgba(255, 165, 0, 0.5)',
+                    });
+                } else if (data.score.includes('Medium')) {
+                    $('td:eq(4)', row).css({
+                        'background-color': 'rgba(255, 255, 0, 0.5)',
+                    });
+                } else if (data.score.includes('Low')) {
+                    $('td:eq(4)', row).css({
+                        'background-color': 'rgba(0, 128, 0, 0.5)',
+                    });
+                }
             }
         },
         columns: [
@@ -167,7 +188,7 @@ var sbomDetail_datatable = function () {
                 return '<div class="text-center text-truncate text-teal fs-12px fw-bold" title="' + row.version + '" data-toggle="tooltip">' + data + '</div>'}},
 		    {targets: 5, width: '52%', className: 'text-center', render: function (data, type, row) {
                 return '<div class="text-center text-truncate text-teal fs-12px fw-bold" title="' + row.path + '" data-toggle="tooltip">' + data + '</div>'}},
-		    {targets: 6, width: '8%', className: 'text-truncate', render: function (data, type, row) {
+		    {targets: 6, width: '8%', className: 'text-center', render: function (data, type, row) {
                 return '<div class="text-center text-truncate text-teal fs-12px fw-bold" title="' + row.type + '" data-toggle="tooltip">' + data + '</div>'}}
 		],
 		language: {
@@ -196,8 +217,8 @@ var sbomDetail_datatable = function () {
 //SBOM 목록 전체 테이블
 var sbom_dataTable = function () {
     var dashboardpopupTable = $('#sbom_dataTable').DataTable({
-        dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'l><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
-        lengthMenu: [[20, 50, 100, 200], [20, 50, 100, 200]],
+        dom: "<'d-flex justify-content-between mb-3'<'col-md-4 mb-md-0'><'text-right'<'d-flex justify-content-end'fB>>>t<'align-items-center d-flex justify-content-between'<' mr-auto col-md-6 mb-md-0 mt-n2 'i><'mb-0 col-md-6'p>>",
+        pageLength: 20,
         responsive: true,
         searching: true,
         ordering: true,
@@ -631,7 +652,7 @@ function adjustWidth() {
         tableContainer.classList.remove('col-xl-12');
         tableContainer.classList.add('col-xl-9');
     });
-};
+}
 
 
 $(document).ready(function () {

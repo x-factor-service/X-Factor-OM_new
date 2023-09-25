@@ -1,7 +1,7 @@
 {% extends 'om/base.html' %}
 {% block content %}
 {% load static %}
-
+{% load humanize %}
 <!-- BEGIN #header -->
 
 <!-- END #header -->
@@ -24,7 +24,7 @@
                     <!-- BEGIN title -->
                     <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo osVersion-moreInfo"><i class="fas fa-ellipsis-h"></i></button>
                     <div class="d-flex fw-bold fs-12px">
-                        <div class="flex-grow-1">OS 버전별 서버 수 (상위 8개)</div>
+                        <div class="flex-grow-1">OS 버전별 자산 수 (상위 8개)</div>
                     </div>
                     <!-- END title -->
                     <!-- BEGIN stat-lg -->
@@ -40,7 +40,7 @@
                             </div>
                             <div class="col-1">
                                 {% for data in chartData.os_chartPartOne %}
-                                <div class="small text-white text-opacity-50 text-truncate text-center" title="{{data.value}}">{{ data.value }}</div>
+                                <div class="small text-white text-opacity-50 text-truncate text-center" title="{{data.value}}">{{ data.value|intcomma }}</div>
                                 {% endfor %}
                             </div>
                             {% endif %}
@@ -53,7 +53,7 @@
                             </div>
                             <div class="col-1">
                                 {% for data in chartData.os_chartPartTwo %}
-                                <div class="small text-white text-opacity-50 text-truncate text-center" title="{{data.value}}">{{ data.value }}</div>
+                                <div class="small text-white text-opacity-50 text-truncate text-center" title="{{data.value}}">{{ data.value|intcomma }}</div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                     <!-- BEGIN stat-lg -->
                     <div class="col-12 h-100px d-flex text-center align-content-center justify-content-center flex-md-column">
                         <div class="count-num">
-                            <span class="fw-bold text-opacity-60 fs-35px pe-3 pb-10px">{{ chartData.idleDataList.value }} 개</span>
+                            <span class="fw-bold text-opacity-60 fs-35px pe-3 pb-10px">{{ chartData.idleDataList.value|intcomma }} 개</span>
                         </div>
                     </div>
                     <!-- END stat-lg -->
@@ -130,7 +130,7 @@
                     <div class="col-12 h-100px d-flex text-center align-content-center justify-content-center flex-md-column">
                         <div class="count-num">
 
-                            <span class="fw-bold text-opacity-60 fs-35px pe-3 pb-10px"> {{chartData.alamCaseDataList.nodeDataList.0.alarmCount|add:chartData.alamCaseDataList.nodeDataList.1.alarmCount|add:chartData.alamCaseDataList.nodeDataList.2.alarmCount|add:chartData.alamCaseDataList.nodeDataList.3.alarmCount}}개</span>
+                            <span class="fw-bold text-opacity-60 fs-35px pe-3 pb-10px"> {{chartData.alamCaseDataList.nodeDataList.0.alarmCount|add:chartData.alamCaseDataList.nodeDataList.1.alarmCount|add:chartData.alamCaseDataList.nodeDataList.2.alarmCount|add:chartData.alamCaseDataList.nodeDataList.3.alarmCount|intcomma}}개</span>
                         </div>
                     </div>
                     <!-- END stat-lg -->
@@ -175,7 +175,7 @@
                         </div>
                         <div class="col-2">
                             {% for data in chartData.donutChartDataList %}
-                             <div class="small text-white text-opacity-50 text-truncate text-center" title="{{data.value}}">{{data.value}}</div>
+                             <div class="small text-white text-opacity-50 text-truncate text-center" title="{{data.value}}">{{data.value|intcomma}}</div>
                             {% endfor %}
                             {% endif %}
                         </div>
@@ -281,8 +281,8 @@
                         <!-- BEGIN title -->
                         {% if chartData.server_LChartDataList %}
                         <div class="d-flex fw-bold fs-12px mb-2">
-                            <div class="flex-grow-1">Virtual 서버 수량 그래프 (최근 1년) </div>
-                            <div class="d-flex fw-bold fs-17px mb-2"><br>Current : {{ chartData.server_LChartDataList.0.data.0.data | last }} unit</div>
+                            <div class="flex-grow-1">Virtual 자산 수량 그래프 (최근 1년) </div>
+                            <div class="d-flex fw-bold fs-17px mb-2"><br>Current : {{ chartData.server_LChartDataList.0.data.0.data | last |intcomma}} unit</div>
                         </div>
                         {% endif %}
                         <!-- END title -->
@@ -315,8 +315,8 @@
                         <!-- BEGIN title -->
                         {% if chartData.server_LChartDataList %}
                         <div class="d-flex fw-bold fs-12px mb-2">
-                            <div class="flex-grow-1">Physical 서버 수량 그래프 (최근 1년)</div>
-                            <div class="d-flex fw-bold fs-17px mb-2"><br>Current : {{ chartData.server_LChartDataList.0.data.1.data | last }} unit</div>
+                            <div class="flex-grow-1">Physical 자산 수량 그래프 (최근 1년)</div>
+                            <div class="d-flex fw-bold fs-17px mb-2"><br>Current : {{ chartData.server_LChartDataList.0.data.1.data | last |intcomma}} unit</div>
                         </div>
                         {% endif %}
 
@@ -408,7 +408,7 @@
                                 {% for alarmDataList in chartData.alamCaseDataList.nodeDataList %}
                                 <tr>
                                     <td>{{alarmDataList.alarmCase}}</td>
-                                    <td class="text-center">{{ alarmDataList.alarmCount }}</td>
+                                    <td class="text-center">{{ alarmDataList.alarmCount|intcomma }}</td>
                                 </tr>
                                 {% endfor %}
                                 </tbody>
@@ -480,7 +480,7 @@
                     <!-- BEGIN title -->
                     <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo physicalServer-moreInfo"><i class="fas fa-ellipsis-h"></i></button>
                     <div class="d-flex fw-bold fs-12px">
-                        <div class="flex-grow-1">물리서버 벤더별 수량 (상위 3개)</div>
+                        <div class="flex-grow-1">물리자산 벤더별 수량 (상위 3개)</div>
                     </div>
                     <!-- END title -->
                     <!-- BEGIN stat-lg -->
@@ -514,7 +514,7 @@
                     <!-- BEGIN title -->
                     <button type="button" class="btn btn-outline-link btn-sm btn-moreInfo serverBandBy-moreInfo"><i class="fas fa-ellipsis-h"></i></button>
                     <div class="d-flex fw-bold fs-12px">
-                        <div class="flex-grow-1">각 대역별 서버 수 (상위 3개)</div>
+                        <div class="flex-grow-1">각 대역별 자산 수 (상위 3개)</div>
                     </div>
                     <!-- END title -->
                     <!-- BEGIN stat-lg -->
@@ -575,7 +575,7 @@
                                     <td class="text-start text-truncate" title="{{ data.ip }}">{{ data.ip }}</td>
                                     <td class="text-start text-truncate" title="{{ data.host }}">{{ data.name }}</td>
                                     <td class="text-center text-truncate" title="{{ data.host }}">{{ data.host }}</td>
-                                    <td class="text-center text-truncate" title="{{ data.count }}">{{ data.count }}</td>
+                                    <td class="text-center text-truncate" title="{{ data.count }}">{{ data.count|intcomma }}</td>
                                 </tr>
                                 {% endfor %}
                                 </tbody>
@@ -630,7 +630,7 @@
                                 <tr class="text-opacity-60">
                                     <td class="text-start text-truncate" title="{{ data.ip }}">{{ data.ip }}</td>
                                     <td class="text-start text-truncate" title="{{ data.name }}">{{ data.name }}</td>
-                                    <td class="w-80px text-center text-truncate" title="{{ data.count }}">{{ data.count }}</td>
+                                    <td class="w-80px text-center text-truncate" title="{{ data.count }}">{{ data.count|intcomma }}</td>
                                 </tr>
                                 {% endfor %}
                                 </tbody>
@@ -670,7 +670,7 @@
                                          title="{{bannerData.name}} Count">{{bannerData.name}}
                                     </div>
                                     <div class="count-num">
-                                        <span class="conTotalnum fw-bold text-opacity-60 fs-4">{{bannerData.value}}</span>
+                                        <span class="conTotalnum fw-bold text-opacity-60 fs-4">{{bannerData.value|intcomma}}</span>
                                         <div class="conNumImg">
                                             {% if bannerData.roc == 0 %}
                                             <a class="conNumIcon text-decoration-none"> - </a>

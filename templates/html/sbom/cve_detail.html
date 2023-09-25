@@ -28,9 +28,9 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td class="text-truncate">{{ item.comp_name }}</td>
+                        <td>{{ item.comp_name }}</td>
                         <td>{{ item.comp_ver }}</td>
-                        <td class="text-truncate ">{{ item.cve_id }}</td>
+                        <td>{{ item.cve_id }}</td>
                         <td>{{ item.score }}</td>
                         <td>{{ item.detect_time }}</td>
                         <td>{{ item.detect_count }}</td>
@@ -38,7 +38,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="cve-vuln mb-5">
+            <div class="cve-vuln mb-4">
                 <dl class="row m-1 bg-info bg-opacity-25 line-height-2 pt-1 ">
                     <dt class="col-sm-2 text-danger text-center">취약점 설명</dt>
                     <dd class="col-sm-10 mb-0">{{ item.note }}</dd>
@@ -89,5 +89,8 @@
         </div>
     </div>
 </div>
+<!-- BEGIN btn-scroll-top -->
+<a href="#" data-toggle="scroll-to-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
+<!-- END btn-scroll-top -->
 {% endblock %}
 

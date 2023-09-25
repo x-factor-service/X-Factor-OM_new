@@ -44,8 +44,8 @@ def Dashboard(type=None):
             disk_donutData = numberTf(disk_donutData_input)
             logger.info('dashboardFunction.py - disk_donutData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - disk_donutData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - disk_donutData')
 
             # -----------------------------상단 메모리 사용률 도넛 차트------------------------------
         try:
@@ -53,101 +53,101 @@ def Dashboard(type=None):
             memory_donutData = numberTf(memory_donutData_input)
             logger.info('dashboardFunction.py - memory_donutData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - memory_donutData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - memory_donutData')
             # -----------------------------상단 씨피유 사용률 도넛 차트------------------------------
         try:
             cpu_donutData_input = inputDb('cpu_donutData')
             cpu_donutData = numberTf(cpu_donutData_input)
             logger.info('dashboardFunction.py - cpu_donutData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - cpu_donutData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - cpu_donutData')
             # -----------------------------상단 오에스 파이차트 ------------------------------------
         try:
             os_pieData = inputDb('os_pieData')
             logger.info('dashboardFunction.py - os_pieData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - os_pieData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - os_pieData')
             # -----------------------------상단 유/무선(와이어) 파이차트 ------------------------------------
         try:
             wire_pieData = inputDb('wire_pieData')
             logger.info('dashboardFunction.py - wire_pieData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - wire_pieData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - wire_pieData')
             # -----------------------------상단 물리/가상 파이차트 ------------------------------------
         try:
             virtual_pieData = inputDb('virtual_pieData')
             logger.info('dashboardFunction.py - virtual_pieData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - virtual_pieData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - virtual_pieData')
             # -----------------------------중앙 관리자산 라인차트 ------------------------------------
         try:
             allAsset_lineData = inputDb('allAsset_lineData')
             logger.info('dashboardFunction.py - allAsset_lineData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - allAsset_lineData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - allAsset_lineData')
             # -----------------------------중앙 미관리자산 라인차트 ------------------------------------
         try:
             discover_lineData = inputDb('discover_lineData')
             logger.info('dashboardFunction.py - discover_lineData - Success')
             #print(discover_lineData)
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - discover_lineData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - discover_lineData')
             # -----------------------------중앙 유휴자산 라인차트 ------------------------------------
         try:
             idle_lineData = inputDb('idle_lineData')
             logger.info('dashboardFunction.py - idle_lineData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - idle_lineData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - idle_lineData')
         # -----------------------------인증서리스트  ------------------------------------
         # try:
         #     cert_listData = inputDb('cert_listData')
         #     logger.info('dashboardFunction.py - cert_listData - Success')
         # except:
-        #     logger.warning('dashboardFunction.py - Error Occurred')
-        #     logger.warning('Error - cert_listData')
+        #     logger.debug('dashboardFunction.py - Error Occurred')
+        #     logger.debug('Error - cert_listData')
         # -----------------------------최대 CPU 점유 프로세스 더보기 -----------------------
         try:
             highCpuProc_listData = inputDb('highCpuProc_listData')
             logger.info('dashboardFunction.py - highCpuProc_listData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - highCpuProc_listData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - highCpuProc_listData')
         # -----------------------------최대 MEMORY 점유 프로세스 더보기 -----------------------
         try:
             highMemProc_listData = inputDb('highMemProc_listData')
             logger.info('dashboardFunction.py - highMemProc_listData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - highMemProc_listData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - highMemProc_listData')
         # -----------------------------최대 DISK 점유 어플리케이션 더보기 -----------------------
         try:
             highDiskApp_listData = inputDb('highDiskApp_listData')
             logger.info('dashboardFunction.py - highDiskApp_listData - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - highDiskApp_listData')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - highDiskApp_listData')
         # ---------------------------------OM 일일 리포트 - 자산 통계 정보 ---------------------
         try:
             report_listData_unMgmt_idle = inputDb('report_listData_unMgmt_idle', type)
             logger.info('dashboardFunction.py - report_listData_unMgmt_idle - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - report_listData_unMgmt_idle')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - report_listData_unMgmt_idle')
         # ---------------------------------OM 일일 리포트 - 전일 발송된 알람 정보 ---------------
         try:
             report_listData_alarm = inputDb('report_listData_alarm', type)
             logger.info('dashboardFunction.py - report_listData_alarm - Success')
         except:
-            logger.warning('dashboardFunction.py - Error Occurred')
-            logger.warning('Error - report_listData_alarm')
+            logger.debug('dashboardFunction.py - Error Occurred')
+            logger.debug('Error - report_listData_alarm')
         # ---------------------------------OM 일일 리포트 - IP대역별 관리 자산 현황
         try:
             report_listData_subnet_isVm = inputDb('report_listData_subnet_isVm', type)

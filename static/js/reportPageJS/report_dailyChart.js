@@ -4,7 +4,9 @@ Version: 1.8.0
 Author: Sean Ngu
 Website: http://www.seantheme.com/hud/
 */
-
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 var handleRenderdailyApexChart = function () {
 	Apex = {
 		title: {
@@ -125,8 +127,11 @@ countElement.textContent = calcPerRound_report_listData_unMgmt_counts.toString()
 		},
 		dataLabels: {
 			enabled: true,
-			style: {
-            colors: ['#ffffff']
+			formatter: function (value) {
+                return numberWithCommas(value);
+            },
+            style: {
+                colors: ['#ffffff']
             }
 		},
 		legend: {
@@ -156,6 +161,9 @@ countElement.textContent = calcPerRound_report_listData_unMgmt_counts.toString()
 		yaxis: {
 			labels: {
 				show: true,
+				formatter: function (value) {
+                    return numberWithCommas(value);
+                }
 			}
 
 		},
@@ -173,7 +181,9 @@ countElement.textContent = calcPerRound_report_listData_unMgmt_counts.toString()
 						return ''
 					}
 				},
-				formatter: (value) => { return '' + value },
+				formatter: function (value) {
+                    return numberWithCommas(value);
+                }
 			}
 		},
 	};
@@ -227,11 +237,14 @@ countElement.textContent = calcPerRound_report_listData_idle_counts.toString() +
 			},
 		},
 		dataLabels: {
-			enabled: true,
-			style: {
-			    colors: ['#ffffff']
-			}
-		},
+            enabled: true,
+            formatter: function (value) {
+                return numberWithCommas(value);
+            },
+            style: {
+                colors: ['#ffffff']
+            }
+        },
 		legend: {
 			show: false
 		},
@@ -272,27 +285,31 @@ countElement.textContent = calcPerRound_report_listData_idle_counts.toString() +
 		},
 		yaxis: {
 			labels: {
-				show: true,
-			}
-
+                show: true,
+                formatter: function (value) {
+                    return numberWithCommas(value);
+                }
+            }
 		},
 		fill: {
 			opacity: 1
 		},
 		tooltip: {
-			theme: 'dark',
-			x: {
-				show: true
-			},
-			y: {
-				title: {
-					formatter: function (seriesName) {
-						return ''
-					}
-				},
-				formatter: (value) => { return '' + value },
-			}
-		},
+            theme: 'dark',
+            x: {
+                show: true
+            },
+            y: {
+                title: {
+                    formatter: function (seriesName) {
+                        return ''
+                    }
+                },
+                formatter: function (value) {
+                    return numberWithCommas(value);
+                }
+            }
+        }
 	};
 	var report_listData_idle_chart = new ApexCharts(
 		document.querySelector('#report_listData_idle_chart'),

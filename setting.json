@@ -66,7 +66,7 @@
         "MenuTNM": "web_menusetting",
         "UserTNM": "web_user",
         "LOG": "action_log",
-        "DS" : "deploy_status"
+        "DS": "deploy_status"
     },
     "FILE": {
         "asset": {
@@ -85,12 +85,12 @@
         }
     },
     "EMAIL": {
-        "EMAIL_ID": "dhlee@xionits.com",
-        "EMAIL_PWD": "!akfls8653",
+        "EMAIL_ID": "skchoi@xionits.com",
+        "EMAIL_PWD": "8285sksk!!",
         "TO_EMAIL": [
-            "djlee@xionits.com",
-            "dhlee@xionits.com",
-            "ikchoi@xionits.com"
+            "skchoi@xionits.com",
+            "",
+            ""
         ]
     }
 }

@@ -1,7 +1,9 @@
 var randomNo = function () {
     return Math.floor(Math.random() * 60) + 30
 };
-
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 var handleRenderChartNCOMG = function () {
     // global apexchart settings
     Apex = {
@@ -134,7 +136,6 @@ var handleRenderChartNCOMG = function () {
         os_pieDataItem.push(dataList.os_pieData[i]['item']);
         os_pieDataCount.push(dataList.os_pieData[i]['count']);
     };
-
     var wire_pieDataItem = []
     var wire_pieDataCount = []
     for (var i = 0; i < dataList.wire_pieData.length; i++) {
@@ -180,7 +181,14 @@ var handleRenderChartNCOMG = function () {
                 position: 'bottom',
                 formatter: function(val, opts) {
                     const seriesValue = opts.w.globals.series[opts.seriesIndex];
-                    return val + ": " + seriesValue + "대";
+                    return val + ": " + numberWithCommas(seriesValue) + "대";
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function(value) {
+                        return numberWithCommas(value);
+                    }
                 }
             }
         };
@@ -229,9 +237,15 @@ var handleRenderChartNCOMG = function () {
         toolbar: {
             show: true,
             tools: {
+                download: true,
                 zoom: false,
-                pan: false
+                pan: false,
+                reset: false,
+                selection: false
             }
+        },
+        zoom: {
+            enabled: false
         }
       },
       stroke: {
@@ -252,6 +266,9 @@ var handleRenderChartNCOMG = function () {
         },
         style: {
             fontSize: '9px',
+        },
+        formatter: function(val) {
+            return numberWithCommas(val);
         }
       },
       xaxis: {
@@ -260,9 +277,22 @@ var handleRenderChartNCOMG = function () {
             return item.item;
         })
       },
+      tooltip: {
+        y: {
+            formatter: function (val) {
+                return numberWithCommas(val);
+            }
+        }
+      },
       yaxis: {
         title: {
-          text: 'Count'
+          show: false
+        },
+        labels: {
+            offsetX: -15,
+            formatter: function (val) {
+                return numberWithCommas(val);
+            }
         }
       },
       legend: {
@@ -318,10 +348,11 @@ var handleRenderChartNCOMG = function () {
       },
       tooltip: {
         custom: function({ series, seriesIndex, dataPointIndex, w }) {
-           var color = w.globals.colors[dataPointIndex];
-           return '<div class="arrow_box" style="padding: 7px 10px; background-color: ' + color + ';">' +
-               '<span style="font-weight: bold;">' + w.globals.labels[dataPointIndex] + ' : ' + series[seriesIndex][dataPointIndex] + '회' + '</span>' +
-               '</div>';
+            var color = w.globals.colors[dataPointIndex];
+            var formattedNumber = numberWithCommas(series[seriesIndex][dataPointIndex]);
+            return '<div class="arrow_box" style="padding: 7px 10px; background-color: ' + color + ';">' +
+                '<span style="font-weight: bold;">' + w.globals.labels[dataPointIndex] + ' : ' + formattedNumber + '회' + '</span>' +
+                '</div>';
         }
       },
       fill: {
@@ -339,7 +370,7 @@ var handleRenderChartNCOMG = function () {
       yaxis: {
         labels: {
           formatter: function (value) {
-            return Math.round(value);
+            return numberWithCommas(Math.round(value));
           }
         }
       },
